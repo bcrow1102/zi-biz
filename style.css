@@ -179,11 +179,12 @@ button {
 .hero-card {
     position: relative;
     overflow: hidden;
-    min-height: 340px;
+    min-height: 300px;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 28px 26px 26px;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    padding: 32px 28px;
     border-radius: var(--radius-xl);
     background:
         radial-gradient(circle at 65% 12%, rgba(42, 147, 255, 0.24), transparent 30%),
@@ -192,52 +193,178 @@ button {
 }
 
 .hero-visual {
+    position: relative;
+    flex: 0 0 auto;
+    overflow: hidden;
+}
+
+/* ── hero background: grid + glow + orbit ── */
+.hero-visual-bg {
     position: absolute;
     inset: 0;
     pointer-events: none;
 }
 
-.floating-card {
+.hero-grid {
     position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(63, 115, 216, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(63, 115, 216, 0.045) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(ellipse 70% 60% at 78% 40%, rgba(0,0,0,0.5) 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 78% 40%, rgba(0,0,0,0.5) 0%, transparent 100%);
+}
+
+.hero-glow {
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    top: 10%;
+    right: 6%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(63, 115, 216, 0.12) 0%, transparent 70%);
+    filter: blur(40px);
+    animation: heroGlowPulse 6s ease-in-out infinite;
+}
+
+@keyframes heroGlowPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+}
+
+.hero-orbit {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(63, 115, 216, 0.08);
+}
+
+.hero-orbit--1 {
+    width: 320px;
+    height: 320px;
+    top: -40px;
+    right: -60px;
+    animation: heroOrbitSpin 50s linear infinite;
+}
+
+.hero-orbit--2 {
+    width: 220px;
+    height: 220px;
+    top: 30px;
+    right: -10px;
+    border-style: dashed;
+    border-color: rgba(63, 115, 216, 0.06);
+    animation: heroOrbitSpin 36s linear infinite reverse;
+}
+
+@keyframes heroOrbitSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ── hero feature cards ── */
+.hero-feature-cards {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 2;
+}
+
+.hero-feature-card {
     display: flex;
     align-items: center;
+    gap: 12px;
+    width: 210px;
+    padding: 14px 16px;
+    border: 1px solid rgba(63, 115, 216, 0.10);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    text-align: left;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.hero-feature-card:hover {
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(63, 115, 216, 0.22);
+    transform: translateY(-2px);
+}
+
+.hero-feature-card-body {
+    min-width: 0;
+}
+
+.hero-feature-card-body strong {
+    display: block;
+    color: #252b35;
+    font-size: 14px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+}
+
+.hero-feature-card-body span {
+    display: block;
+    margin-top: 2px;
+    color: #8b929d;
+    font-size: 11.5px;
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+}
+
+.hero-feature-arrow {
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    border-radius: 22px;
-    background: linear-gradient(145deg, rgba(47, 128, 237, 0.82), rgba(28, 100, 210, 0.92));
-    box-shadow: 0 20px 36px rgba(47, 128, 237, 0.22);
-    transform: rotate(-12deg);
-}
-
-.floating-card-label {
-    color: #ffffff;
-    font-size: 18px;
+    border-radius: 8px;
+    background: rgba(63, 115, 216, 0.07);
+    color: #3f73d8;
+    font-size: 13px;
     line-height: 1;
-    font-weight: 950;
-    letter-spacing: -0.05em;
-    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-    white-space: nowrap;
-    opacity: 0.96;
+    transition: background 0.2s ease;
 }
 
-.card-one {
-    width: 138px;
-    height: 92px;
-    top: 58px;
-    right: 58px;
+.hero-feature-card:hover .hero-feature-arrow {
+    background: rgba(63, 115, 216, 0.14);
 }
 
-.card-two {
-    width: 112px;
-    height: 76px;
-    top: 95px;
-    right: 118px;
-    opacity: 0.32;
-    transform: rotate(-18deg);
+.hero-feature-icon {
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #f0f3f8;
+    font-size: 16px;
+    line-height: 1;
+    filter: grayscale(0.3);
+}
+
+.hero-feature-card-body {
+    flex: 1 1 auto;
+}
+
+.hero-feature-arrow {
+    margin-left: auto;
 }
 
 .hero-content {
     position: relative;
     z-index: 1;
+    flex: 1 1 auto;
+    max-width: 420px;
 }
 
 .hero-kicker,
@@ -1437,4 +1564,272 @@ button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+
+/* 디자인 톤 다운: 과한 볼드 완화 */
+.brand-text {
+    font-weight: 760;
+    letter-spacing: -0.035em;
+}
+
+.hero-kicker,
+.page-kicker,
+.namecard-tool-kicker {
+    font-weight: 760;
+    letter-spacing: 0.08em;
+}
+
+.hero-card h1 {
+    font-weight: 760;
+    letter-spacing: -0.035em;
+}
+
+.hero-card p {
+    font-weight: 520;
+    color: #6f7783;
+}
+
+.page-head h2 {
+    font-weight: 760;
+    letter-spacing: -0.045em;
+}
+
+.page-head p:last-child {
+    font-weight: 520;
+}
+
+.wallet-left strong,
+.tool-card strong,
+.coming-card h3,
+.tool-empty h3,
+.menu-list button {
+    font-weight: 720;
+    letter-spacing: -0.035em;
+}
+
+.wallet-left p,
+.tool-card p,
+.coming-card p,
+.tool-empty p,
+.notice-card p {
+    font-weight: 500;
+    color: #737b86;
+}
+
+.hero-menu-item {
+    font-weight: 680;
+}
+
+.primary-btn,
+.ghost-btn,
+.small-action,
+.login-btn,
+.logout-inline-btn,
+.cost {
+    font-weight: 720;
+}
+
+:root {
+    --shadow: 0 10px 28px rgba(15, 23, 42, 0.055);
+}
+
+.hero-card,
+.wallet-card,
+.coming-card,
+.tool-panel,
+.menu-list {
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.055);
+}
+
+.tool-card {
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
+    border: 1px solid rgba(18, 24, 38, 0.045);
+}
+
+.account-strip,
+.logout-inline-btn,
+.ghost-btn {
+    box-shadow: none;
+}
+
+:root {
+    --blue: #3f73d8;
+    --blue-soft: #eef4ff;
+}
+
+.primary-btn {
+    box-shadow: 0 10px 22px rgba(63, 115, 216, 0.18);
+}
+
+.primary-btn:hover {
+    background: #3568ca;
+    box-shadow: 0 12px 26px rgba(63, 115, 216, 0.22);
+}
+
+.menu-icon,
+.tool-icon,
+.big-icon {
+    background: #f6f7f9;
+    box-shadow: inset 0 0 0 1px rgba(18, 24, 38, 0.04);
+    filter: grayscale(0.35);
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    font-size: 20px;
+}
+
+.tool-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 14px;
+    font-size: 19px;
+}
+
+/* 강제 톤다운 테스트 */
+.hero-card h1 {
+    font-weight: 600 !important;
+    letter-spacing: -0.025em !important;
+}
+
+.brand-text {
+    font-weight: 600 !important;
+}
+
+.hero-kicker,
+.page-kicker {
+    font-weight: 600 !important;
+}
+
+.hero-card p,
+.wallet-left p,
+.tool-card p,
+.tool-empty p,
+.page-head p:last-child {
+    font-weight: 400 !important;
+}
+
+.wallet-left strong,
+.tool-card strong,
+.tool-empty h3,
+.page-head h2,
+.menu-list button {
+    font-weight: 600 !important;
+}
+
+.hero-menu-item,
+.primary-btn,
+.ghost-btn,
+.small-action,
+.cost,
+.login-btn,
+.logout-inline-btn {
+    font-weight: 600 !important;
+}
+
+.wallet-card,
+.hero-card,
+.tool-card,
+.tool-panel,
+.menu-list,
+.coming-card {
+    box-shadow: none !important;
+    border: 1px solid rgba(18, 24, 38, 0.055) !important;
+}
+
+.hero-card {
+    background: #f8fafc !important;
+}
+
+.primary-btn {
+    background: #3f73d8 !important;
+    box-shadow: none !important;
+}
+
+.ghost-btn {
+    background: #f5f7fa !important;
+    box-shadow: none !important;
+}
+
+.menu-icon,
+.tool-icon,
+.big-icon {
+    filter: grayscale(0.75) !important;
+    background: #f5f6f8 !important;
+}
+
+/* 로그인 화면 볼드 완화 */
+.login-kicker {
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+}
+
+.login-panel h2 {
+    font-weight: 650 !important;
+    letter-spacing: -0.04em !important;
+}
+
+.login-desc,
+.login-help,
+.login-id-help,
+.login-divider {
+    font-weight: 400 !important;
+}
+
+.login-id-box strong,
+.nickname-field span {
+    font-weight: 600 !important;
+}
+
+.login-id-box p {
+    font-weight: 400 !important;
+}
+
+.login-id-row input,
+.nickname-field input {
+    font-weight: 500 !important;
+}
+
+.login-id-row button,
+.social-login-btn,
+.nickname-check-btn,
+.login-submit-btn,
+.login-back-btn {
+    font-weight: 650 !important;
+    box-shadow: none !important;
+}
+
+.kakao-btn,
+.naver-btn,
+.phone-btn {
+    box-shadow: none !important;
+}
+
+.login-panel {
+    box-shadow: 0 18px 46px rgba(15, 23, 42, 0.16) !important;
+}
+
+.login-close {
+    font-weight: 500 !important;
+}
+
+/* ── hero-card mobile: stack + hide feature cards ── */
+@media (max-width: 720px) {
+    .hero-card {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-end;
+        min-height: 320px;
+        padding: 28px 22px 24px;
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero-visual {
+        display: none;
+    }
 }

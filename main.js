@@ -526,7 +526,7 @@
             },
             image: {
                 title: '이미지 보정',
-                desc: '사진 업로드, 밝기 보정, 선명도 개선 기능이 들어갈 자리야.',
+                desc: '사진 업로드, 밝기 보정, 선명도 개선, 홍보 문구 정리 기능이 들어갈 자리야.',
                 button: '준비중'
             },
             flyer: {
@@ -612,98 +612,107 @@
                 logout();
             });
         }
-        if (els.noticeBtn) {
-            els.noticeBtn.addEventListener('click', function (event) {
-                event.stopPropagation();
-                toggleNoticePopover();
+
+        var betaBundleBtn = document.getElementById('betaBundleBtn');
+
+        if (betaBundleBtn) {
+            betaBundleBtn.addEventListener('click', function () {
+                alert('베타 번들은 추후 오픈 예정입니다.');
             });
         }
-
-        if (els.noticeCloseBtn) {
-            els.noticeCloseBtn.addEventListener('click', function (event) {
-                event.stopPropagation();
-                closeNoticePopover();
-            });
-        }
-
-        if (els.noticePopover) {
-            els.noticePopover.addEventListener('click', function (event) {
-                event.stopPropagation();
-            });
-        }
-
-
-
-        document.querySelectorAll('[data-auth-provider]').forEach(function (button) {
-            button.addEventListener('click', function () {
-                var provider = button.getAttribute('data-auth-provider');
-
-                // 실제 연동 전이므로 지금은 인증 완료처럼 다음 단계로 넘긴다.
-                showNicknameStep(provider);
-            });
+    }
+    if (els.noticeBtn) {
+        els.noticeBtn.addEventListener('click', function (event) {
+            event.stopPropagation();
+            toggleNoticePopover();
         });
+    }
 
-        if (els.completeLoginBtn) {
-            els.completeLoginBtn.addEventListener('click', completeTempLogin);
-        }
-
-        if (els.backToAuthBtn) {
-            els.backToAuthBtn.addEventListener('click', showAuthStep);
-        }
-
-        if (els.nicknameInput) {
-            els.nicknameInput.addEventListener('input', function () {
-                var nickname = normalizeNickname(els.nicknameInput.value);
-
-                if (nickname.length > 8) {
-                    els.nicknameInput.value = nickname.slice(0, 8);
-                }
-
-                resetNicknameCheck();
-                setLoginHelp('');
-            });
-
-            els.nicknameInput.addEventListener('keydown', function (event) {
-                if (event.key === 'Enter') {
-                    completeTempLogin();
-                }
-            });
-        }
-
-        document.querySelectorAll('[data-login-close]').forEach(function (button) {
-            button.addEventListener('click', closeLoginSheet);
-        });
-        document.addEventListener('click', function () {
+    if (els.noticeCloseBtn) {
+        els.noticeCloseBtn.addEventListener('click', function (event) {
+            event.stopPropagation();
             closeNoticePopover();
         });
+    }
+
+    if (els.noticePopover) {
+        els.noticePopover.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    }
 
 
 
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') {
-                closeLoginSheet();
-                closeNoticePopover();
+    document.querySelectorAll('[data-auth-provider]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var provider = button.getAttribute('data-auth-provider');
+
+            // 실제 연동 전이므로 지금은 인증 완료처럼 다음 단계로 넘긴다.
+            showNicknameStep(provider);
+        });
+    });
+
+    if (els.completeLoginBtn) {
+        els.completeLoginBtn.addEventListener('click', completeTempLogin);
+    }
+
+    if (els.backToAuthBtn) {
+        els.backToAuthBtn.addEventListener('click', showAuthStep);
+    }
+
+    if (els.nicknameInput) {
+        els.nicknameInput.addEventListener('input', function () {
+            var nickname = normalizeNickname(els.nicknameInput.value);
+
+            if (nickname.length > 8) {
+                els.nicknameInput.value = nickname.slice(0, 8);
+            }
+
+            resetNicknameCheck();
+            setLoginHelp('');
+        });
+
+        els.nicknameInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                completeTempLogin();
             }
         });
     }
 
+    document.querySelectorAll('[data-login-close]').forEach(function (button) {
+        button.addEventListener('click', closeLoginSheet);
+    });
+    document.addEventListener('click', function () {
+        closeNoticePopover();
+    });
+
+
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeLoginSheet();
+            closeNoticePopover();
+        }
+    });
+}
+
     function boot() {
-        state.user = getSavedUser();
+    state.user = getSavedUser();
 
-        updateGold();
-        updateLoginButton();
-        updateNoticeCount();
+    updateGold();
+    updateLoginButton();
+    updateNoticeCount();
 
-        bindViewButtons();
-        bindToolButtons();
-        bindLoginButtons();
+    bindViewButtons();
+    bindToolButtons();
+    bindLoginButtons();
 
-        renderToolMessage('namecard');
-    }
+    renderToolMessage('namecard');
+}
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', boot);
-    } else {
-        boot();
-    }
-})();
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+} else {
+    boot();
+}
+}) ();
