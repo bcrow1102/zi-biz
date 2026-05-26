@@ -4,6 +4,8 @@
     var STORAGE_KEY = 'zimo_biz_temp_user';
     var USERS_KEY = 'zimo_biz_temp_users';
     var NOTICE_READ_KEY = 'zimo_biz_notice_read_ids';
+    var FEEDBACK_KEY = 'zimo_biz_beta_feedback_items';
+    var FEEDBACK_LIKES_KEY = 'zimo_biz_beta_feedback_likes';
 
     var notices = [
         {
@@ -18,7 +20,10 @@
         user: null,
         pendingProvider: '',
         nicknameChecked: false,
-        checkedNickname: ''
+        checkedNickname: '',
+        feedbackSort: 'latest',
+        feedbackCategory: 'feature',
+        feedbackVisibleCount: 5
     };
 
     var views = {
@@ -26,6 +31,7 @@
         broker: document.getElementById('viewBroker'),
         site: document.getElementById('viewSite'),
         tools: document.getElementById('viewTools'),
+        feedback: document.getElementById('viewFeedback'),
         more: document.getElementById('viewMore')
     };
 
@@ -477,6 +483,382 @@
 
         return true;
     }
+    function getFeedbackItems() {
+        try {
+            var saved = localStorage.getItem(FEEDBACK_KEY);
+            return saved ? JSON.parse(saved) : [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function saveFeedbackItems(items) {
+        try {
+            localStorage.setItem(FEEDBACK_KEY, JSON.stringify(items));
+        } catch (error) {
+            // 저장 실패 시 화면 동작은 유지한다.
+        }
+    }
+
+    function getFeedbackLikeKey() {
+        if (isLoggedIn()) {
+            return FEEDBACK_LIKES_KEY + '_' + normalizeNickname(state.user.nickname).toLowerCase();
+        }
+
+        return FEEDBACK_LIKES_KEY + '_guest';
+    }
+
+    function getLikedFeedbackIds() {
+        try {
+            var saved = localStorage.getItem(getFeedbackLikeKey());
+            return saved ? JSON.parse(saved) : [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function saveLikedFeedbackIds(ids) {
+        try {
+            localStorage.setItem(getFeedbackLikeKey(), JSON.stringify(ids));
+        } catch (error) {
+            // 저장 실패 시에도 화면은 유지한다.
+        }
+    }
+
+    function getFeedbackCategoryLabel(category) {
+        var labels = {
+            feature: '기능 요청',
+            pain: '불편사항',
+            bug: '오류 제보',
+            etc: '기타 의견'
+        };
+
+        return labels[category] || '기타 의견';
+    }
+
+    function escapeHtml(value) {
+        return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function formatFeedbackDate(value) {
+        var date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return '';
+        }
+
+        return [
+            date.getFullYear(),
+            String(date.getMonth() + 1).padStart(2, '0'),
+            String(date.getDate()).padStart(2, '0')
+        ].join('.');
+    }
+
+    function seedFeedbackItems() {
+        var items = getFeedbackItems();
+
+        if (items.length > 0) return;
+
+        var now = new Date().toISOString();
+
+        saveFeedbackItems([
+            {
+                id: 'sample-feature-image-brightness',
+                category: 'feature',
+                title: '이미지 보정에서 밝기 조절도 있으면 좋겠어요',
+                body: '사진이 어둡게 찍힌 경우가 많아서, 업로드 후 밝기와 선명도를 간단히 조절할 수 있으면 좋겠습니다.',
+                author: '베타유저',
+                likes: 7,
+                createdAt: now
+            },
+            {
+                id: 'sample-pain-simple-upload',
+                category: 'pain',
+                title: '사진 올리는 과정이 더 단순했으면 좋겠어요',
+                body: '중개 매물 사진을 올릴 때 한 번에 여러 장을 올리고 순서만 쉽게 바꿀 수 있으면 편할 것 같습니다.',
+                author: '현장실장',
+                likes: 4,
+                createdAt: now
+            }
+        ]);
+    }
+
+    function syncFeedbackCategoryUI() {
+        var categoryInput = document.getElementById('feedbackCategory');
+        var selectedLabel = document.getElementById('feedbackSelectedLabel');
+        var label = getFeedbackCategoryLabel(state.feedbackCategory);
+
+        document.querySelectorAll('[data-feedback-category]').forEach(function (button) {
+            button.classList.toggle(
+                'is-active',
+                button.getAttribute('data-feedback-category') === state.feedbackCategory
+            );
+        });
+
+        if (categoryInput) {
+            categoryInput.value = state.feedbackCategory;
+        }
+
+        if (selectedLabel) {
+            selectedLabel.textContent = label;
+        }
+    }
+
+    function openFeedbackWritePanel() {
+        if (!requireLogin()) return;
+
+        var panel = document.getElementById('feedbackForm');
+        var titleInput = document.getElementById('feedbackTitle');
+
+        syncFeedbackCategoryUI();
+
+        if (panel) {
+            panel.classList.remove('is-hidden');
+        }
+
+        if (titleInput) {
+            window.setTimeout(function () {
+                titleInput.focus();
+            }, 80);
+        }
+    }
+
+    function closeFeedbackWritePanel() {
+        var panel = document.getElementById('feedbackForm');
+
+        if (panel) {
+            panel.classList.add('is-hidden');
+        }
+    }
+
+    function renderFeedbackList() {
+        var list = document.getElementById('feedbackList');
+
+        if (!list) return;
+
+        var items = getFeedbackItems();
+        var likedIds = getLikedFeedbackIds();
+
+        if (state.feedbackSort === 'likes') {
+            items.sort(function (a, b) {
+                return Number(b.likes || 0) - Number(a.likes || 0);
+            });
+        } else {
+            items.sort(function (a, b) {
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            });
+        }
+
+        if (items.length === 0) {
+            list.innerHTML =
+                '<div class="feedback-empty">' +
+                '<strong>아직 등록된 의견이 없습니다.</strong>' +
+                '<p>필요한 기능이나 불편한 점을 가장 먼저 남겨주세요.</p>' +
+                '</div>';
+            return;
+        }
+        var totalCount = items.length;
+        var visibleItems = items.slice(0, state.feedbackVisibleCount);
+        var hasMore = totalCount > visibleItems.length;
+
+        list.innerHTML = visibleItems.map(function (item) {
+            var isLiked = likedIds.indexOf(item.id) !== -1;
+
+            return '' +
+                '<article class="feedback-item" data-feedback-id="' + escapeHtml(item.id) + '">' +
+                '<div class="feedback-item-top">' +
+                '<span class="feedback-category">' + escapeHtml(getFeedbackCategoryLabel(item.category)) + '</span>' +
+                '<span class="feedback-date">' + escapeHtml(formatFeedbackDate(item.createdAt)) + '</span>' +
+                '</div>' +
+
+                '<button type="button" class="feedback-open-btn" data-feedback-open="' + escapeHtml(item.id) + '">' +
+                '<span>' + escapeHtml(item.title) + '</span>' +
+                '<em>내용보기</em>' +
+                '</button>' +
+
+                '<div class="feedback-detail">' +
+                '<p>' + escapeHtml(item.body) + '</p>' +
+                '<small>이 의견은 운영자가 확인 후 서비스 개선에 참고합니다.</small>' +
+                '</div>' +
+
+                '<div class="feedback-item-bottom">' +
+                '<span class="feedback-author">' + escapeHtml(item.author || '익명') + '</span>' +
+                '<button type="button" class="feedback-like-btn' + (isLiked ? ' is-liked' : '') + '" data-feedback-like="' + escapeHtml(item.id) + '">' +
+                '<span>좋아요</span>' +
+                '<strong>' + Number(item.likes || 0) + '</strong>' +
+                '</button>' +
+                '</div>' +
+                '</article>';
+        }).join('') + (hasMore
+            ? '<button type="button" class="feedback-more-btn" id="feedbackMoreBtn">더보기 ' + visibleItems.length + ' / ' + totalCount + '</button>'
+            : '');
+    }
+
+    function createFeedbackItem() {
+        if (!requireLogin()) return;
+
+        var categoryInput = document.getElementById('feedbackCategory');
+        var titleInput = document.getElementById('feedbackTitle');
+        var bodyInput = document.getElementById('feedbackBody');
+
+        var category = categoryInput ? categoryInput.value : state.feedbackCategory;
+        var title = titleInput ? titleInput.value.trim() : '';
+        var body = bodyInput ? bodyInput.value.trim() : '';
+
+        if (title.length < 3) {
+            showToolReadyMessage('feedbackTitle');
+            return;
+        }
+
+        if (body.length < 5) {
+            showToolReadyMessage('feedbackBody');
+            return;
+        }
+
+        var items = getFeedbackItems();
+
+        items.unshift({
+            id: 'feedback-' + Date.now(),
+            category: category,
+            title: title,
+            body: body,
+            author: state.user && state.user.nickname ? state.user.nickname : '익명',
+            likes: 0,
+            createdAt: new Date().toISOString()
+        });
+
+        saveFeedbackItems(items);
+
+        if (titleInput) titleInput.value = '';
+        if (bodyInput) bodyInput.value = '';
+        if (categoryInput) categoryInput.value = state.feedbackCategory;
+
+        state.feedbackSort = 'latest';
+        state.feedbackVisibleCount = 5;
+
+        document.querySelectorAll('[data-feedback-sort]').forEach(function (button) {
+            button.classList.toggle('is-active', button.getAttribute('data-feedback-sort') === 'latest');
+        });
+        closeFeedbackWritePanel();
+        renderFeedbackList();
+        showToolReadyMessage('feedbackSaved');
+    }
+
+    function toggleFeedbackLike(feedbackId) {
+        if (!requireLogin()) return;
+
+        var likedIds = getLikedFeedbackIds();
+
+        if (likedIds.indexOf(feedbackId) !== -1) {
+            showToolReadyMessage('feedbackAlreadyLiked');
+            return;
+        }
+
+        var items = getFeedbackItems();
+
+        items = items.map(function (item) {
+            if (item.id === feedbackId) {
+                item.likes = Number(item.likes || 0) + 1;
+            }
+
+            return item;
+        });
+
+        likedIds.push(feedbackId);
+
+        saveFeedbackItems(items);
+        saveLikedFeedbackIds(likedIds);
+
+        renderFeedbackList();
+    }
+
+    function bindFeedbackBoard() {
+        var form = document.getElementById('feedbackForm');
+
+        if (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                createFeedbackItem();
+            });
+        }
+
+        document.querySelectorAll('[data-feedback-category]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                state.feedbackCategory = button.getAttribute('data-feedback-category') || 'feature';
+                syncFeedbackCategoryUI();
+            });
+        });
+
+        var writeOpenBtn = document.getElementById('feedbackWriteOpenBtn');
+
+        if (writeOpenBtn) {
+            writeOpenBtn.addEventListener('click', function () {
+                openFeedbackWritePanel();
+            });
+        }
+
+        var cancelBtn = document.getElementById('feedbackCancelBtn');
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', function () {
+                closeFeedbackWritePanel();
+            });
+        }
+
+        document.querySelectorAll('[data-feedback-sort]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                state.feedbackSort = button.getAttribute('data-feedback-sort') || 'latest';
+                state.feedbackVisibleCount = 5;
+
+                document.querySelectorAll('[data-feedback-sort]').forEach(function (sortButton) {
+                    sortButton.classList.toggle('is-active', sortButton === button);
+                });
+
+                renderFeedbackList();
+            });
+        });
+
+        var list = document.getElementById('feedbackList');
+
+        if (list) {
+            list.addEventListener('click', function (event) {
+                var likeButton = event.target.closest('[data-feedback-like]');
+                var moreButton = event.target.closest('#feedbackMoreBtn');
+
+                if (moreButton) {
+                    state.feedbackVisibleCount += 5;
+                    renderFeedbackList();
+                    return;
+                }
+
+                if (likeButton) {
+                    toggleFeedbackLike(likeButton.getAttribute('data-feedback-like'));
+                    return;
+                }
+
+                var openButton = event.target.closest('[data-feedback-open]');
+
+                if (openButton) {
+                    var item = openButton.closest('.feedback-item');
+
+                    if (!item) return;
+
+                    item.classList.toggle('is-open');
+
+                    var label = openButton.querySelector('em');
+
+                    if (label) {
+                        label.textContent = item.classList.contains('is-open') ? '접기' : '내용보기';
+                    }
+                }
+            });
+        }
+    }
 
     function requireLogin() {
         if (isLoggedIn()) return true;
@@ -491,10 +873,8 @@
         }
 
         if (protectedViews[viewName] && !requireLogin()) {
-            return;
+            return false;
         }
-
-
 
         state.currentView = viewName;
 
@@ -503,7 +883,14 @@
             views[key].classList.toggle('is-active', key === viewName);
         });
 
-        document.querySelectorAll('[data-view]').forEach(function (button) {
+        document.querySelectorAll('.hero-menu-item[data-view]').forEach(function (button) {
+            var target = button.getAttribute('data-view');
+
+            button.classList.remove('is-active');
+            button.classList.toggle('is-current', target === viewName);
+        });
+
+        document.querySelectorAll('.nav-item[data-view]').forEach(function (button) {
             var target = button.getAttribute('data-view');
             button.classList.toggle('is-active', target === viewName);
         });
@@ -512,6 +899,8 @@
             top: 0,
             behavior: 'smooth'
         });
+
+        return true;
     }
 
 
@@ -557,8 +946,59 @@
         document.querySelectorAll('[data-view]').forEach(function (button) {
             button.addEventListener('click', function () {
                 var viewName = button.getAttribute('data-view');
-                setActiveView(viewName);
+                var isHeroMenuButton = button.classList.contains('hero-menu-item');
+                var isFindHomeButton = viewName === 'home' && isHeroMenuButton;
+                var findCard = document.querySelector('.find-home-card');
+
+                var didMove = setActiveView(viewName);
+
+                if (!didMove) {
+                    return;
+                }
+
+                if (findCard) {
+                    findCard.classList.add('is-hidden');
+                }
+
+                if (isFindHomeButton && findCard) {
+                    findCard.classList.remove('is-hidden');
+
+                    window.setTimeout(function () {
+                        findCard.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 220);
+                }
             });
+        });
+    }
+    function bindFindHomeMenuButton() {
+        var findHomeMenuBtn = document.getElementById('findHomeMenuBtn');
+        var findCard = document.querySelector('.find-home-card');
+
+        if (!findHomeMenuBtn) return;
+
+        findHomeMenuBtn.addEventListener('click', function () {
+            setActiveView('home');
+
+            document.querySelectorAll('.hero-menu-item').forEach(function (button) {
+                button.classList.remove('is-active');
+                button.classList.remove('is-current');
+            });
+
+            findHomeMenuBtn.classList.add('is-current');
+
+            if (findCard) {
+                findCard.classList.remove('is-hidden');
+
+                window.setTimeout(function () {
+                    findCard.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 220);
+            }
         });
     }
 
@@ -583,7 +1023,11 @@
             namecard: '디지털 명함 생성기는 다음 단계에서 연결할 거야.',
             image: '이미지 보정 기능은 준비중이야.',
             flyer: '웹전단 제작 기능은 준비중이야.',
-            video: '홍보 영상 제작 기능은 준비중이야.'
+            video: '홍보 영상 제작 기능은 준비중이야.',
+            feedbackTitle: '제목을 3자 이상 입력해줘.',
+            feedbackBody: '내용을 5자 이상 입력해줘.',
+            feedbackSaved: '의견이 등록됐어.',
+            feedbackAlreadyLiked: '이미 좋아요를 누른 의견이야.'
         };
 
         var message = messageMap[toolName] || '제작도구를 준비중이야.';
@@ -736,8 +1180,14 @@
         updateNoticeCount();
 
         bindViewButtons();
+        bindFindHomeMenuButton();
         bindToolButtons();
+        bindFeedbackBoard();
         bindLoginButtons();
+
+        seedFeedbackItems();
+        syncFeedbackCategoryUI();
+        renderFeedbackList();
 
         renderToolMessage('namecard');
     }
