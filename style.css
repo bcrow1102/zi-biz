@@ -212,8 +212,8 @@ button {
         linear-gradient(rgba(63, 115, 216, 0.045) 1px, transparent 1px),
         linear-gradient(90deg, rgba(63, 115, 216, 0.045) 1px, transparent 1px);
     background-size: 36px 36px;
-    mask-image: radial-gradient(ellipse 70% 60% at 78% 40%, rgba(0,0,0,0.5) 0%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 78% 40%, rgba(0,0,0,0.5) 0%, transparent 100%);
+    mask-image: radial-gradient(ellipse 70% 60% at 78% 40%, rgba(0, 0, 0, 0.5) 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 78% 40%, rgba(0, 0, 0, 0.5) 0%, transparent 100%);
 }
 
 .hero-glow {
@@ -229,8 +229,17 @@ button {
 }
 
 @keyframes heroGlowPulse {
-    0%, 100% { opacity: 0.7; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.08); }
+
+    0%,
+    100% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.08);
+    }
 }
 
 .hero-orbit {
@@ -258,8 +267,13 @@ button {
 }
 
 @keyframes heroOrbitSpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ── hero feature cards ── */
@@ -825,14 +839,7 @@ button {
         font-size: 19px;
     }
 
-    .hero-card {
-        min-height: 326px;
-        padding: 26px 22px 24px;
-    }
 
-    .hero-card h1 {
-        font-size: 32px;
-    }
 
     .wallet-row {
         padding: 17px 20px;
@@ -1815,21 +1822,1567 @@ button {
     font-weight: 500 !important;
 }
 
-/* ── hero-card mobile: stack + hide feature cards ── */
-@media (max-width: 720px) {
-    .hero-card {
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: flex-end;
-        min-height: 320px;
-        padding: 28px 22px 24px;
+
+
+/* ── logged-in name: blue plain text only ── */
+
+.login-btn.is-logged-in {
+    min-height: auto;
+    padding: 0;
+    border-radius: 0;
+    background: transparent !important;
+    color: var(--blue);
+    font-size: 13px;
+    font-weight: 650 !important;
+    box-shadow: none !important;
+    pointer-events: none;
+    cursor: default;
+}
+
+.login-btn.is-logged-in #loginBtnLabel {
+    display: inline;
+    color: var(--blue);
+}
+
+
+
+.login-btn.is-logged-in #loginBtnLabel {
+    display: inline;
+}
+
+.user-avatar {
+    display: none !important;
+}
+
+
+
+/* =========================================================
+   MOBILE EMERGENCY FIX
+   - 기존 PC 디자인은 유지
+   - 모바일에서만 레이아웃 깨짐 방지
+   - 반드시 style.css 맨 아래에 추가
+========================================================= */
+
+@media (max-width: 760px) {
+
+    html,
+    body {
+        width: 100%;
+        overflow-x: hidden;
     }
 
-    .hero-content {
+    .app-shell {
+        width: 100%;
         max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        overflow-x: hidden;
+        box-shadow: none;
+    }
+
+    .app-header {
+        height: auto;
+        min-height: 62px;
+        padding: 12px 14px 8px;
+        gap: 8px;
+    }
+
+    .brand-text {
+        font-size: 18px;
+        white-space: nowrap;
+    }
+
+    .header-info-train {
+        display: none !important;
+    }
+
+    .header-actions {
+        gap: 6px;
+        min-width: 0;
+    }
+
+    .account-strip {
+        min-height: 34px;
+        max-width: 132px;
+        padding: 2px 4px;
+        gap: 4px;
+        overflow: hidden;
+    }
+
+    .login-btn {
+        min-height: 30px;
+        max-width: 82px;
+        padding: 0 8px;
+        font-size: 11px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .gold-pill {
+        min-height: 28px;
+        gap: 4px;
+        padding: 0 4px;
+        font-size: 10px;
+    }
+
+    .gold-icon {
+        width: 19px;
+        height: 19px;
+        font-size: 11px;
+    }
+
+    .logout-inline-btn {
+        display: none !important;
+    }
+
+    .icon-btn {
+        width: 34px;
+        height: 34px;
+        flex: 0 0 auto;
+    }
+
+    .app-main {
+        padding: 8px 14px 0;
+    }
+
+    .hero-menu {
+        justify-content: flex-start;
+        overflow-x: auto;
+        margin: 0 -14px 14px;
+        padding: 8px 14px 10px;
+        scrollbar-width: none;
+    }
+
+    .hero-menu::-webkit-scrollbar {
+        display: none;
+    }
+
+    .hero-menu-item {
+        flex: 0 0 auto;
+        min-height: 34px;
+        padding: 0 16px;
+        font-size: 15px;
+    }
+
+    .hero-menu-divider {
+        flex: 0 0 auto;
+    }
+
+
+
+    .wallet-card,
+    .tool-panel,
+    .coming-card,
+    .menu-list {
+        border-radius: 24px;
+    }
+
+    .wallet-row {
+        min-height: auto;
+        padding: 16px;
+        gap: 10px;
+    }
+
+    .wallet-left {
+        gap: 12px;
+    }
+
+    .menu-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+        font-size: 20px;
+    }
+
+    .wallet-left strong {
+        font-size: 17px;
+    }
+
+    .wallet-left p {
+        font-size: 12.5px;
+    }
+
+    .small-action {
+        min-width: 58px;
+        height: 40px;
+        font-size: 13px;
+    }
+
+    .tool-card {
+        padding: 16px;
+        border-radius: 22px;
+    }
+
+    .tool-card strong {
+        font-size: 17px;
+    }
+
+    .tool-card p {
+        font-size: 12.5px;
+    }
+
+    .cost {
+        min-width: 58px;
+        font-size: 11px;
+    }
+
+    .login-sheet {
+        padding: 16px;
+        align-items: center;
+    }
+
+    .login-panel {
+        width: 100%;
+        max-height: calc(100vh - 32px);
+        padding: 28px 18px 20px;
+        border-radius: 26px;
+        transform: none;
+    }
+
+    .login-panel h2 {
+        font-size: 25px;
+    }
+
+    .login-id-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .login-id-row button {
+        width: 100%;
+    }
+
+    .notice-popover {
+        top: 62px;
+        left: 14px;
+        right: 14px;
+        width: auto;
+        max-width: none;
+    }
+
+    .bottom-nav {
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 100%;
+        transform: none;
+        border-radius: 24px 24px 0 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .app-header {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .brand-text {
+        font-size: 17px;
+    }
+
+    .account-strip {
+        max-width: 116px;
+    }
+
+    .login-btn {
+        max-width: 72px;
+        font-size: 10.5px;
+    }
+
+    .gold-pill {
+        font-size: 9.5px;
+    }
+
+
+    .bottom-nav {
+        height: 78px;
+    }
+
+    .nav-item span {
+        font-size: 21px;
+    }
+
+    .nav-item--home span {
+        font-size: 10px;
+    }
+
+    .nav-item strong {
+        font-size: 11px;
+    }
+}
+
+/* =========================================================
+   HERO / SHOWCASE CLEAN REBUILD
+   - PC 현재 톤 유지
+   - 모바일 히어로만 재정렬
+   - 로그인/공지/하단네비/지갑카드/제작툴 영향 없음
+========================================================= */
+
+/* ---------- PC / COMMON SHOWCASE ---------- */
+
+.hero-visual {
+    position: relative;
+    width: min(50vw, 590px);
+    min-height: 270px;
+    overflow: visible;
+}
+
+.hero-showcase {
+    position: relative;
+    width: 100%;
+    height: 270px;
+    z-index: 2;
+}
+
+.hero-card,
+.hero-visual,
+.hero-showcase {
+    overflow: visible;
+}
+
+.hero-event-card {
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    z-index: 8;
+    width: 190px;
+    min-height: 104px;
+    padding: 12px 14px 38px;
+    border: 1px solid rgba(63, 115, 216, 0.08);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+    text-align: left;
+}
+
+.hero-event-card .event-kicker {
+    display: block;
+    color: var(--blue);
+    font-size: 11px;
+    line-height: 1.15;
+    font-weight: 750;
+    letter-spacing: -0.025em;
+}
+
+.hero-event-card strong {
+    display: block;
+    margin-top: 5px;
+    color: #151922;
+    font-size: 18px;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.045em;
+}
+
+.hero-event-card strong em {
+    color: var(--blue);
+    font-style: normal;
+}
+
+.hero-event-card p {
+    margin-top: 6px;
+    color: #69717e;
+    font-size: 11px;
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+}
+
+.event-sparkle {
+    position: absolute;
+    z-index: 3;
+    width: 11px;
+    height: 11px;
+    opacity: 0.78;
+    pointer-events: none;
+}
+
+.event-sparkle::before,
+.event-sparkle::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 999px;
+    background: rgba(63, 115, 216, 0.26);
+    transform: translate(-50%, -50%);
+}
+
+.event-sparkle::before {
+    width: 100%;
+    height: 2px;
+}
+
+.event-sparkle::after {
+    width: 2px;
+    height: 100%;
+}
+
+.event-sparkle--1 {
+    top: 16px;
+    right: 28px;
+}
+
+.event-sparkle--2 {
+    right: 18px;
+    bottom: 45px;
+    transform: scale(0.75);
+}
+
+
+
+
+.showcase-stack {
+    position: absolute;
+    left: 34px;
+    right: 26px;
+    bottom: 8px;
+    z-index: 3;
+    height: 215px;
+}
+
+.showcase-card {
+    position: absolute;
+    display: block;
+    border: 1px solid rgba(63, 115, 216, 0.11);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 22px 48px rgba(15, 23, 42, 0.14);
+    text-align: left;
+    transition:
+        transform var(--ease),
+        box-shadow var(--ease);
+}
+
+.showcase-card:hover {
+    box-shadow: 0 26px 56px rgba(15, 23, 42, 0.18);
+}
+
+.showcase-tag {
+    position: absolute;
+    left: 18px;
+    top: -15px;
+    z-index: 10;
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    border-radius: 10px;
+    background: #3f73d8;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: -0.035em;
+    white-space: nowrap;
+    box-shadow: 0 10px 20px rgba(63, 115, 216, 0.2);
+}
+
+.showcase-card--namecard {
+    left: 0;
+    top: 42px;
+    z-index: 6;
+    width: 330px;
+    height: 178px;
+    padding: 9px;
+    transform: rotate(-3deg);
+}
+
+.showcase-card--namecard:hover {
+    transform: rotate(-3deg) translateY(-2px);
+}
+
+.showcase-card--image {
+    right: 86px;
+    top: 62px;
+    z-index: 4;
+    width: 260px;
+    height: 136px;
+    padding: 10px;
+    transform: rotate(2deg);
+}
+
+.showcase-card--image:hover {
+    transform: rotate(2deg) translateY(-2px);
+}
+
+.showcase-card--image .showcase-tag {
+    left: 148px;
+}
+
+.showcase-card--video {
+    right: 0;
+    top: 92px;
+    z-index: 3;
+    width: 225px;
+    height: 116px;
+    padding: 10px;
+    transform: rotate(5deg);
+}
+
+.showcase-card--video:hover {
+    transform: rotate(5deg) translateY(-2px);
+}
+
+.showcase-card--video .showcase-tag {
+    left: 120px;
+}
+
+/* ---------- REAL NAMECARD ---------- */
+
+.real-namecard-preview {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 18px 20px 16px;
+    border-radius: 17px;
+    background: #ffffff;
+    color: #323843;
+}
+
+.real-namecard-top {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.real-namecard-brand {
+    color: #c83437;
+    font-size: 23px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.055em;
+}
+
+.real-namecard-person {
+    position: relative;
+    min-width: 62px;
+    padding-left: 12px;
+    text-align: left;
+}
+
+.real-namecard-person::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 2px;
+    height: 34px;
+    border-radius: 999px;
+    background: rgba(200, 52, 55, 0.35);
+}
+
+.real-namecard-person span {
+    display: block;
+    color: #404853;
+    font-size: 9.5px;
+    line-height: 1.1;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+}
+
+.real-namecard-person strong {
+    display: block;
+    margin-top: 4px;
+    color: #2c323b;
+    font-size: 14px;
+    line-height: 1.1;
+    font-weight: 750;
+    letter-spacing: -0.045em;
+}
+
+.real-namecard-line {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 1px;
+    margin-top: 18px;
+    background: rgba(200, 52, 55, 0.36);
+}
+
+.real-namecard-body {
+    flex: 0 0 auto;
+    margin-top: 13px;
+}
+
+.real-namecard-body strong {
+    display: block;
+    color: #c83437;
+    font-size: 12px;
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.045em;
+}
+
+.real-namecard-body p {
+    display: block;
+    margin-top: 7px;
+    color: #4d5663;
+    font-size: 9.8px;
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+}
+
+.real-namecard-contact {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 14px;
+    row-gap: 5px;
+    margin-top: auto;
+    padding-top: 11px;
+}
+
+.real-namecard-contact div {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 12px;
+}
+
+.real-namecard-contact div:nth-child(3) {
+    grid-column: 1 / 3;
+}
+
+.real-namecard-contact span {
+    flex: 0 0 auto;
+    color: #c83437;
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+
+.real-namecard-contact strong {
+    min-width: 0;
+    color: #555d68;
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 650;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+}
+
+/* ---------- IMAGE / VIDEO CARD ---------- */
+
+.image-preview {
+    position: relative;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #edf2f8;
+}
+
+.image-before,
+.image-after {
+    position: relative;
+    overflow: hidden;
+}
+
+.image-before {
+    background:
+        linear-gradient(rgba(14, 21, 33, 0.56), rgba(14, 21, 33, 0.56)),
+        linear-gradient(135deg, #6f7782, #b7bec8);
+}
+
+.image-after {
+    background:
+        radial-gradient(circle at 62% 18%, rgba(255, 255, 255, 0.72), transparent 26%),
+        linear-gradient(135deg, #f5efe5, #dbe8f5 58%, #ffffff);
+}
+
+.image-before::before,
+.image-after::before {
+    content: "";
+    position: absolute;
+    left: 22%;
+    right: 16%;
+    bottom: 22%;
+    height: 26%;
+    border-radius: 12px 12px 5px 5px;
+    background: rgba(255, 255, 255, 0.28);
+}
+
+.image-before::after,
+.image-after::after {
+    content: "";
+    position: absolute;
+    right: 16%;
+    top: 20%;
+    width: 26%;
+    height: 40%;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.38);
+}
+
+.image-before span,
+.image-after span {
+    position: absolute;
+    left: 10px;
+    bottom: 9px;
+    min-height: 22px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 9px;
+    border-radius: 999px;
+    background: rgba(18, 24, 38, 0.58);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.image-after span {
+    left: auto;
+    right: 10px;
+    background: rgba(47, 128, 237, 0.85);
+}
+
+.video-preview {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 15px;
+    background:
+        linear-gradient(rgba(12, 18, 30, 0.12), rgba(12, 18, 30, 0.68)),
+        linear-gradient(135deg, #a9bed7, #4c617b);
+}
+
+.video-building {
+    position: absolute;
+    left: 34px;
+    right: 38px;
+    bottom: 26px;
+    height: 58px;
+    display: flex;
+    align-items: end;
+    gap: 7px;
+    opacity: 0.92;
+}
+
+.building {
+    flex: 1;
+    display: block;
+    border-radius: 4px 4px 1px 1px;
+    background:
+        repeating-linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.7) 0 3px,
+            transparent 3px 9px),
+        rgba(242, 247, 255, 0.42);
+}
+
+.building--1 {
+    height: 42px;
+}
+
+.building--2 {
+    height: 58px;
+}
+
+.building--3 {
+    height: 48px;
+}
+
+.play-mark {
+    position: absolute;
+    left: 50%;
+    top: 47%;
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #172033;
+    font-size: 15px;
+    line-height: 1;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+}
+
+.video-bar {
+    position: absolute;
+    left: 15px;
+    right: 15px;
+    bottom: 13px;
+    height: 4px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.28);
+}
+
+.video-bar span {
+    display: block;
+    width: 38%;
+    height: 100%;
+    border-radius: inherit;
+    background: rgba(255, 255, 255, 0.88);
+}
+
+/* ---------- TABLET ---------- */
+
+@media (max-width: 980px) {
+    .hero-card {
+        align-items: flex-start;
     }
 
     .hero-visual {
-        display: none;
+        width: 48vw;
+        min-width: 400px;
+    }
+
+    .showcase-card--namecard {
+        width: 310px;
+        height: 170px;
+    }
+
+    .showcase-card--image {
+        right: 54px;
+        width: 238px;
+    }
+
+    .showcase-card--image .showcase-tag {
+        left: 118px;
+    }
+
+    .showcase-card--video {
+        width: 205px;
+    }
+
+    .showcase-card--video .showcase-tag {
+        left: 96px;
+    }
+}
+
+/* ---------- MOBILE HERO ONLY ---------- */
+
+@media (max-width: 760px) {
+    .hero-card {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) 128px !important;
+        grid-template-areas:
+            "content event"
+            "showcase showcase" !important;
+        align-items: start !important;
+        gap: 18px 12px !important;
+        min-height: auto !important;
+        padding: 26px 18px 22px !important;
+        overflow: hidden !important;
+        border-radius: 26px !important;
+    }
+
+    .hero-content {
+        grid-area: content !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        z-index: 3 !important;
+    }
+
+    .hero-kicker {
+        margin-bottom: 12px !important;
+        font-size: 11px !important;
+        line-height: 1 !important;
+    }
+
+    .hero-card h1 {
+        font-size: 28px !important;
+        line-height: 1.14 !important;
+        letter-spacing: -0.035em !important;
+    }
+
+    .hero-card p {
+        max-width: none !important;
+        margin-top: 14px !important;
+        font-size: 13.5px !important;
+        line-height: 1.5 !important;
+        word-break: keep-all !important;
+    }
+
+    .hero-actions {
+        display: flex !important;
+        width: 100% !important;
+        gap: 8px !important;
+        margin-top: 20px !important;
+    }
+
+    .hero-cta,
+    .ghost-btn {
+        flex: 1 1 0 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        min-height: 50px !important;
+        padding: 0 10px !important;
+        border-radius: 16px !important;
+        font-size: 14px !important;
+        white-space: nowrap !important;
+    }
+
+    .hero-visual {
+        display: contents !important;
+        width: auto !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .hero-showcase {
+        display: contents !important;
+        width: auto !important;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+    }
+
+    .hero-visual-bg {
+        display: none !important;
+    }
+
+    .hero-event-card {
+        grid-area: event !important;
+        position: relative !important;
+        inset: auto !important;
+        width: 128px !important;
+        min-height: 106px !important;
+        margin: 0 !important;
+        padding: 11px 10px 32px !important;
+        border-radius: 19px !important;
+        overflow: hidden !important;
+        transform: none !important;
+        z-index: 4 !important;
+    }
+
+    .hero-event-card .event-kicker {
+        font-size: 8.5px !important;
+        line-height: 1.15 !important;
+    }
+
+    .hero-event-card strong {
+        margin-top: 4px !important;
+        font-size: 11px !important;
+        line-height: 1.15 !important;
+        letter-spacing: -0.04em !important;
+    }
+
+    .hero-event-card p {
+        margin-top: 5px !important;
+        font-size: 8.5px !important;
+        line-height: 1.25 !important;
+    }
+
+
+    .event-sparkle {
+        display: block !important;
+        opacity: 0.75 !important;
+    }
+
+    .event-sparkle--1 {
+        top: 12px !important;
+        right: 18px !important;
+    }
+
+    .event-sparkle--2 {
+        right: 12px !important;
+        bottom: 48px !important;
+    }
+
+    .showcase-stack {
+        grid-area: showcase !important;
+        position: relative !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        width: 100% !important;
+        height: 214px !important;
+        min-height: 214px !important;
+        margin: -2px 0 0 !important;
+        overflow: visible !important;
+        transform: none !important;
+        z-index: 2 !important;
+    }
+
+    .showcase-card {
+        position: absolute !important;
+        max-width: 100% !important;
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.07) !important;
+    }
+
+    .showcase-card--namecard {
+        left: 0 !important;
+        right: auto !important;
+        top: 28px !important;
+        width: min(304px, 82vw) !important;
+        height: 166px !important;
+        padding: 8px !important;
+        transform: rotate(-1.6deg) translateZ(0) !important;
+        transform-origin: center center !important;
+        background: #ffffff !important;
+        filter: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        z-index: 7 !important;
+    }
+
+    .showcase-card--namecard:hover {
+        transform: rotate(-1.6deg) translateZ(0) !important;
+    }
+
+    .showcase-card--image {
+        left: auto !important;
+        right: 12px !important;
+        top: 88px !important;
+        width: min(192px, 52vw) !important;
+        height: 94px !important;
+        padding: 8px !important;
+        transform: rotate(2deg) !important;
+        z-index: 4 !important;
+    }
+
+    .showcase-card--video {
+        left: auto !important;
+        right: 0 !important;
+        top: 106px !important;
+        width: min(156px, 44vw) !important;
+        height: 82px !important;
+        padding: 8px !important;
+        transform: rotate(5deg) !important;
+        z-index: 3 !important;
+    }
+
+    .showcase-tag {
+        min-height: 24px !important;
+        padding: 0 9px !important;
+        border-radius: 8px !important;
+        font-size: 10px !important;
+        box-shadow: 0 6px 14px rgba(63, 115, 216, 0.16) !important;
+    }
+
+    .showcase-card--namecard .showcase-tag {
+        left: 12px !important;
+        top: -12px !important;
+        transform: none !important;
+        z-index: 10 !important;
+    }
+
+    .showcase-card--image .showcase-tag,
+    .showcase-card--video .showcase-tag {
+        display: none !important;
+    }
+
+    .real-namecard-preview {
+        padding: 14px 15px 42px !important;
+        transform: none !important;
+        filter: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        -webkit-font-smoothing: antialiased !important;
+        text-rendering: optimizeLegibility !important;
+    }
+
+    .real-namecard-preview * {
+        transform: none !important;
+        filter: none !important;
+        text-shadow: none !important;
+    }
+
+    .real-namecard-brand {
+        font-size: 20px !important;
+        color: #c83437 !important;
+        font-weight: 800 !important;
+    }
+
+    .real-namecard-line {
+        margin-top: 12px !important;
+    }
+
+    .real-namecard-body {
+        margin-top: 9px !important;
+    }
+
+    .real-namecard-body strong {
+        font-size: 11px !important;
+        line-height: 1.2 !important;
+        color: #c83437 !important;
+        font-weight: 700 !important;
+    }
+
+    .real-namecard-body p {
+        margin-top: 4px !important;
+        font-size: 8.8px !important;
+        line-height: 1.2 !important;
+        color: #4b5563 !important;
+        font-weight: 500 !important;
+    }
+
+    .real-namecard-contact {
+        position: absolute !important;
+        left: 15px !important;
+        right: 15px !important;
+        bottom: 10px !important;
+        column-gap: 8px !important;
+        row-gap: 2px !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .real-namecard-contact span,
+    .real-namecard-contact strong {
+        font-size: 7.7px !important;
+        line-height: 1.1 !important;
+    }
+
+    .real-namecard-contact span {
+        color: #c83437 !important;
+        font-weight: 700 !important;
+    }
+
+    .real-namecard-contact strong {
+        color: #2f3640 !important;
+        font-weight: 700 !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .hero-card {
+        grid-template-columns: minmax(0, 1fr) 116px !important;
+        gap: 16px 9px !important;
+        padding: 22px 16px 18px !important;
+    }
+
+    .hero-card h1 {
+        font-size: 26px !important;
+    }
+
+    .hero-card p {
+        font-size: 13px !important;
+    }
+
+    .hero-actions {
+        gap: 7px !important;
+    }
+
+    .hero-cta,
+    .ghost-btn {
+        min-height: 48px !important;
+        font-size: 13px !important;
+    }
+
+    .hero-event-card {
+        width: 116px !important;
+        min-height: 98px !important;
+        padding: 10px 9px 29px !important;
+    }
+
+    .hero-event-card strong {
+        font-size: 10.5px !important;
+    }
+
+    .hero-event-card p {
+        font-size: 8.1px !important;
+    }
+
+
+    .showcase-stack {
+        height: 202px !important;
+        min-height: 202px !important;
+    }
+
+    .showcase-card--namecard {
+        top: 28px !important;
+        width: min(278px, 82vw) !important;
+        height: 156px !important;
+    }
+
+    .real-namecard-preview {
+        padding: 13px 14px 40px !important;
+    }
+
+    .real-namecard-contact {
+        left: 14px !important;
+        right: 14px !important;
+        bottom: 9px !important;
+    }
+
+    .real-namecard-contact span,
+    .real-namecard-contact strong {
+        font-size: 7.1px !important;
+    }
+
+    .showcase-card--image {
+        top: 88px !important;
+        width: min(174px, 50vw) !important;
+        height: 88px !important;
+    }
+
+    .showcase-card--video {
+        top: 104px !important;
+        width: min(146px, 42vw) !important;
+        height: 76px !important;
+    }
+}
+
+/* =========================================================
+   EVENT COIN STACK SVG
+========================================================= */
+
+.event-coin-towers {
+    position: absolute;
+    right: 11px;
+    bottom: 8px;
+    z-index: 4;
+    width: 82px;
+    height: 44px;
+    pointer-events: none;
+}
+
+.coin-stack-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.coin-stack {
+    filter: drop-shadow(0 3px 3px rgba(121, 80, 9, 0.16));
+}
+
+.coin-stack ellipse {
+    stroke: rgba(150, 96, 6, 0.22);
+    stroke-width: 0.8;
+}
+
+.coin-stack rect {
+    stroke: rgba(126, 78, 4, 0.18);
+    stroke-width: 0.6;
+}
+
+@media (max-width: 760px) {
+    .event-coin-towers {
+        right: 7px !important;
+        bottom: 6px !important;
+        width: 56px !important;
+        height: 31px !important;
+        transform: none !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .event-coin-towers {
+        right: 7px !important;
+        bottom: 6px !important;
+        width: 53px !important;
+        height: 30px !important;
+        transform: none !important;
+    }
+}
+
+/* =========================================================
+   HERO EVENT IMAGE CARD OVERRIDE
+========================================================= */
+
+/* =========================================================
+   HERO EVENT IMAGE CARD OVERRIDE
+   - 이미지 자체만 보이게
+   - 바깥 배경/그림자 제거
+========================================================= */
+
+.hero-event-card.hero-event-card--image {
+    position: absolute !important;
+    top: 4px !important;
+    right: 8px !important;
+    z-index: 8 !important;
+
+    width: 190px !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+}
+
+.hero-event-card.hero-event-card--image img {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    user-select: none !important;
+    pointer-events: none !important;
+}
+
+@media (max-width: 760px) {
+    .hero-event-card.hero-event-card--image {
+        grid-area: event !important;
+        position: relative !important;
+        inset: auto !important;
+        width: 128px !important;
+        height: auto !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+        transform: none !important;
+        z-index: 4 !important;
+    }
+
+    .hero-event-card.hero-event-card--image img {
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .hero-event-card.hero-event-card--image {
+        width: 116px !important;
+    }
+}
+
+@media (max-width: 760px) {
+    .hero-event-card.hero-event-card--image {
+        grid-area: event !important;
+        position: relative !important;
+        inset: auto !important;
+
+        width: 128px !important;
+        height: auto !important;
+        min-height: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 19px !important;
+        background: transparent !important;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.055) !important;
+        overflow: visible !important;
+        transform: none !important;
+        z-index: 4 !important;
+    }
+
+    .hero-event-card.hero-event-card--image img {
+        border-radius: 19px !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .hero-event-card.hero-event-card--image {
+        width: 116px !important;
+    }
+}
+
+/* =========================================================
+   PC EVENT CARD POSITION FIX
+   - PC에서 이벤트 이미지 카드만 살짝 위로 이동
+========================================================= */
+
+@media (min-width: 761px) {
+    .hero-event-card.hero-event-card--image {
+        top: -18px !important;
+        right: 8px !important;
+    }
+}
+
+/* =========================================================
+   DESKTOP WIDE SHELL
+   - PC에서 좌우 여백 약 5%씩만 남김
+========================================================= */
+
+@media (min-width: 761px) {
+    :root {
+        --max: min(1500px, 90vw);
+    }
+
+    .app-shell {
+        max-width: var(--max) !important;
+    }
+
+    .bottom-nav {
+        max-width: var(--max) !important;
+    }
+}
+
+/* =========================================================
+   PC HERO VISUAL POSITION FIX
+   - 현재 배치 그대로 오른쪽 비주얼 전체 이동
+========================================================= */
+
+@media (min-width: 761px) {
+    .hero-visual {
+        transform: translateX(90px) !important;
+    }
+}
+
+/* =========================================================
+   PC WALLET ROW POSITION FIX
+   - 하단 섹션 좌측 정보는 오른쪽으로
+   - 우측 버튼은 중앙 쪽으로
+========================================================= */
+
+@media (min-width: 761px) {
+    .wallet-card .wallet-left {
+        transform: translateX(72px) !important;
+    }
+
+    .wallet-card .small-action {
+        transform: translateX(-108px) !important;
+    }
+}
+
+/* =========================================================
+   PC TOOLS CARD POSITION FIX
+   - 제작도구 화면 좌측 정보는 오른쪽으로
+   - Gold 금액은 중앙 쪽으로
+========================================================= */
+
+@media (min-width: 761px) {
+    #viewTools .tool-card>div {
+        transform: translateX(72px) !important;
+    }
+
+    #viewTools .tool-card .cost {
+        transform: translateX(-108px) !important;
+    }
+}
+
+/* =========================================================
+   TOOL CARD COST + CTA PILL
+   - Gold 박스 밑에 파란 생성하기 박스
+   - 선택된 카드에만 생성하기 노출
+========================================================= */
+
+#viewTools .tool-card {
+    position: relative;
+    align-items: center;
+}
+
+#viewTools .tool-card-side {
+    flex: 0 0 auto;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+#viewTools .tool-card-side .cost {
+    transform: none !important;
+}
+
+#viewTools .tool-inline-cta {
+    display: inline-flex;
+    min-width: 86px;
+    min-height: 36px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: var(--blue);
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+}
+
+/* 하단 별도 CTA 박스는 숨김 */
+#viewTools .tool-panel {
+    display: none !important;
+}
+
+/* PC에서 오른쪽 Gold+CTA 묶음을 중앙 쪽으로 이동 */
+@media (min-width: 761px) {
+    #viewTools .tool-card-side {
+        transform: translateX(-108px) !important;
+    }
+
+    #viewTools .tool-card .cost {
+        transform: none !important;
+    }
+}
+
+@media (max-width: 760px) {
+    #viewTools .tool-card-side {
+        gap: 6px;
+    }
+
+    #viewTools .tool-inline-cta {
+        min-width: 76px;
+        min-height: 32px;
+        padding: 0 12px;
+        font-size: 12px;
+    }
+}
+
+/* =========================================================
+   TOOL ACTION TOAST
+   - 제작도구 클릭 시 화면 반응 표시
+========================================================= */
+
+.tool-action-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 110px;
+    z-index: 300;
+    max-width: calc(100vw - 40px);
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: rgba(22, 25, 31, 0.92);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate(-50%, 12px);
+    transition:
+        opacity 0.22s ease,
+        transform 0.22s ease;
+    pointer-events: none;
+}
+
+.tool-action-toast.is-show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+@media (max-width: 760px) {
+    .tool-action-toast {
+        bottom: 92px;
+        font-size: 13px;
+        padding: 11px 15px;
+    }
+}
+
+/* =========================================================
+   PC HERO INNER BALANCE FINAL
+   - 좌측 텍스트는 중앙 쪽으로 약 2cm
+   - 오른쪽 이미지 묶음은 현재보다 오른쪽으로 약 4cm
+========================================================= */
+
+@media (min-width: 761px) {
+    .hero-content {
+        transform: translateX(72px) !important;
+    }
+
+    .hero-visual {
+        transform: translateX(144px) !important;
     }
 }

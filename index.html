@@ -34,7 +34,6 @@
             <div class="header-actions">
                 <div class="account-strip">
                     <button type="button" class="login-btn" id="loginBtn">
-                        <span class="user-avatar is-hidden" id="userAvatar" aria-hidden="true">🙂</span>
                         <span id="loginBtnLabel">로그인</span>
                     </button>
 
@@ -66,13 +65,13 @@
                     <span class="hero-menu-divider" aria-hidden="true"></span>
 
                     <button type="button" class="hero-menu-item" data-view="site">
-                        분양현장
+                        중개업무
                     </button>
 
                     <span class="hero-menu-divider" aria-hidden="true"></span>
 
                     <button type="button" class="hero-menu-item" data-view="broker">
-                        중개업무
+                        분양현장
                     </button>
 
                     <span class="hero-menu-divider" aria-hidden="true"></span>
@@ -90,7 +89,7 @@
                             더 쉽고 빠르게
                         </h1>
                         <p>
-                            매물, 분양현장, 홍보 제작까지<br />
+                            매물등록, 분양현장 소개, 홍보 제작까지<br />
                             필요한 작업을 한 곳에서 처리합니다.
                         </p>
 
@@ -112,31 +111,79 @@
                             <div class="hero-orbit hero-orbit--1"></div>
                             <div class="hero-orbit hero-orbit--2"></div>
                         </div>
-                        <div class="hero-feature-cards">
-                            <button type="button" class="hero-feature-card" data-view="broker">
-                                <span class="hero-feature-icon">🏠</span>
-                                <div class="hero-feature-card-body">
-                                    <strong>매물 등록</strong>
-                                    <span>빠르게 정리</span>
-                                </div>
-                                <span class="hero-feature-arrow" aria-hidden="true">→</span>
-                            </button>
-                            <button type="button" class="hero-feature-card" data-view="site">
-                                <span class="hero-feature-icon">🏢</span>
-                                <div class="hero-feature-card-body">
-                                    <strong>분양현장</strong>
-                                    <span>정보 관리</span>
-                                </div>
-                                <span class="hero-feature-arrow" aria-hidden="true">→</span>
-                            </button>
-                            <button type="button" class="hero-feature-card" data-view="tools">
-                                <span class="hero-feature-icon">✨</span>
-                                <div class="hero-feature-card-body">
-                                    <strong>홍보 제작</strong>
-                                    <span>명함 · 전단 · 영상</span>
-                                </div>
-                                <span class="hero-feature-arrow" aria-hidden="true">→</span>
-                            </button>
+
+                        <div class="hero-showcase" aria-label="지모비즈 제작 기능 미리보기">
+                            <div class="hero-event-card hero-event-card--image" aria-label="신규 10,000 Gold 지급 이벤트">
+                                <img src="./event-gold-card.webp" alt="" />
+                            </div>
+
+                            <div class="showcase-stack">
+                                <button type="button" class="showcase-card showcase-card--video" data-view="tools">
+                                    <span class="showcase-tag">3 영상 제작</span>
+                                    <div class="video-preview">
+                                        <div class="video-building">
+                                            <span class="building building--1"></span>
+                                            <span class="building building--2"></span>
+                                            <span class="building building--3"></span>
+                                        </div>
+                                        <span class="play-mark">▶</span>
+                                        <div class="video-bar">
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </button>
+
+                                <button type="button" class="showcase-card showcase-card--image" data-view="tools">
+                                    <span class="showcase-tag">2 이미지 보정</span>
+                                    <div class="image-preview">
+                                        <div class="image-before">
+                                            <span>보정 전</span>
+                                        </div>
+                                        <div class="image-after">
+                                            <span>보정 후</span>
+                                        </div>
+                                    </div>
+                                </button>
+
+                                <button type="button" class="showcase-card showcase-card--namecard" data-view="tools">
+                                    <span class="showcase-tag">1 디지털 명함</span>
+
+                                    <div class="real-namecard-preview">
+                                        <div class="real-namecard-top">
+                                            <div class="real-namecard-brand">zimo biz</div>
+
+                                            <div class="real-namecard-person">
+                                                <span>팀장</span>
+                                                <strong>김지모</strong>
+                                            </div>
+                                        </div>
+
+                                        <div class="real-namecard-line"></div>
+
+                                        <div class="real-namecard-body">
+                                            <strong>울산 부동산·분양광고 상담</strong>
+                                            <p>울산 남구 삼산로 00</p>
+                                        </div>
+
+                                        <div class="real-namecard-contact">
+                                            <div>
+                                                <span>Mobile</span>
+                                                <strong>010-0000-0000</strong>
+                                            </div>
+
+                                            <div>
+                                                <span>Tel</span>
+                                                <strong>052-000-0000</strong>
+                                            </div>
+
+                                            <div>
+                                                <span>E-mail</span>
+                                                <strong>hello@zimo.kr</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -158,7 +205,7 @@
                             <span class="menu-icon icon-building">🏢</span>
                             <div>
                                 <strong>분양현장 정보</strong>
-                                <p>현장 소개, 조건, 혜택 정보를 정리합니다</p>
+                                <p>현장소개, 조건, 혜택 정보를 등록하고 공유합니다</p>
                             </div>
                         </div>
                         <button type="button" class="small-action" data-view="site">보기</button>
@@ -222,7 +269,11 @@
                             <strong>디지털 명함 생성</strong>
                             <p>카톡·문자 공유용 명함 미리보기를 만듭니다.</p>
                         </div>
-                        <span class="cost">1,000 G</span>
+
+                        <span class="tool-card-side">
+                            <span class="cost">1,000 G</span>
+                            <span class="tool-inline-cta">생성하기</span>
+                        </span>
                     </button>
 
                     <button type="button" class="tool-card" data-tool="image">
@@ -231,7 +282,11 @@
                             <strong>이미지 보정</strong>
                             <p>사진 보정과 홍보 문구 정리를 함께 준비합니다.</p>
                         </div>
-                        <span class="cost">500 G</span>
+
+                        <span class="tool-card-side">
+                            <span class="cost">500 G</span>
+                            <span class="tool-inline-cta">생성하기</span>
+                        </span>
                     </button>
 
                     <button type="button" class="tool-card" data-tool="flyer">
@@ -240,7 +295,11 @@
                             <strong>웹전단 제작</strong>
                             <p>현장명과 조건으로 공유용 전단을 만듭니다.</p>
                         </div>
-                        <span class="cost">1,000 G</span>
+
+                        <span class="tool-card-side">
+                            <span class="cost">1,000 G</span>
+                            <span class="tool-inline-cta">생성하기</span>
+                        </span>
                     </button>
 
                     <button type="button" class="tool-card" data-tool="video">
@@ -249,19 +308,14 @@
                             <strong>홍보 영상 제작</strong>
                             <p>사진 몇 장으로 짧은 홍보 영상을 만듭니다.</p>
                         </div>
-                        <span class="cost">3,000 G</span>
+
+                        <span class="tool-card-side">
+                            <span class="cost">3,000 G</span>
+                            <span class="tool-inline-cta">생성하기</span>
+                        </span>
                     </button>
                 </section>
 
-                <section class="tool-panel" id="toolPanel">
-                    <div class="tool-empty">
-                        <h3>디지털 명함 생성기</h3>
-                        <p>다음 단계에서 기존 명함 생성기 코드를 이 영역 안으로 옮길 거야.</p>
-                        <button type="button" class="primary-btn" id="openNamecardBtn">
-                            명함 생성기 열기
-                        </button>
-                    </div>
-                </section>
             </section>
 
             <!-- 전체 -->
