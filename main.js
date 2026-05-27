@@ -904,15 +904,97 @@
     }
 
 
+    function ensureNamecardCss() {
+        if (document.getElementById('namecardToolCss')) {
+            return;
+        }
+
+        var link = document.createElement('link');
+        link.id = 'namecardToolCss';
+        link.rel = 'stylesheet';
+        link.href = './tools/namecard/namecard.css';
+
+        document.head.appendChild(link);
+    }
+
+    function loadNamecardScript() {
+        return new Promise(function (resolve, reject) {
+            if (window.bootNamecardTool) {
+                resolve();
+                return;
+            }
+
+            var script = document.createElement('script');
+            script.id = 'namecardToolScript';
+            script.src = './tools/namecard/namecard.js';
+            script.onload = function () {
+                resolve();
+            };
+            script.onerror = function () {
+                reject(new Error('namecard.js 로드 실패'));
+            };
+
+            document.body.appendChild(script);
+        });
+    }
+
+    function renderNamecardTool() {
+        if (!els.toolPanel) return;
+
+        els.toolPanel.classList.add('has-namecard-tool');
+        els.toolPanel.innerHTML =
+            '<div class="tool-empty">' +
+            '<h3>디지털 명함 생성기 불러오는 중</h3>' +
+            '<p>명함 제작 화면을 준비하고 있어.</p>' +
+            '</div>';
+
+        ensureNamecardCss();
+
+        fetch('./tools/namecard/namecard.html')
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('namecard.html 로드 실패');
+                }
+
+                return response.text();
+            })
+            .then(function (html) {
+                els.toolPanel.innerHTML = html;
+
+                return loadNamecardScript();
+            })
+            .then(function () {
+                if (window.bootNamecardTool) {
+                    window.bootNamecardTool();
+                }
+
+                window.setTimeout(function () {
+                    els.toolPanel.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 120);
+            })
+            .catch(function () {
+                els.toolPanel.classList.remove('has-namecard-tool');
+                els.toolPanel.innerHTML =
+                    '<div class="tool-empty">' +
+                    '<h3>명함 생성기를 불러오지 못했어</h3>' +
+                    '<p>tools/namecard/namecard.html, namecard.css, namecard.js 경로를 확인해줘.</p>' +
+                    '<button type="button" class="primary-btn" disabled>로드 실패</button>' +
+                    '</div>';
+            });
+    }
+
     function renderToolMessage(toolName) {
         if (!els.toolPanel) return;
 
+        if (toolName === 'namecard') {
+            renderNamecardTool();
+            return;
+        }
+
         var toolMap = {
-            namecard: {
-                title: '디지털 명함 생성기',
-                desc: '오늘은 이식 준비 단계야. 다음 단계에서 명함 생성기 UI를 이 영역 안으로 넣자.',
-                button: '명함 생성기 준비중'
-            },
             image: {
                 title: '이미지 보정',
                 desc: '사진 업로드, 밝기 보정, 선명도 개선, 홍보 문구 정리 기능이 들어갈 자리야.',
@@ -930,7 +1012,7 @@
             }
         };
 
-        var tool = toolMap[toolName] || toolMap.namecard;
+        var tool = toolMap[toolName] || toolMap.image;
 
         els.toolPanel.classList.remove('has-namecard-tool');
 
@@ -941,7 +1023,6 @@
             '<button type="button" class="primary-btn" disabled>' + tool.button + '</button>' +
             '</div>';
     }
-
     function bindViewButtons() {
         document.querySelectorAll('[data-view]').forEach(function (button) {
             button.addEventListener('click', function () {
@@ -1013,7 +1094,11 @@
                     toolButton.classList.toggle('is-ready', toolButton === button);
                 });
 
-                showToolReadyMessage(toolName);
+                renderToolMessage(toolName);
+
+                if (toolName !== 'namecard') {
+                    showToolReadyMessage(toolName);
+                }
             });
         });
     }

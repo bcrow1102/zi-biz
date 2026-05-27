@@ -1,0 +1,605 @@
+/* =========================================================
+   ZIMO BIZ - NAMECARD TOOL
+   디지털 명함 생성기 전용 스타일
+========================================================= */
+
+.namecard-tool {
+    width: 100%;
+}
+
+.namecard-tool-head {
+    padding: 4px 2px 18px;
+}
+
+.namecard-kicker {
+    margin-bottom: 8px;
+    color: var(--blue);
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+}
+
+.namecard-tool-head h3 {
+    color: #16191f;
+    font-size: 28px;
+    line-height: 1.15;
+    font-weight: 850;
+    letter-spacing: -0.055em;
+}
+
+.namecard-tool-head p {
+    margin-top: 8px;
+    color: #7b828c;
+    font-size: 14px;
+    line-height: 1.55;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    word-break: keep-all;
+}
+
+.namecard-tool-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.namecard-form-area {
+    display: grid;
+    gap: 12px;
+}
+
+.namecard-form-block {
+    padding: 18px;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+}
+
+.namecard-form-block h4 {
+    margin-bottom: 14px;
+    color: #252b35;
+    font-size: 17px;
+    line-height: 1.25;
+    font-weight: 850;
+    letter-spacing: -0.045em;
+}
+
+.namecard-field {
+    display: grid;
+    gap: 7px;
+}
+
+.namecard-field+.namecard-field {
+    margin-top: 12px;
+}
+
+.namecard-field span {
+    color: #606976;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+}
+
+.namecard-field input,
+.namecard-field select {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+    border: 1px solid rgba(18, 24, 38, 0.08);
+    border-radius: 16px;
+    outline: none;
+    background: #f8fafc;
+    color: #16191f;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+
+.namecard-field select {
+    appearance: none;
+    background-image:
+        linear-gradient(45deg, transparent 50%, #8a8f98 50%),
+        linear-gradient(135deg, #8a8f98 50%, transparent 50%);
+    background-position:
+        calc(100% - 20px) 20px,
+        calc(100% - 14px) 20px;
+    background-size:
+        6px 6px,
+        6px 6px;
+    background-repeat: no-repeat;
+}
+
+.namecard-field input:focus,
+.namecard-field select:focus {
+    border-color: rgba(47, 128, 237, 0.55);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(47, 128, 237, 0.1);
+}
+
+.namecard-preview-area {
+    min-width: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.namecard-preview-top {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 2px;
+}
+
+.namecard-preview-top h4 {
+    color: #16191f;
+    font-size: 22px;
+    line-height: 1.15;
+    font-weight: 850;
+    letter-spacing: -0.055em;
+}
+
+.namecard-reset-btn {
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: #f2f4f8;
+    color: #606976;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.namecard-preview-scene {
+    position: relative;
+    overflow: hidden;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 24px 20px 22px;
+    border-radius: 30px;
+    background:
+        radial-gradient(circle at 20% 12%, rgba(255, 255, 255, 0.65), transparent 28%),
+        linear-gradient(135deg, #e8edf5 0%, #c7d2e2 48%, #f4f7fb 100%);
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+}
+
+.namecard-preview-scene::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(15, 23, 42, 0.22)),
+        radial-gradient(circle at 80% 22%, rgba(47, 128, 237, 0.18), transparent 30%);
+    pointer-events: none;
+}
+
+.namecard-card,
+.namecard-caption {
+    position: relative;
+    z-index: 1;
+}
+
+.namecard-card {
+    display: block;
+    width: min(100%, 430px);
+    margin: 0 auto;
+    aspect-ratio: 1.82 / 1;
+    border-radius: 18px;
+    background: #ffffff;
+    color: #16191f;
+    overflow: hidden;
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.22);
+}
+
+.namecard-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.namecard-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(110deg, rgba(255, 255, 255, 0.5), transparent 24%, transparent 74%, rgba(255, 255, 255, 0.22)),
+        radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.28), transparent 20%);
+    opacity: 0.5;
+}
+
+.namecard-card-inner {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 26px 28px 22px;
+}
+
+.namecard-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.namecard-logo {
+    max-width: 64%;
+    color: #d82626;
+    font-size: 30px;
+    line-height: 0.98;
+    font-weight: 900;
+    letter-spacing: -0.065em;
+    white-space: nowrap;
+}
+
+.namecard-logo.is-long {
+    font-size: 25px;
+    letter-spacing: -0.075em;
+}
+
+.namecard-logo.is-very-long {
+    font-size: 21px;
+    letter-spacing: -0.08em;
+}
+
+.namecard-person {
+    position: relative;
+    min-width: 92px;
+    display: grid;
+    gap: 8px;
+    justify-items: start;
+    padding-left: 14px;
+    color: #4d5560;
+    text-align: left;
+}
+
+.namecard-person::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 2px;
+    height: 35px;
+    border-radius: 999px;
+    background: rgba(216, 38, 38, 0.42);
+}
+
+.namecard-person span {
+    width: 100%;
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.namecard-person strong {
+    width: 100%;
+    font-size: 15px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    white-space: nowrap;
+}
+
+.namecard-divider {
+    height: 2px;
+    margin: 24px 0 18px;
+    border-radius: 999px;
+    background: rgba(216, 38, 38, 0.38);
+}
+
+.namecard-card-middle {
+    display: grid;
+    gap: 5px;
+    min-height: 42px;
+}
+
+.namecard-card-middle strong {
+    color: #d82626;
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    word-break: keep-all;
+}
+
+.namecard-card-middle p {
+    color: #5f6672;
+    font-size: 12px;
+    line-height: 1.35;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+}
+
+.namecard-card-bottom {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 6px;
+    column-gap: 14px;
+}
+
+.namecard-info-col {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    font-size: 12px;
+    line-height: 1.25;
+}
+
+.namecard-info-col--wide {
+    grid-column: 1 / -1;
+}
+
+.namecard-info-col span {
+    flex: 0 0 auto;
+    color: #d82626;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+.namecard-info-col strong {
+    min-width: 0;
+    color: #5f6672;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 빨간 명함 */
+.namecard-card.template-red {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+}
+
+.namecard-card.template-red .namecard-logo,
+.namecard-card.template-red .namecard-card-middle strong,
+.namecard-card.template-red .namecard-info-col span {
+    color: #d82626;
+}
+
+.namecard-card.template-red .namecard-divider {
+    background: rgba(216, 38, 38, 0.38);
+}
+
+.namecard-card.template-red .namecard-person::before {
+    background: rgba(216, 38, 38, 0.42);
+}
+
+/* 파란 명함 */
+.namecard-card.template-blue {
+    background:
+        radial-gradient(circle at 0% 0%, rgba(92, 131, 237, 0.16), transparent 34%),
+        linear-gradient(135deg, #111827 0%, #1e3a8a 100%);
+    color: #ffffff;
+}
+
+.namecard-card.template-blue .namecard-logo,
+.namecard-card.template-blue .namecard-card-middle strong,
+.namecard-card.template-blue .namecard-info-col span {
+    color: #ffffff;
+}
+
+.namecard-card.template-blue .namecard-person,
+.namecard-card.template-blue .namecard-card-middle p,
+.namecard-card.template-blue .namecard-info-col strong {
+    color: rgba(255, 255, 255, 0.76);
+}
+
+.namecard-card.template-blue .namecard-divider {
+    background: rgba(255, 255, 255, 0.42);
+}
+
+.namecard-card.template-blue .namecard-person::before {
+    background: rgba(255, 255, 255, 0.42);
+}
+
+.namecard-caption {
+    width: min(100%, 430px);
+    margin: 0 auto;
+    padding: 15px 18px 17px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.62);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(14px);
+}
+
+.namecard-caption p {
+    color: #1f2937;
+    font-size: 14px;
+    line-height: 1.5;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    word-break: keep-all;
+}
+
+.namecard-caption p+p {
+    margin-top: 3px;
+    color: #5f6672;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.namecard-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 12px;
+}
+
+.namecard-tag-list span {
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: rgba(47, 128, 237, 0.09);
+    border: 1px solid rgba(47, 128, 237, 0.14);
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: -0.02em;
+}
+
+.namecard-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.namecard-action-btn {
+    min-height: 50px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid rgba(18, 24, 38, 0.08);
+    color: #252b35;
+    font-size: 14px;
+    font-weight: 850;
+    letter-spacing: -0.03em;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+}
+
+.namecard-action-btn--primary {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #ffffff;
+    box-shadow: 0 12px 24px rgba(47, 128, 237, 0.2);
+}
+
+.namecard-helper {
+    min-height: 22px;
+    color: #9aa2ad;
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.025em;
+}
+
+/* 태블릿 */
+@media (max-width: 900px) {
+    .namecard-tool-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .namecard-preview-area {
+        order: -1;
+    }
+}
+
+/* 모바일 */
+@media (max-width: 520px) {
+    .namecard-tool-head h3 {
+        font-size: 25px;
+    }
+
+    .namecard-tool-grid {
+        gap: 14px;
+    }
+
+    .namecard-form-block {
+        padding: 17px;
+        border-radius: 22px;
+    }
+
+    .namecard-field input,
+    .namecard-field select {
+        height: 50px;
+        font-size: 15px;
+    }
+
+    .namecard-preview-scene {
+        min-height: 450px;
+        padding: 18px 12px 16px;
+        border-radius: 28px;
+    }
+
+    .namecard-card {
+        width: min(100%, 380px);
+        border-radius: 15px;
+    }
+
+    .namecard-card-inner {
+        padding: 18px 16px 16px;
+    }
+
+    .namecard-card-top {
+        gap: 10px;
+    }
+
+    .namecard-logo {
+        max-width: 62%;
+        font-size: 23px;
+    }
+
+    .namecard-logo.is-long {
+        font-size: 20px;
+    }
+
+    .namecard-logo.is-very-long {
+        font-size: 17px;
+    }
+
+    .namecard-person {
+        min-width: 84px;
+        gap: 8px;
+        padding-left: 12px;
+    }
+
+    .namecard-person span {
+        font-size: 11px;
+    }
+
+    .namecard-person strong {
+        font-size: 13px;
+        letter-spacing: 0.16em;
+    }
+
+    .namecard-divider {
+        margin: 18px 0 14px;
+    }
+
+    .namecard-card-middle strong {
+        font-size: 12px;
+    }
+
+    .namecard-card-middle p {
+        font-size: 11px;
+    }
+
+    .namecard-card-bottom {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    .namecard-info-col {
+        font-size: 11px;
+    }
+
+    .namecard-caption {
+        width: min(100%, 380px);
+        padding: 16px 16px 18px;
+        border-radius: 18px;
+    }
+
+    .namecard-actions {
+        grid-template-columns: 1fr;
+    }
+}
