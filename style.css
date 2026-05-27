@@ -4385,3 +4385,143 @@ button {
         border-radius: 26px !important;
     }
 }
+
+/* =========================================================
+   TOOL FOCUS MODE
+   - 생성기 진입 시 다른 제작 카드 숨김
+========================================================= */
+
+#viewTools.is-tool-focus-mode .tool-list {
+    display: none !important;
+}
+
+#viewTools.is-tool-focus-mode .tool-panel {
+    margin-top: 0 !important;
+}
+
+/* 생성기 화면이 하단 네비에 가리지 않게 여유 */
+#viewTools.is-tool-focus-mode {
+    padding-bottom: 120px !important;
+}
+
+/* 모바일 제작도구 화면 하단 네비 여백 */
+@media (max-width: 768px) {
+    #viewTools {
+        padding-bottom: 140px !important;
+    }
+
+    #viewTools .tool-panel.has-namecard-tool {
+        padding: 18px 14px 24px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* 모바일에서만 로그아웃 문구를 '나가기'로 표시 + 종 밑에 배치 */
+@media (max-width: 760px) {
+    .header-actions {
+        display: grid !important;
+        grid-template-columns: auto 36px !important;
+        grid-template-areas:
+            "account notice"
+            ". logout" !important;
+        align-items: start !important;
+        column-gap: 8px !important;
+        row-gap: 6px !important;
+    }
+
+    .account-strip {
+        grid-area: account !important;
+        align-self: start !important;
+    }
+
+    .notice-icon-btn {
+        grid-area: notice !important;
+        align-self: start !important;
+    }
+
+    .logout-inline-btn {
+        grid-area: logout !important;
+        justify-self: center !important;
+        align-self: start !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        min-height: auto !important;
+        height: auto !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+
+        color: transparent !important;
+        font-size: 0 !important;
+        line-height: 1 !important;
+        text-decoration: none !important;
+        white-space: nowrap !important;
+    }
+
+    .logout-inline-btn::after {
+        content: "나가기";
+        color: #8a93a0;
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: -0.03em;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .logout-inline-btn.is-hidden {
+        display: none !important;
+    }
+}
+
+/* 로그인 별명 입력 글자 두께 완화 */
+.login-id-row input,
+.nickname-field input {
+    font-weight: 400 !important;
+}
+
+/* 모바일 헤더 Gold 숫자 선명도 보정 */
+@media (max-width: 760px) {
+    .account-strip {
+        background: #ffffff !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        border: 1px solid rgba(18, 24, 38, 0.055) !important;
+    }
+
+    .gold-pill {
+        color: #303743 !important;
+        font-size: 10.5px !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.01em !important;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: geometricPrecision;
+    }
+
+    #goldAmount {
+        font-weight: 600 !important;
+    }
+
+    .gold-icon {
+        font-weight: 600 !important;
+        box-shadow: none !important;
+    }
+}
+
+/* 모바일 이벤트 카드 살짝 확대 */
+@media (max-width: 420px) {
+    .hero-card {
+        grid-template-columns: minmax(0, 1fr) 126px !important;
+        gap: 16px 10px !important;
+    }
+
+    .hero-event-card.hero-event-card--image {
+        width: 126px !important;
+    }
+}

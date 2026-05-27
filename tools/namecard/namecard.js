@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    var DRAFT_KEY = 'zimo_biz_namecard_draft';
+
     var defaults = {
         template: 'template-red',
         company: 'zimo biz',
@@ -66,7 +68,7 @@
             return fallback || '';
         }
 
-        return String(el.value || '').trim() || fallback || '';
+        return String(el.value || '').trim();
     }
 
     function setText(el, text) {
@@ -84,10 +86,6 @@
         }
 
         return 'https://' + text;
-    }
-
-    function cleanPhone(phone) {
-        return String(phone || '').replace(/[^\d+]/g, '');
     }
 
     function setHelper(message) {
@@ -119,6 +117,108 @@
             desc2: value('desc2', defaults.desc2),
             tags: value('tags', defaults.tags)
         };
+    }
+    function getEmptyFields(data) {
+        var fieldLabels = {
+            company: '현장명 / 회사명',
+            name: '이름',
+            role: '직함',
+            summary: '한 줄 소개',
+            phone: '휴대폰',
+            landline: '대표번호',
+            email: '이메일',
+            address: '주소',
+            website: '연결 주소',
+            desc1: '설명 1줄',
+            desc2: '설명 2줄',
+            tags: '태그 3개'
+        };
+
+        return Object.keys(fieldLabels)
+            .filter(function (key) {
+                return !String(data[key] || '').trim();
+            })
+            .map(function (key) {
+                return fieldLabels[key];
+            });
+    }
+
+    function confirmEmptyFields(emptyFields) {
+        if (!emptyFields.length) {
+            return true;
+        }
+
+        var message =
+            '입력되지 않은 항목이 있습니다.\n\n' +
+            emptyFields.map(function (label) {
+                return '- ' + label;
+            }).join('\n') +
+            '\n\n그래도 공유 명함을 생성할까요?';
+
+        return window.confirm(message);
+    }
+
+    function copyTextToClipboard(text, successMessage) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text)
+                .then(function () {
+                    setHelper(successMessage || '복사했습니다.');
+                })
+                .catch(function () {
+                    fallbackCopy(text);
+                });
+
+            return;
+        }
+
+        fallbackCopy(text);
+    }
+
+    /*
+        나중에 Supabase 붙이면 이 함수만 바꾸면 됨.
+    
+        최종 동작:
+        1. Supabase에 data 저장
+        2. namecard id 받기
+        3. 공유 URL 만들기
+        4. OG 이미지 생성/연결
+        5. 공유 URL 반환
+    */
+    function createShareUrl(data) {
+        // 현재 임시 버전: Supabase 연결 전이라 입력된 연결 주소를 공유 URL처럼 사용
+        var url = normalizeUrl(data.website);
+
+        if (!url) {
+            url = window.location.origin || 'https://지모비즈.com';
+        }
+
+        return Promise.resolve(url);
+    }
+
+    function handleShareUrlCopy() {
+        var data = getData();
+        var emptyFields = getEmptyFields(data);
+
+        if (!confirmEmptyFields(emptyFields)) {
+            setHelper('공유 생성을 취소했습니다.');
+            return;
+        }
+
+        try {
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+        } catch (error) {
+            // 임시저장 실패해도 공유 생성 흐름은 계속 진행
+        }
+
+        setHelper('공유 URL을 생성하고 있습니다.');
+
+        createShareUrl(data)
+            .then(function (shareUrl) {
+                copyTextToClipboard(shareUrl, '공유 URL을 복사했습니다. 카톡에 붙여넣어 보내세요.');
+            })
+            .catch(function () {
+                setHelper('공유 URL 생성에 실패했습니다.');
+            });
     }
 
     function updateTemplate(templateName) {
@@ -169,9 +269,7 @@
             .filter(Boolean)
             .slice(0, 3);
 
-        if (!tags.length) {
-            tags = ['디지털명함', '빠른공유', 'zimo'];
-        }
+
 
         els.previewTags.innerHTML = '';
 
@@ -202,41 +300,6 @@
         renderTags(data.tags);
     }
 
-    function makeShareText() {
-        var data = getData();
-        var website = normalizeUrl(data.website);
-
-        var lines = [
-            '[' + data.company + ' 명함]',
-            data.name + ' / ' + data.role,
-            data.summary,
-            '',
-            '휴대폰: ' + data.phone
-        ];
-
-        if (data.landline) {
-            lines.push('대표번호: ' + data.landline);
-        }
-
-        if (data.email) {
-            lines.push('이메일: ' + data.email);
-        }
-
-        if (data.address) {
-            lines.push('주소: ' + data.address);
-        }
-
-        if (website) {
-            lines.push('바로가기: ' + website);
-        }
-
-        lines.push('');
-        lines.push(data.desc1);
-        lines.push(data.desc2);
-
-        return lines.join('\n');
-    }
-
     function fallbackCopy(text) {
         var textarea = document.createElement('textarea');
 
@@ -251,69 +314,72 @@
 
         try {
             document.execCommand('copy');
-            setHelper('명함 링크 문구를 복사했습니다.');
+            setHelper('공유 URL을 복사했습니다.');
         } catch (error) {
-            setHelper('복사에 실패했습니다. 브라우저 권한을 확인해주세요.');
+            setHelper('복사에 실패했습니다. 브라우저 권한을 확인해줘.');
         }
 
         document.body.removeChild(textarea);
     }
 
     function copyShareText() {
-        var text = makeShareText();
+        var data = getData();
+        var url = normalizeUrl(data.website);
+
+        if (!url) {
+            setHelper('복사할 연결 주소를 입력해줘.');
+            if (els.website) els.website.focus();
+            return;
+        }
 
         if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text)
+            navigator.clipboard.writeText(url)
                 .then(function () {
-                    setHelper('명함 링크 문구를 복사했습니다.');
+                    setHelper('공유 URL을 복사했습니다.');
                 })
                 .catch(function () {
-                    fallbackCopy(text);
+                    fallbackCopy(url);
                 });
 
             return;
         }
 
-        fallbackCopy(text);
+        fallbackCopy(url);
     }
 
-    function downloadVcard() {
+    function saveDraft() {
         var data = getData();
-        var phone = cleanPhone(data.phone);
-        var landline = cleanPhone(data.landline);
-        var website = normalizeUrl(data.website);
 
-        var vcard = [
-            'BEGIN:VCARD',
-            'VERSION:3.0',
-            'N:' + data.name + ';;;;',
-            'FN:' + data.name,
-            'ORG:' + data.company,
-            'TITLE:' + data.role,
-            phone ? 'TEL;TYPE=CELL:' + phone : '',
-            landline ? 'TEL;TYPE=WORK:' + landline : '',
-            data.email ? 'EMAIL:' + data.email : '',
-            data.address ? 'ADR;TYPE=WORK:;;' + data.address + ';;;;' : '',
-            website ? 'URL:' + website : '',
-            'NOTE:' + data.summary + ' ' + data.desc1 + ' ' + data.desc2,
-            'END:VCARD'
-        ].filter(Boolean).join('\n');
+        try {
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+            setHelper('입력내용을 저장했습니다.');
+        } catch (error) {
+            setHelper('저장에 실패했습니다. 브라우저 저장공간을 확인해줘.');
+        }
+    }
 
-        var blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
-        var url = URL.createObjectURL(blob);
-        var fileName = data.name.replace(/\s+/g, '_') + '_namecard.vcf';
+    function loadSavedDraft() {
+        var saved = null;
 
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
+        try {
+            saved = localStorage.getItem(DRAFT_KEY);
+        } catch (error) {
+            saved = null;
+        }
 
-        document.body.appendChild(a);
-        a.click();
+        if (!saved) return;
 
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        try {
+            var data = JSON.parse(saved);
 
-        setHelper('연락처 파일을 저장했습니다.');
+            Object.keys(defaults).forEach(function (key) {
+                if (els[key] && Object.prototype.hasOwnProperty.call(data, key)) {
+                    els[key].value = data[key];
+                }
+            });
+        } catch (error) {
+            // 저장값이 깨졌으면 무시한다.
+        }
     }
 
     function resetForm() {
@@ -322,6 +388,12 @@
                 els[key].value = defaults[key];
             }
         });
+
+        try {
+            localStorage.removeItem(DRAFT_KEY);
+        } catch (error) {
+            // 삭제 실패 시에도 초기화 화면은 유지한다.
+        }
 
         updatePreview();
         setHelper('기본 예시값으로 초기화했습니다.');
@@ -350,11 +422,11 @@
         });
 
         if (els.copyTextBtn) {
-            els.copyTextBtn.addEventListener('click', copyShareText);
+            els.copyTextBtn.addEventListener('click', handleShareUrlCopy);
         }
 
         if (els.saveVcardBtn) {
-            els.saveVcardBtn.addEventListener('click', downloadVcard);
+            els.saveVcardBtn.addEventListener('click', saveDraft);
         }
 
         if (els.resetBtn) {
@@ -369,6 +441,7 @@
             return;
         }
 
+        loadSavedDraft();
         bindEvents();
         updatePreview();
     }

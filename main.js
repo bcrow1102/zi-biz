@@ -86,14 +86,16 @@
 
     function getSavedUser() {
         try {
-            var saved = sessionStorage.getItem(STORAGE_KEY);
+            var saved = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
             return saved ? JSON.parse(saved) : null;
         } catch (error) {
             return null;
         }
     }
+
     function saveUser(user) {
         try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
             sessionStorage.setItem(STORAGE_KEY, JSON.stringify(user));
         } catch (error) {
             // 임시 로그인 저장 실패 시에도 현재 화면 상태는 유지한다.
@@ -877,6 +879,9 @@
         }
 
         state.currentView = viewName;
+        if (viewName === 'tools') {
+            renderToolHome();
+        }
 
         Object.keys(views).forEach(function (key) {
             if (!views[key]) return;
@@ -937,6 +942,13 @@
             document.body.appendChild(script);
         });
     }
+    function setToolFocusMode(isActive) {
+        var viewTools = document.getElementById('viewTools');
+
+        if (!viewTools) return;
+
+        viewTools.classList.toggle('is-tool-focus-mode', !!isActive);
+    }
 
     function renderNamecardTool() {
         if (!els.toolPanel) return;
@@ -984,6 +996,22 @@
                     '<button type="button" class="primary-btn" disabled>로드 실패</button>' +
                     '</div>';
             });
+    }
+    function renderToolHome() {
+        setToolFocusMode(false);
+
+        document.querySelectorAll('#viewTools .tool-card[data-tool]').forEach(function (toolButton) {
+            toolButton.classList.remove('is-ready');
+        });
+
+        if (!els.toolPanel) return;
+
+        els.toolPanel.classList.remove('has-namecard-tool');
+        els.toolPanel.innerHTML =
+            '<div class="tool-empty">' +
+            '<h3>제작도구를 선택해줘</h3>' +
+            '<p>필요한 제작 기능을 선택하면 해당 생성기만 열립니다.</p>' +
+            '</div>';
     }
 
     function renderToolMessage(toolName) {
@@ -1089,6 +1117,7 @@
                 if (!requireLogin()) return;
 
                 var toolName = button.getAttribute('data-tool');
+                setToolFocusMode(true);
 
                 document.querySelectorAll('#viewTools .tool-card[data-tool]').forEach(function (toolButton) {
                     toolButton.classList.toggle('is-ready', toolButton === button);
@@ -1274,7 +1303,7 @@
         syncFeedbackCategoryUI();
         renderFeedbackList();
 
-        renderToolMessage('namecard');
+        renderToolHome();
     }
 
     if (document.readyState === 'loading') {
