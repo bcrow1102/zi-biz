@@ -2413,3 +2413,10 @@
         padding-bottom: 6px !important;
     }
 }
+
+/* 모바일 명함 카드 하단 여백 살짝 보정 */
+@media (max-width: 760px) {
+    .namecard-preview-scene--compact .namecard-card-inner {
+        padding-bottom: 18px !important;
+    }
+}
