@@ -603,3 +603,1813 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================================================
+   NAMECARD COMPACT LAYOUT OVERRIDE
+   - zimo biz 내부용 압축 입력 / 카톡 미리보기 유지
+========================================================= */
+
+.namecard-tool-grid--compact {
+    grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+    gap: 16px;
+}
+
+.namecard-tool-head {
+    padding-bottom: 12px;
+}
+
+.namecard-tool-head h3 {
+    color: var(--blue);
+    font-size: 25px;
+    font-weight: 650;
+    letter-spacing: -0.04em;
+}
+
+.namecard-tool-head p {
+    max-width: 620px;
+    color: #6f7783;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.namecard-form-block--single {
+    padding: 18px;
+}
+
+.namecard-form-title-row {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.namecard-form-title-row h4,
+.namecard-caption-inputs h4,
+.namecard-preview-top h4 {
+    margin: 0;
+    color: #16191f;
+    font-size: 17px;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+}
+
+.namecard-template-mini {
+    width: 148px;
+    display: grid;
+    gap: 5px;
+}
+
+.namecard-template-mini span,
+.namecard-field span {
+    color: #6f7783;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+}
+
+.namecard-template-mini select {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid rgba(18, 24, 38, 0.08);
+    border-radius: 14px;
+    outline: none;
+    background: #f8fafc;
+    color: #16191f;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.namecard-field-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.namecard-field-grid--3 {
+    grid-template-columns: 0.8fr 0.8fr 1.2fr;
+}
+
+.namecard-field-grid--2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.namecard-field {
+    gap: 6px;
+}
+
+.namecard-field+.namecard-field {
+    margin-top: 10px;
+}
+
+.namecard-field-grid .namecard-field+.namecard-field {
+    margin-top: 0;
+}
+
+.namecard-field input,
+.namecard-field select {
+    height: 44px;
+    border-radius: 14px;
+    background: #f8fafc;
+    font-size: 14px;
+    font-weight: 450;
+}
+
+.namecard-caption-inputs {
+    margin-top: 16px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(18, 24, 38, 0.07);
+}
+
+.namecard-caption-inputs h4 {
+    margin-bottom: 12px;
+    color: var(--blue);
+}
+
+.namecard-preview-scene--compact {
+    min-height: 420px;
+    justify-content: center;
+    gap: 14px;
+    padding: 20px 16px;
+    border-radius: 26px;
+}
+
+.namecard-card {
+    width: min(100%, 405px);
+}
+
+.namecard-card-inner {
+    padding: 24px 25px 20px;
+}
+
+.namecard-logo {
+    font-weight: 720;
+}
+
+.namecard-person span {
+    font-weight: 500;
+}
+
+.namecard-person strong {
+    font-weight: 650;
+}
+
+.namecard-card-middle strong {
+    font-weight: 650;
+}
+
+.namecard-card-middle p,
+.namecard-info-col strong {
+    font-weight: 450;
+}
+
+.namecard-info-col span {
+    font-weight: 650;
+}
+
+.namecard-caption--apartment {
+    position: relative;
+    overflow: hidden;
+    width: min(100%, 405px);
+    padding: 15px 17px 16px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(239, 246, 255, 0.92)),
+        radial-gradient(circle at 88% 10%, rgba(63, 115, 216, 0.12), transparent 34%);
+}
+
+.namecard-caption--apartment::before {
+    content: "";
+    position: absolute;
+    right: 16px;
+    bottom: 14px;
+    width: 54px;
+    height: 42px;
+    border-radius: 10px 10px 3px 3px;
+    background:
+        linear-gradient(90deg, rgba(63, 115, 216, 0.08) 1px, transparent 1px),
+        linear-gradient(rgba(63, 115, 216, 0.08) 1px, transparent 1px);
+    background-size: 12px 12px;
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.namecard-caption--apartment p {
+    position: relative;
+    z-index: 1;
+    color: #16191f;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.namecard-caption--apartment p+p {
+    color: #66717f;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.namecard-tag-list {
+    position: relative;
+    z-index: 1;
+    margin-top: 10px;
+}
+
+.namecard-tag-list span {
+    min-height: 25px;
+    padding: 0 9px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.namecard-action-btn {
+    min-height: 46px;
+    font-weight: 600;
+}
+
+.namecard-helper {
+    font-weight: 400;
+}
+
+/* 모바일 압축 */
+@media (max-width: 900px) {
+    .namecard-tool-grid--compact {
+        grid-template-columns: 1fr;
+    }
+
+    .namecard-preview-area {
+        order: -1;
+    }
+}
+
+@media (max-width: 520px) {
+    .namecard-tool-head h3 {
+        font-size: 23px;
+    }
+
+    .namecard-form-title-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .namecard-template-mini {
+        width: 100%;
+    }
+
+    .namecard-field-grid--3,
+    .namecard-field-grid--2 {
+        grid-template-columns: 1fr;
+    }
+
+    .namecard-field-grid .namecard-field+.namecard-field {
+        margin-top: 0;
+    }
+
+    .namecard-preview-scene--compact {
+        min-height: 390px;
+        padding: 18px 12px;
+    }
+
+    .namecard-card,
+    .namecard-caption--apartment {
+        width: min(100%, 380px);
+    }
+}
+
+/* =========================================================
+   NAMECARD FINAL DETAIL OVERRIDE
+   - 파란 시안 고급화 / 버튼 디테일
+========================================================= */
+
+.namecard-card.template-blue {
+    background:
+        radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.13), transparent 28%),
+        radial-gradient(circle at 92% 12%, rgba(99, 179, 237, 0.18), transparent 34%),
+        linear-gradient(135deg, #18233f 0%, #1f3c74 52%, #10203f 100%);
+}
+
+.namecard-card.template-blue::after {
+    opacity: 0.34;
+    background:
+        linear-gradient(112deg, rgba(255, 255, 255, 0.28), transparent 22%, transparent 76%, rgba(255, 255, 255, 0.12)),
+        radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.16), transparent 24%);
+}
+
+.namecard-card.template-blue .namecard-logo,
+.namecard-card.template-blue .namecard-card-middle strong,
+.namecard-card.template-blue .namecard-info-col span {
+    color: #f8fbff;
+}
+
+.namecard-card.template-blue .namecard-person,
+.namecard-card.template-blue .namecard-card-middle p,
+.namecard-card.template-blue .namecard-info-col strong {
+    color: rgba(236, 244, 255, 0.78);
+}
+
+.namecard-card.template-blue .namecard-divider {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.58), rgba(147, 197, 253, 0.34));
+}
+
+.namecard-card.template-blue .namecard-person::before {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(147, 197, 253, 0.28));
+}
+
+.namecard-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.namecard-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    line-height: 1;
+    transform: translateY(-0.5px);
+}
+
+.namecard-action-btn--primary {
+    background: #3f73d8;
+    border-color: #3f73d8;
+    color: #ffffff;
+}
+
+.namecard-action-btn--primary:hover {
+    background: #3568ca;
+}
+
+/* =========================================================
+   NAMECARD VISUAL POLISH OVERRIDE
+   - 시안1 / 시안2 고급화
+   - 하단 캡션 심플 배경 보강
+========================================================= */
+
+/* 전체 비율 조금 더 안정감 있게 */
+.namecard-tool-grid--compact {
+    grid-template-columns: minmax(0, 1.02fr) minmax(370px, 0.98fr);
+    gap: 18px;
+}
+
+.namecard-preview-scene--compact {
+    min-height: 438px;
+    padding: 22px 16px 18px;
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at 15% 10%, rgba(255, 255, 255, 0.72), transparent 24%),
+        radial-gradient(circle at 85% 16%, rgba(63, 115, 216, 0.08), transparent 25%),
+        linear-gradient(180deg, #eef4fb 0%, #dde7f4 100%);
+}
+
+.namecard-preview-scene--compact::before {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(15, 23, 42, 0.18)),
+        radial-gradient(circle at 82% 18%, rgba(63, 115, 216, 0.10), transparent 28%);
+    opacity: 0.92;
+}
+
+/* 카드 공통 고급화 */
+.namecard-card {
+    border-radius: 20px;
+    box-shadow:
+        0 18px 40px rgba(15, 23, 42, 0.16),
+        0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.namecard-card::before {
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.34),
+        inset 0 0 0 1px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.namecard-card-inner {
+    padding: 24px 25px 20px;
+}
+
+.namecard-logo {
+    font-weight: 700;
+}
+
+.namecard-person span {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+.namecard-person strong {
+    font-weight: 650;
+    letter-spacing: 0.08em;
+}
+
+.namecard-card-middle strong {
+    font-weight: 650;
+}
+
+.namecard-card-middle p,
+.namecard-info-col strong {
+    font-weight: 450;
+}
+
+.namecard-info-col span {
+    font-weight: 650;
+}
+
+/* =========================
+   시안 1 - 레드
+========================= */
+.namecard-card.template-red {
+    position: relative;
+    background:
+        linear-gradient(180deg, #ffffff 0%, #fbfbfc 100%);
+}
+
+.namecard-card.template-red::after {
+    opacity: 0.34;
+    background:
+        linear-gradient(112deg, rgba(255, 255, 255, 0.45), transparent 22%, transparent 78%, rgba(212, 53, 53, 0.08)),
+        radial-gradient(circle at 16% 14%, rgba(255, 255, 255, 0.22), transparent 24%);
+}
+
+.namecard-card.template-red .namecard-logo,
+.namecard-card.template-red .namecard-card-middle strong,
+.namecard-card.template-red .namecard-info-col span {
+    color: #d63a3a;
+}
+
+.namecard-card.template-red .namecard-divider {
+    height: 2px;
+    background: linear-gradient(90deg, rgba(214, 58, 58, 0.52), rgba(214, 58, 58, 0.14));
+}
+
+.namecard-card.template-red .namecard-person::before {
+    background: linear-gradient(180deg, rgba(214, 58, 58, 0.52), rgba(214, 58, 58, 0.18));
+}
+
+/* 카드 우측 하단 장식 */
+.namecard-card.template-red .namecard-card-inner::after {
+    content: "";
+    position: absolute;
+    right: -20px;
+    bottom: -18px;
+    width: 120px;
+    height: 120px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(214, 58, 58, 0.07) 0%, transparent 64%);
+    pointer-events: none;
+}
+
+/* =========================
+   시안 2 - 블루
+========================= */
+.namecard-card.template-blue {
+    position: relative;
+    background:
+        radial-gradient(circle at 14% 10%, rgba(255, 255, 255, 0.12), transparent 24%),
+        radial-gradient(circle at 88% 14%, rgba(120, 180, 255, 0.14), transparent 30%),
+        linear-gradient(135deg, #172742 0%, #24447b 55%, #14233f 100%);
+}
+
+.namecard-card.template-blue::after {
+    opacity: 0.28;
+    background:
+        linear-gradient(112deg, rgba(255, 255, 255, 0.22), transparent 22%, transparent 76%, rgba(255, 255, 255, 0.10)),
+        radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.12), transparent 24%);
+}
+
+.namecard-card.template-blue .namecard-logo,
+.namecard-card.template-blue .namecard-card-middle strong,
+.namecard-card.template-blue .namecard-info-col span {
+    color: #f7fbff;
+}
+
+.namecard-card.template-blue .namecard-person,
+.namecard-card.template-blue .namecard-card-middle p,
+.namecard-card.template-blue .namecard-info-col strong {
+    color: rgba(239, 246, 255, 0.78);
+}
+
+.namecard-card.template-blue .namecard-divider {
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.58), rgba(151, 201, 255, 0.18));
+}
+
+.namecard-card.template-blue .namecard-person::before {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(151, 201, 255, 0.20));
+}
+
+.namecard-card.template-blue .namecard-card-inner::after {
+    content: "";
+    position: absolute;
+    right: -14px;
+    bottom: -14px;
+    width: 116px;
+    height: 116px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(136, 190, 255, 0.10) 0%, transparent 66%);
+    pointer-events: none;
+}
+
+/* =========================
+   하단부 캡션 - 심플/예쁜 배경
+========================= */
+.namecard-caption--apartment {
+    position: relative;
+    overflow: hidden;
+    width: min(100%, 405px);
+    padding: 16px 17px 17px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(12px);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(240, 247, 255, 0.92)),
+        radial-gradient(circle at 88% 14%, rgba(63, 115, 216, 0.10), transparent 32%);
+}
+
+/* 좌상단 아주 약한 블루 포인트 */
+.namecard-caption--apartment::before {
+    content: "";
+    position: absolute;
+    left: -18px;
+    top: -22px;
+    width: 88px;
+    height: 88px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(63, 115, 216, 0.08) 0%, transparent 68%);
+    pointer-events: none;
+}
+
+/* 우하단 아파트 라인 패턴 */
+.namecard-caption--apartment::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    width: 72px;
+    height: 48px;
+    border-radius: 12px 12px 4px 4px;
+    background:
+        linear-gradient(90deg, rgba(63, 115, 216, 0.08) 1px, transparent 1px),
+        linear-gradient(rgba(63, 115, 216, 0.08) 1px, transparent 1px);
+    background-size: 12px 12px;
+    opacity: 0.52;
+    pointer-events: none;
+}
+
+.namecard-caption--apartment p {
+    position: relative;
+    z-index: 1;
+    color: #18202b;
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.namecard-caption--apartment p+p {
+    margin-top: 4px;
+    color: #697586;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.namecard-tag-list {
+    position: relative;
+    z-index: 1;
+    margin-top: 11px;
+    gap: 6px;
+}
+
+.namecard-tag-list span {
+    min-height: 26px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: rgba(63, 115, 216, 0.08);
+    border: 1px solid rgba(63, 115, 216, 0.10);
+    color: #3f73d8;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* 버튼도 톤 조금 정리 */
+.namecard-action-btn {
+    min-height: 46px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 15px;
+}
+
+.namecard-action-btn--primary {
+    background: #3f73d8;
+    border-color: #3f73d8;
+    color: #ffffff;
+    box-shadow: 0 12px 24px rgba(63, 115, 216, 0.18);
+}
+
+.namecard-action-btn--primary:hover {
+    background: #3568ca;
+}
+
+.namecard-helper {
+    color: #8a93a0;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+/* 모바일 */
+@media (max-width: 520px) {
+    .namecard-preview-scene--compact {
+        min-height: 398px;
+        padding: 18px 12px 16px;
+    }
+
+    .namecard-card,
+    .namecard-caption--apartment {
+        width: min(100%, 382px);
+    }
+
+    .namecard-caption--apartment {
+        padding: 15px 15px 16px;
+    }
+}
+
+/* =========================================================
+   NAMECARD FINAL FIX
+   - 하단부 배경 확실히 적용
+   - 링크 밑줄 제거
+   - 현장명 / 이메일만 밑줄 유지
+========================================================= */
+
+/* 카드 전체가 a 태그라 생기는 밑줄 제거 */
+.namecard-card,
+.namecard-card *,
+.namecard-card:hover,
+.namecard-card:hover * {
+    text-decoration: none !important;
+}
+
+/* 현장명만 고급스럽게 밑줄 */
+.namecard-logo {
+    display: inline-block !important;
+    width: fit-content !important;
+    padding-bottom: 5px !important;
+    border-bottom: 2px solid currentColor !important;
+    text-decoration: none !important;
+}
+
+/* 이메일 주소만 밑줄 */
+.namecard-info-col--wide strong {
+    display: inline-block !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    padding-bottom: 2px !important;
+    border-bottom: 1px solid currentColor !important;
+    text-decoration: none !important;
+}
+
+/* 다른 텍스트는 밑줄 절대 제거 */
+.namecard-person span,
+.namecard-person strong,
+.namecard-card-middle strong,
+.namecard-card-middle p,
+.namecard-info-col span,
+.namecard-info-col strong {
+    text-decoration: none !important;
+}
+
+/* 하단부 배경 더 확실하게 */
+.namecard-caption--apartment {
+    position: relative !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(236, 246, 255, 0.96) 58%, rgba(226, 239, 255, 0.94) 100%) !important;
+    border: 1px solid rgba(63, 115, 216, 0.16) !important;
+    box-shadow:
+        0 16px 34px rgba(15, 23, 42, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 좌상단 부드러운 파랑 포인트 */
+.namecard-caption--apartment::before {
+    content: "" !important;
+    position: absolute !important;
+    left: -34px !important;
+    top: -42px !important;
+    width: 130px !important;
+    height: 130px !important;
+    border-radius: 999px !important;
+    background: radial-gradient(circle, rgba(63, 115, 216, 0.16) 0%, rgba(63, 115, 216, 0.08) 38%, transparent 70%) !important;
+    opacity: 1 !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+
+/* 우하단 아파트/건물 패턴 확실히 보이게 */
+.namecard-caption--apartment::after {
+    content: "" !important;
+    position: absolute !important;
+    right: 12px !important;
+    bottom: 10px !important;
+    width: 86px !important;
+    height: 58px !important;
+    border-radius: 14px 14px 5px 5px !important;
+    background:
+        linear-gradient(90deg, rgba(63, 115, 216, 0.14) 1px, transparent 1px),
+        linear-gradient(rgba(63, 115, 216, 0.14) 1px, transparent 1px) !important;
+    background-size: 13px 13px !important;
+    opacity: 0.8 !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+
+.namecard-caption--apartment p,
+.namecard-caption--apartment .namecard-tag-list {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.namecard-caption--apartment p:first-child {
+    color: #18202b !important;
+    font-weight: 600 !important;
+}
+
+.namecard-caption--apartment p+p {
+    color: #647083 !important;
+    font-weight: 400 !important;
+}
+
+.namecard-caption--apartment .namecard-tag-list span {
+    background: rgba(63, 115, 216, 0.10) !important;
+    border-color: rgba(63, 115, 216, 0.16) !important;
+    color: #3f73d8 !important;
+    font-weight: 500 !important;
+}
+
+/* =========================================================
+   NAMECARD VISUAL RESET FINAL
+   - 명함 자체 효과 제거
+   - 시안1 흰바탕 / 시안2 네이비 유지
+   - 하단부만 심플한 부동산 배경 효과
+   - 밑줄은 현장명, 이메일만 유지
+========================================================= */
+
+/* 미리보기 배경은 명함에 영향 없게 차분하게 */
+.namecard-preview-scene--compact {
+    background:
+        linear-gradient(180deg, #eef3f8 0%, #dfe7f0 100%) !important;
+    box-shadow: none !important;
+}
+
+.namecard-preview-scene--compact::before {
+    opacity: 0 !important;
+    display: none !important;
+}
+
+/* 카드 전체 링크 밑줄 제거 */
+.namecard-card,
+.namecard-card *,
+.namecard-card:hover,
+.namecard-card:hover * {
+    text-decoration: none !important;
+}
+
+/* 명함 카드 자체 효과 최소화 */
+.namecard-card {
+    border-radius: 18px !important;
+    box-shadow: 0 14px 26px rgba(15, 23, 42, 0.12) !important;
+    overflow: hidden !important;
+}
+
+/* 카드 위 광택/장식 제거 */
+.namecard-card::after,
+.namecard-card-inner::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* 카드 테두리만 아주 약하게 */
+.namecard-card::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    border-radius: inherit !important;
+    pointer-events: none !important;
+    box-shadow:
+        inset 0 0 0 1px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+}
+
+/* 시안 1: 흰 바탕만 유지 */
+.namecard-card.template-red {
+    background: #ffffff !important;
+    color: #16191f !important;
+}
+
+.namecard-card.template-red .namecard-logo,
+.namecard-card.template-red .namecard-card-middle strong,
+.namecard-card.template-red .namecard-info-col span {
+    color: #b83a34 !important;
+}
+
+.namecard-card.template-red .namecard-person,
+.namecard-card.template-red .namecard-card-middle p,
+.namecard-card.template-red .namecard-info-col strong {
+    color: #3f4651 !important;
+}
+
+.namecard-card.template-red .namecard-divider {
+    height: 1px !important;
+    background: rgba(184, 58, 52, 0.35) !important;
+}
+
+.namecard-card.template-red .namecard-person::before {
+    background: rgba(184, 58, 52, 0.28) !important;
+}
+
+/* 시안 2: 네이비 바탕만 유지 */
+.namecard-card.template-blue {
+    background: #18233f !important;
+    color: #ffffff !important;
+}
+
+.namecard-card.template-blue .namecard-logo,
+.namecard-card.template-blue .namecard-card-middle strong,
+.namecard-card.template-blue .namecard-info-col span {
+    color: #ffffff !important;
+}
+
+.namecard-card.template-blue .namecard-person,
+.namecard-card.template-blue .namecard-card-middle p,
+.namecard-card.template-blue .namecard-info-col strong {
+    color: rgba(255, 255, 255, 0.78) !important;
+}
+
+.namecard-card.template-blue .namecard-divider {
+    height: 1px !important;
+    background: rgba(255, 255, 255, 0.34) !important;
+}
+
+.namecard-card.template-blue .namecard-person::before {
+    background: rgba(255, 255, 255, 0.34) !important;
+}
+
+/* 전체 텍스트 밑줄 제거 */
+.namecard-person span,
+.namecard-person strong,
+.namecard-card-middle strong,
+.namecard-card-middle p,
+.namecard-info-col span,
+.namecard-info-col strong {
+    text-decoration: none !important;
+    border-bottom: 0 !important;
+}
+
+/* 현장명 / 회사명만 밑줄 */
+.namecard-logo {
+    display: inline-block !important;
+    width: fit-content !important;
+    padding-bottom: 5px !important;
+    border-bottom: 2px solid currentColor !important;
+    text-decoration: none !important;
+}
+
+/* 이메일만 밑줄 */
+.namecard-info-col--wide strong {
+    display: inline-block !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    padding-bottom: 2px !important;
+    border-bottom: 1px solid currentColor !important;
+    text-decoration: none !important;
+}
+
+/* 하단부만 배경 효과 */
+.namecard-caption--apartment {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.97) 0%, rgba(238, 246, 255, 0.96) 62%, rgba(229, 239, 252, 0.95) 100%) !important;
+    border: 1px solid rgba(63, 115, 216, 0.14) !important;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* 하단부 왼쪽 은은한 포인트 */
+.namecard-caption--apartment::before {
+    content: "" !important;
+    position: absolute !important;
+    left: -42px !important;
+    top: -46px !important;
+    width: 140px !important;
+    height: 140px !important;
+    border-radius: 999px !important;
+    background: radial-gradient(circle, rgba(63, 115, 216, 0.14) 0%, rgba(63, 115, 216, 0.06) 42%, transparent 72%) !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+
+/* 하단부 오른쪽 부동산/건물 패턴 */
+.namecard-caption--apartment::after {
+    content: "" !important;
+    position: absolute !important;
+    right: 13px !important;
+    bottom: 11px !important;
+    width: 92px !important;
+    height: 62px !important;
+    border-radius: 14px 14px 5px 5px !important;
+    background:
+        linear-gradient(90deg, rgba(63, 115, 216, 0.15) 1px, transparent 1px),
+        linear-gradient(rgba(63, 115, 216, 0.15) 1px, transparent 1px) !important;
+    background-size: 13px 13px !important;
+    opacity: 0.72 !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+
+/* 하단부 텍스트는 위로 */
+.namecard-caption--apartment p,
+.namecard-caption--apartment .namecard-tag-list {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.namecard-caption--apartment p:first-child {
+    color: #18202b !important;
+    font-weight: 600 !important;
+}
+
+.namecard-caption--apartment p+p {
+    color: #647083 !important;
+    font-weight: 400 !important;
+}
+
+.namecard-caption--apartment .namecard-tag-list span {
+    background: rgba(63, 115, 216, 0.10) !important;
+    border-color: rgba(63, 115, 216, 0.15) !important;
+    color: #3f73d8 !important;
+    font-weight: 500 !important;
+}
+
+/* 하단부 배경: 바둑판 제거 + 심플 건물 라인 일러스트 */
+.namecard-caption--apartment {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 252, 255, 0.98) 100%) !important;
+    border: 1px solid rgba(63, 115, 216, 0.10) !important;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* 은은한 배경 포인트 */
+.namecard-caption--apartment::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background:
+        radial-gradient(circle at 18% 14%, rgba(63, 115, 216, 0.08) 0%, transparent 24%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(63, 115, 216, 0.025) 100%) !important;
+    z-index: -2 !important;
+    pointer-events: none !important;
+}
+
+/* 우하단 부동산/건물 라인 일러스트 */
+.namecard-caption--apartment::after {
+    content: "" !important;
+    position: absolute !important;
+    right: 14px !important;
+    bottom: 12px !important;
+    width: 132px !important;
+    height: 56px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 70'%3E%3Cg fill='none' stroke='%23bfd0ef' stroke-width='2' opacity='.95'%3E%3Cpath d='M6 62.5H174'/%3E%3Crect x='96' y='26' width='18' height='36' rx='2'/%3E%3Cpath d='M99 34.5H111M99 42.5H111M99 50.5H111'/%3E%3Crect x='118' y='14' width='26' height='48' rx='2'/%3E%3Cpath d='M122 24.5H140M122 32.5H140M122 40.5H140M122 48.5H140'/%3E%3Crect x='148' y='30' width='16' height='32' rx='2'/%3E%3Cpath d='M151 38.5H161M151 46.5H161M151 54.5H161'/%3E%3C/g%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    background-position: right bottom !important;
+    opacity: 0.56 !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+
+/* =========================================================
+   NAMECARD MOBILE HARD FIX
+   - 모바일에서 입력/미리보기 1열 강제
+   - 카드 찌그러짐 방지
+========================================================= */
+
+@media (max-width: 768px) {
+    .namecard-tool {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+
+    .namecard-tool-grid,
+    .namecard-tool-grid--compact {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .namecard-form-area,
+    .namecard-preview-area {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    /* 모바일에서는 입력폼 먼저, 미리보기 나중 */
+    .namecard-form-area {
+        order: 1 !important;
+    }
+
+    .namecard-preview-area {
+        order: 2 !important;
+    }
+
+    .namecard-form-block--single {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 16px !important;
+        border-radius: 22px !important;
+    }
+
+    .namecard-form-title-row {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+        align-items: stretch !important;
+    }
+
+    .namecard-template-mini {
+        width: 100% !important;
+    }
+
+    .namecard-field-grid,
+    .namecard-field-grid--2,
+    .namecard-field-grid--3 {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+    }
+
+    .namecard-field input,
+    .namecard-field select {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 46px !important;
+        font-size: 14px !important;
+    }
+
+    .namecard-preview-top {
+        margin-top: 4px !important;
+    }
+
+    .namecard-preview-scene,
+    .namecard-preview-scene--compact {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: auto !important;
+        padding: 20px 12px 18px !important;
+        border-radius: 24px !important;
+        gap: 14px !important;
+        overflow: hidden !important;
+    }
+
+    .namecard-card {
+        width: 100% !important;
+        max-width: 360px !important;
+        min-width: 0 !important;
+        margin: 0 auto !important;
+    }
+
+    .namecard-caption,
+    .namecard-caption--apartment {
+        width: 100% !important;
+        max-width: 360px !important;
+        min-width: 0 !important;
+        margin: 0 auto !important;
+    }
+
+    .namecard-actions {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* =========================================================
+   NAMECARD MOBILE ORDER + COMPACT INPUT FIX
+   - 모바일에서 미리보기 먼저
+   - 짧은 입력칸은 2열 유지
+========================================================= */
+
+@media (max-width: 768px) {
+
+    /* 모바일 순서: 미리보기 먼저, 입력은 아래 */
+    .namecard-preview-area {
+        order: 1 !important;
+    }
+
+    .namecard-form-area {
+        order: 2 !important;
+    }
+
+    .namecard-tool-grid,
+    .namecard-tool-grid--compact {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+
+    /* 미리보기 상단 여백 압축 */
+    .namecard-preview-top {
+        margin-top: 0 !important;
+    }
+
+    .namecard-preview-top h4 {
+        font-size: 18px !important;
+        font-weight: 650 !important;
+    }
+
+    .namecard-preview-scene,
+    .namecard-preview-scene--compact {
+        min-height: auto !important;
+        padding: 18px 10px 16px !important;
+        border-radius: 24px !important;
+        gap: 12px !important;
+    }
+
+    /* 모바일 카드 크기 안정화 */
+    .namecard-card {
+        width: 100% !important;
+        max-width: 340px !important;
+        margin: 0 auto !important;
+        border-radius: 16px !important;
+    }
+
+    .namecard-card-inner {
+        padding: 18px 16px 15px !important;
+    }
+
+    .namecard-logo {
+        max-width: 60% !important;
+        font-size: 22px !important;
+    }
+
+    .namecard-logo.is-long {
+        font-size: 19px !important;
+    }
+
+    .namecard-logo.is-very-long {
+        font-size: 16px !important;
+    }
+
+    .namecard-person {
+        min-width: 76px !important;
+        gap: 7px !important;
+        padding-left: 11px !important;
+    }
+
+    .namecard-person span {
+        font-size: 11px !important;
+    }
+
+    .namecard-person strong {
+        font-size: 13px !important;
+        letter-spacing: 0.12em !important;
+    }
+
+    .namecard-divider {
+        margin: 16px 0 13px !important;
+    }
+
+    .namecard-card-middle {
+        min-height: 36px !important;
+    }
+
+    .namecard-card-middle strong {
+        font-size: 12px !important;
+    }
+
+    .namecard-card-middle p {
+        font-size: 11px !important;
+    }
+
+    .namecard-card-bottom {
+        row-gap: 4px !important;
+        column-gap: 10px !important;
+    }
+
+    .namecard-info-col {
+        font-size: 11px !important;
+        gap: 5px !important;
+    }
+
+    .namecard-caption,
+    .namecard-caption--apartment {
+        width: 100% !important;
+        max-width: 340px !important;
+        margin: 0 auto !important;
+        padding: 14px 14px 15px !important;
+        border-radius: 17px !important;
+    }
+
+    .namecard-caption--apartment p:first-child {
+        font-size: 13px !important;
+    }
+
+    .namecard-caption--apartment p+p {
+        font-size: 12px !important;
+    }
+
+    .namecard-tag-list {
+        margin-top: 9px !important;
+        gap: 5px !important;
+    }
+
+    .namecard-tag-list span {
+        min-height: 24px !important;
+        padding: 0 8px !important;
+        font-size: 10.5px !important;
+    }
+
+    /* 입력폼 압축 */
+    .namecard-form-block--single {
+        padding: 16px !important;
+        border-radius: 22px !important;
+    }
+
+    .namecard-form-title-row {
+        display: grid !important;
+        grid-template-columns: 1fr 120px !important;
+        align-items: end !important;
+        gap: 10px !important;
+    }
+
+    .namecard-form-title-row h4 {
+        font-size: 17px !important;
+    }
+
+    .namecard-template-mini {
+        width: 100% !important;
+    }
+
+    .namecard-template-mini select {
+        height: 42px !important;
+    }
+
+    /* 이름/직함은 2열, 휴대폰은 한 줄 전체 */
+    .namecard-field-grid--3 {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+    }
+
+    .namecard-field-grid--3 .namecard-field:nth-child(3) {
+        grid-column: 1 / -1 !important;
+    }
+
+    /* 현장명/대표번호, 이메일/연결주소는 2열 유지 */
+    .namecard-field-grid--2 {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+    }
+
+    .namecard-field input,
+    .namecard-field select {
+        height: 44px !important;
+        padding: 0 12px !important;
+        font-size: 14px !important;
+        border-radius: 14px !important;
+    }
+
+    .namecard-field span {
+        font-size: 12px !important;
+    }
+
+    .namecard-caption-inputs {
+        margin-top: 14px !important;
+        padding-top: 14px !important;
+    }
+
+    .namecard-caption-inputs h4 {
+        font-size: 16px !important;
+    }
+
+    .namecard-actions {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+
+    .namecard-action-btn {
+        min-height: 46px !important;
+    }
+}
+
+/* 아주 좁은 모바일에서는 2열도 무리라 일부만 1열 */
+@media (max-width: 390px) {
+
+    .namecard-form-title-row,
+    .namecard-field-grid--2,
+    .namecard-field-grid--3 {
+        grid-template-columns: 1fr !important;
+    }
+
+    .namecard-field-grid--3 .namecard-field:nth-child(3) {
+        grid-column: auto !important;
+    }
+
+    .namecard-card,
+    .namecard-caption,
+    .namecard-caption--apartment {
+        max-width: 320px !important;
+    }
+}
+
+/* =========================================================
+   NAMECARD MOBILE INPUT 2-COLUMN FINAL OVERRIDE
+   - 모바일 미리보기 먼저 유지
+   - 짧은 입력칸 2열 적용
+========================================================= */
+
+@media (max-width: 768px) {
+
+    /* 미리보기 먼저 */
+    .namecard-preview-area {
+        order: 1 !important;
+    }
+
+    .namecard-form-area {
+        order: 2 !important;
+    }
+
+    /* 시안 선택은 타이틀 옆에 유지 */
+    .namecard-form-title-row {
+        display: grid !important;
+        grid-template-columns: 1fr 118px !important;
+        gap: 10px !important;
+        align-items: end !important;
+    }
+
+    /* 이름 / 직함은 2열 */
+    .namecard-field-grid--3 {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+    }
+
+    /* 휴대폰은 가독성 때문에 한 줄 전체 */
+    .namecard-field-grid--3 .namecard-field:nth-child(3) {
+        grid-column: 1 / -1 !important;
+    }
+
+    /* 현장명/대표번호, 이메일/연결주소는 2열 */
+    .namecard-field-grid--2 {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+    }
+
+    .namecard-field-grid .namecard-field {
+        margin-top: 0 !important;
+    }
+
+    .namecard-field input,
+    .namecard-field select {
+        height: 43px !important;
+        padding: 0 11px !important;
+        font-size: 13.5px !important;
+    }
+
+    .namecard-field span {
+        font-size: 11.5px !important;
+    }
+
+    .namecard-field+.namecard-field {
+        margin-top: 9px !important;
+    }
+
+    .namecard-caption-inputs {
+        margin-top: 13px !important;
+        padding-top: 13px !important;
+    }
+}
+
+/* 아주 좁은 폰에서도 2열 유지하되 더 압축 */
+@media (max-width: 390px) {
+    .namecard-form-title-row {
+        grid-template-columns: 1fr 104px !important;
+    }
+
+    .namecard-field-grid--2,
+    .namecard-field-grid--3 {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+    }
+
+    .namecard-field-grid--3 .namecard-field:nth-child(3) {
+        grid-column: 1 / -1 !important;
+    }
+
+    .namecard-field input,
+    .namecard-field select {
+        height: 42px !important;
+        padding: 0 10px !important;
+        font-size: 13px !important;
+    }
+}
+
+/* =========================================================
+   NAMECARD MOBILE ALIGNMENT FINAL FIX
+   - 모바일 2열 입력칸 라벨/박스 높이 정렬
+   - 모바일 명함 카드 내부 텍스트 밀림 수정
+========================================================= */
+
+@media (max-width: 768px) {
+
+    /* 2열 입력칸 정렬 안정화 */
+    .namecard-field-grid--2,
+    .namecard-field-grid--3 {
+        align-items: start !important;
+    }
+
+    .namecard-field-grid--2 .namecard-field,
+    .namecard-field-grid--3 .namecard-field {
+        min-width: 0 !important;
+        display: grid !important;
+        grid-template-rows: 18px 42px !important;
+        gap: 5px !important;
+        margin-top: 0 !important;
+    }
+
+    .namecard-field-grid--2 .namecard-field span,
+    .namecard-field-grid--3 .namecard-field span {
+        height: 18px !important;
+        line-height: 18px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .namecard-field-grid--2 .namecard-field input,
+    .namecard-field-grid--3 .namecard-field input,
+    .namecard-field-grid--2 .namecard-field select,
+    .namecard-field-grid--3 .namecard-field select {
+        height: 42px !important;
+    }
+
+    /* 단독 입력칸은 기존처럼 자연스럽게 */
+    .namecard-form-block--single>.namecard-field {
+        display: grid !important;
+        grid-template-rows: auto 44px !important;
+        gap: 6px !important;
+    }
+
+    /* 휴대폰은 한 줄 전체라 라벨/입력 자연스럽게 */
+    .namecard-field-grid--3 .namecard-field:nth-child(3) {
+        grid-column: 1 / -1 !important;
+        grid-template-rows: 18px 42px !important;
+    }
+
+    /* 모바일 명함 카드 세로 공간 확보 */
+    .namecard-card {
+        aspect-ratio: auto !important;
+        min-height: 196px !important;
+        max-width: 340px !important;
+    }
+
+    .namecard-card-inner {
+        height: auto !important;
+        min-height: 196px !important;
+        padding: 17px 16px 14px !important;
+    }
+
+    .namecard-card-top {
+        gap: 10px !important;
+    }
+
+    .namecard-logo {
+        font-size: 21px !important;
+        line-height: 1 !important;
+        padding-bottom: 4px !important;
+    }
+
+    .namecard-person {
+        min-width: 70px !important;
+        gap: 6px !important;
+    }
+
+    .namecard-person span {
+        font-size: 10.5px !important;
+    }
+
+    .namecard-person strong {
+        font-size: 12.5px !important;
+    }
+
+    .namecard-divider {
+        margin: 13px 0 11px !important;
+    }
+
+    .namecard-card-middle {
+        min-height: 34px !important;
+        gap: 3px !important;
+    }
+
+    .namecard-card-middle strong {
+        font-size: 11.5px !important;
+        line-height: 1.28 !important;
+    }
+
+    .namecard-card-middle p {
+        font-size: 10.5px !important;
+        line-height: 1.28 !important;
+    }
+
+    .namecard-card-bottom {
+        margin-top: 10px !important;
+        row-gap: 3px !important;
+        column-gap: 8px !important;
+    }
+
+    .namecard-info-col {
+        font-size: 10.5px !important;
+        line-height: 1.2 !important;
+        gap: 5px !important;
+    }
+
+    .namecard-info-col span {
+        font-weight: 650 !important;
+    }
+
+    .namecard-info-col strong {
+        font-size: 10.5px !important;
+        line-height: 1.2 !important;
+    }
+
+    .namecard-info-col--wide {
+        grid-column: 1 / -1 !important;
+    }
+}
+
+/* 아주 좁은 폰에서 카드 더 압축 */
+@media (max-width: 390px) {
+    .namecard-card {
+        max-width: 320px !important;
+        min-height: 188px !important;
+    }
+
+    .namecard-card-inner {
+        min-height: 188px !important;
+        padding: 16px 15px 13px !important;
+    }
+
+    .namecard-logo {
+        font-size: 20px !important;
+    }
+
+    .namecard-card-bottom {
+        margin-top: 8px !important;
+    }
+}
+
+/* =========================================================
+   NAMECARD MOBILE FINAL FIX
+   - 모바일 카드 내부 배치를 PC처럼
+   - 이메일 / 연결주소는 모바일에서 1열
+========================================================= */
+
+@media (max-width: 768px) {
+
+    /* ---------------------------------
+       모바일 명함 카드: PC 느낌 유지
+    --------------------------------- */
+    .namecard-card {
+        max-width: 360px !important;
+        min-height: 220px !important;
+        aspect-ratio: auto !important;
+    }
+
+    .namecard-card-inner {
+        min-height: 220px !important;
+        padding: 18px 18px 16px !important;
+        display: grid !important;
+        grid-template-rows: auto auto auto 1fr !important;
+    }
+
+    .namecard-card-top {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+    }
+
+    .namecard-logo {
+        font-size: 21px !important;
+        line-height: 1.05 !important;
+        max-width: 62% !important;
+    }
+
+    .namecard-person {
+        min-width: 72px !important;
+        gap: 6px !important;
+        padding-left: 12px !important;
+    }
+
+    .namecard-person span {
+        font-size: 11px !important;
+        line-height: 1.1 !important;
+    }
+
+    .namecard-person strong {
+        font-size: 13px !important;
+        line-height: 1.15 !important;
+        letter-spacing: 0.06em !important;
+    }
+
+    .namecard-divider {
+        margin: 14px 0 12px !important;
+    }
+
+    .namecard-card-middle {
+        min-height: 38px !important;
+        gap: 3px !important;
+    }
+
+    .namecard-card-middle strong {
+        font-size: 11.5px !important;
+        line-height: 1.3 !important;
+    }
+
+    .namecard-card-middle p {
+        font-size: 10.8px !important;
+        line-height: 1.3 !important;
+    }
+
+    /* 연락처 영역을 PC처럼 2열 느낌으로 */
+    .namecard-card-bottom {
+        margin-top: 12px !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        column-gap: 14px !important;
+        row-gap: 5px !important;
+        align-items: start !important;
+    }
+
+    .namecard-info-col {
+        min-width: 0 !important;
+        display: flex !important;
+        align-items: baseline !important;
+        gap: 6px !important;
+        font-size: 10.8px !important;
+        line-height: 1.2 !important;
+    }
+
+    .namecard-info-col span,
+    .namecard-info-col strong {
+        white-space: nowrap !important;
+    }
+
+    .namecard-info-col span {
+        font-size: 10.8px !important;
+    }
+
+    .namecard-info-col strong {
+        font-size: 10.8px !important;
+    }
+
+    /* 이메일은 아래 줄 왼쪽만 차지 */
+    .namecard-info-col--wide {
+        grid-column: 1 / 2 !important;
+    }
+
+    /* ---------------------------------
+       모바일 입력폼: 이메일/연결주소 1열
+    --------------------------------- */
+    .namecard-field-grid--contact-long {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+
+    .namecard-field-grid--contact-long .namecard-field {
+        grid-template-rows: 18px 42px !important;
+        margin-top: 0 !important;
+    }
+
+    .namecard-field-grid--contact-long input {
+        width: 100% !important;
+    }
+}
+
+/* 아주 좁은 모바일 추가 보정 */
+@media (max-width: 390px) {
+    .namecard-card {
+        max-width: 330px !important;
+        min-height: 212px !important;
+    }
+
+    .namecard-card-inner {
+        min-height: 212px !important;
+        padding: 17px 16px 15px !important;
+    }
+
+    .namecard-logo {
+        font-size: 19px !important;
+    }
+
+    .namecard-card-bottom {
+        column-gap: 10px !important;
+    }
+
+    .namecard-info-col {
+        gap: 5px !important;
+        font-size: 10.3px !important;
+    }
+
+    .namecard-info-col span,
+    .namecard-info-col strong {
+        font-size: 10.3px !important;
+    }
+}
+
+/* =========================================================
+   NAMECARD MOBILE CARD HEIGHT TIGHTEN
+   - 모바일 명함 카드 하단 여백 축소
+========================================================= */
+
+@media (max-width: 768px) {
+    .namecard-card {
+        min-height: 190px !important;
+        max-width: 360px !important;
+    }
+
+    .namecard-card-inner {
+        min-height: 190px !important;
+        padding: 17px 18px 14px !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .namecard-divider {
+        margin: 12px 0 10px !important;
+    }
+
+    .namecard-card-middle {
+        min-height: auto !important;
+        gap: 3px !important;
+    }
+
+    .namecard-card-bottom {
+        margin-top: 10px !important;
+        row-gap: 4px !important;
+        column-gap: 14px !important;
+    }
+
+    .namecard-info-col--wide {
+        margin-top: 0 !important;
+    }
+}
+
+@media (max-width: 390px) {
+    .namecard-card {
+        min-height: 184px !important;
+    }
+
+    .namecard-card-inner {
+        min-height: 184px !important;
+        padding: 16px 16px 13px !important;
+    }
+
+    .namecard-divider {
+        margin: 11px 0 9px !important;
+    }
+
+    .namecard-card-bottom {
+        margin-top: 8px !important;
+    }
+}
+
+/* =========================================================
+   NAMECARD MOBILE EMAIL BOTTOM SPACE ONLY
+   - 메일 위쪽 배치는 유지
+   - E-mail 아래 카드 하단 여백만 축소
+========================================================= */
+
+@media (max-width: 768px) {
+    .namecard-card {
+        min-height: 0 !important;
+        height: auto !important;
+        aspect-ratio: auto !important;
+    }
+
+    .namecard-card-inner {
+        min-height: 0 !important;
+        height: auto !important;
+        padding-bottom: 7px !important;
+    }
+}
+
+@media (max-width: 390px) {
+    .namecard-card-inner {
+        padding-bottom: 6px !important;
+    }
+}
