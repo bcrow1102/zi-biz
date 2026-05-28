@@ -31,7 +31,7 @@
             managerInput: document.getElementById('flyerManagerInput'),
             phoneInput: document.getElementById('flyerPhoneInput'),
 
-            imageInput: document.getElementById('flyerImageInput'),
+
 
             preview: document.getElementById('flyerPreview'),
             previewHero: document.getElementById('flyerPreviewHero'),
@@ -84,9 +84,9 @@
             manager: els.managerInput ? els.managerInput.value : '',
             phone: els.phoneInput ? els.phoneInput.value : '',
 
+            background: getActiveValue('data-flyer-bg', 'apartment'),
             theme: getActiveValue('data-flyer-theme', 'simple'),
-            overlay: getActiveValue('data-flyer-overlay', 'soft'),
-            image: els.previewHero ? els.previewHero.getAttribute('data-flyer-image') || '' : ''
+            overlay: getActiveValue('data-flyer-overlay', 'soft')
         };
     }
 
@@ -125,6 +125,21 @@
             els.previewPhone.href = 'tel:' + onlyPhone(phoneText);
         }
     }
+    function setBackground(background) {
+        var els = getEls();
+
+        if (!els.preview) return;
+
+        ['apartment', 'office'].forEach(function (name) {
+            els.preview.classList.remove('flyer-bg-' + name);
+        });
+
+        els.preview.classList.add('flyer-bg-' + background);
+
+        document.querySelectorAll('[data-flyer-bg]').forEach(function (button) {
+            button.classList.toggle('is-active', button.getAttribute('data-flyer-bg') === background);
+        });
+    }
 
     function setTheme(theme) {
         var els = getEls();
@@ -158,41 +173,7 @@
         });
     }
 
-    function setHeroImage(imageData) {
-        var els = getEls();
 
-        if (!els.previewHero || !els.preview) return;
-
-        if (imageData) {
-            els.previewHero.style.backgroundImage = 'url("' + imageData + '")';
-            els.previewHero.setAttribute('data-flyer-image', imageData);
-            els.preview.classList.add('has-uploaded-image');
-        } else {
-            els.previewHero.style.backgroundImage = '';
-            els.previewHero.removeAttribute('data-flyer-image');
-            els.preview.classList.remove('has-uploaded-image');
-        }
-    }
-
-    function handleImageUpload(file) {
-        if (!file || !file.type || file.type.indexOf('image/') !== 0) {
-            showFlyerToast('이미지 파일만 업로드할 수 있어.');
-            return;
-        }
-
-        var reader = new FileReader();
-
-        reader.onload = function (event) {
-            setHeroImage(event.target.result || '');
-            saveDraft(false);
-        };
-
-        reader.onerror = function () {
-            showFlyerToast('이미지를 불러오지 못했어.');
-        };
-
-        reader.readAsDataURL(file);
-    }
 
     function saveDraft(showMessage) {
         var els = getEls();
@@ -249,9 +230,9 @@
         if (els.managerInput) els.managerInput.value = data.manager || '';
         if (els.phoneInput) els.phoneInput.value = data.phone || '';
 
+        setBackground(data.background || 'apartment');
         setTheme(data.theme || 'simple');
         setOverlay(data.overlay || 'soft');
-        setHeroImage(data.image || '');
 
         updatePreview();
     }
@@ -269,9 +250,9 @@
             // 삭제 실패 시에도 화면은 초기화한다.
         }
 
+        setBackground('apartment');
         setTheme('simple');
         setOverlay('soft');
-        setHeroImage('');
         closeDownloadPopover();
         updatePreview();
 
@@ -430,13 +411,18 @@
             });
         });
 
-        if (els.imageInput) {
-            els.imageInput.addEventListener('change', function () {
-                var file = els.imageInput.files && els.imageInput.files[0];
+        document.querySelectorAll('[data-flyer-bg]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                setBackground(button.getAttribute('data-flyer-bg') || 'apartment');
+                saveDraft(false);
 
-                handleImageUpload(file);
+                var bgMenu = button.closest('.flyer-bg-menu');
+
+                if (bgMenu) {
+                    bgMenu.removeAttribute('open');
+                }
             });
-        }
+        });
 
         document.querySelectorAll('[data-flyer-theme]').forEach(function (button) {
             button.addEventListener('click', function () {
@@ -490,11 +476,14 @@
         }
         document.addEventListener('click', function (event) {
             var themeMenu = document.querySelector('.flyer-theme-menu');
+            var bgMenu = document.querySelector('.flyer-bg-menu');
 
-            if (!themeMenu) return;
-
-            if (!themeMenu.contains(event.target)) {
+            if (themeMenu && !themeMenu.contains(event.target)) {
                 themeMenu.removeAttribute('open');
+            }
+
+            if (bgMenu && !bgMenu.contains(event.target)) {
+                bgMenu.removeAttribute('open');
             }
         });
 

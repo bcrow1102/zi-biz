@@ -107,10 +107,14 @@
                 <strong>미리보기</strong>
 
                 <div class="flyer-top-actions">
-                    <label class="flyer-text-action flyer-upload-text">
-                        <input type="file" id="flyerImageInput" accept="image/*" />
-                        이미지 업로드
-                    </label>
+                    <details class="flyer-bg-menu">
+                        <summary class="flyer-text-action">배경 선택</summary>
+
+                        <div class="flyer-bg-menu-list">
+                            <button type="button" class="flyer-bg-btn is-active" data-flyer-bg="apartment">아파트</button>
+                            <button type="button" class="flyer-bg-btn" data-flyer-bg="office">오피스텔</button>
+                        </div>
+                    </details>
 
                     <details class="flyer-theme-menu">
                         <summary class="flyer-text-action">시안 선택</summary>
@@ -144,7 +148,8 @@
             </div>
 
             <div class="flyer-preview-wrap">
-                <article class="flyer-preview flyer-theme-simple flyer-overlay-soft" id="flyerPreview">
+                <article class="flyer-preview flyer-bg-apartment flyer-theme-simple flyer-overlay-soft"
+                    id="flyerPreview">
                     <div class="flyer-preview-hero" id="flyerPreviewHero">
                         <div class="flyer-preview-overlay"></div>
 

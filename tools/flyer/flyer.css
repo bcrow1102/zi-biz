@@ -447,7 +447,7 @@
 
 /* 배경 이미지 */
 .flyer-theme-simple {
-    background-image: url("./images/flyer-simple-bg.jpg");
+
     --flyer-main: #082f63;
     --flyer-sub: #24364d;
     --flyer-accent: #2467c9;
@@ -457,7 +457,7 @@
 }
 
 .flyer-theme-standard {
-    background-image: url("./images/flyer-standard-bg.jpg");
+
     --flyer-main: #c8005d;
     --flyer-sub: #222836;
     --flyer-accent: #e6006d;
@@ -467,7 +467,6 @@
 }
 
 .flyer-theme-premium {
-    background-image: url("./images/flyer-premium-bg.jpg");
     --flyer-main: #182033;
     --flyer-sub: #354052;
     --flyer-accent: #b88a3b;
@@ -1985,4 +1984,96 @@ body.is-flyer-pdf-capturing #flyerPreview * {
     box-shadow: none !important;
     filter: none !important;
     backdrop-filter: none !important;
+}
+
+/* =========================================================
+   FLYER BACKGROUND SELECT
+   - 이미지 업로드 제거 후 배경 선택으로 전환
+========================================================= */
+
+.flyer-bg-menu {
+    position: relative !important;
+}
+
+.flyer-bg-menu summary {
+    list-style: none !important;
+}
+
+.flyer-bg-menu summary::-webkit-details-marker {
+    display: none !important;
+}
+
+.flyer-bg-menu-list {
+    position: absolute !important;
+    top: 24px !important;
+    right: 0 !important;
+    z-index: 20 !important;
+    display: none !important;
+    min-width: 120px !important;
+    padding: 8px !important;
+    border-radius: 16px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(18, 24, 38, 0.08) !important;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12) !important;
+}
+
+.flyer-bg-menu[open] .flyer-bg-menu-list {
+    display: grid !important;
+    gap: 4px !important;
+}
+
+.flyer-bg-btn {
+    display: block !important;
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 8px 10px !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: transparent !important;
+    color: #6d7582 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-align: left !important;
+    cursor: pointer !important;
+}
+
+.flyer-bg-btn:hover,
+.flyer-bg-btn.is-active {
+    background: #f3f7ff !important;
+    color: #3182f6 !important;
+}
+
+/* 기존 이미지 업로드가 남아있어도 숨김 */
+.flyer-upload-text {
+    display: none !important;
+}
+
+/* =========================================================
+   FLYER BACKGROUND IMAGE COMBINATION
+   - 배경 선택: 아파트 / 오피스텔
+   - 시안 선택: 심플 / 스탠다드 / 프리미엄
+========================================================= */
+
+.flyer-bg-apartment.flyer-theme-simple {
+    background-image: url("./images/flyer-apartment-simple-bg.jpg") !important;
+}
+
+.flyer-bg-apartment.flyer-theme-standard {
+    background-image: url("./images/flyer-apartment-standard-bg.jpg") !important;
+}
+
+.flyer-bg-apartment.flyer-theme-premium {
+    background-image: url("./images/flyer-apartment-premium-bg.jpg") !important;
+}
+
+.flyer-bg-office.flyer-theme-simple {
+    background-image: url("./images/flyer-office-simple-bg.jpg") !important;
+}
+
+.flyer-bg-office.flyer-theme-standard {
+    background-image: url("./images/flyer-office-standard-bg.jpg") !important;
+}
+
+.flyer-bg-office.flyer-theme-premium {
+    background-image: url("./images/flyer-office-premium-bg.jpg") !important;
 }
