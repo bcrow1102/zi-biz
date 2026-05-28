@@ -2420,3 +2420,29 @@
         padding-bottom: 18px !important;
     }
 }
+
+/* =========================================================
+   NAMECARD PLACEHOLDER FINAL
+   - 웹전단 예시 문구 톤과 맞춤
+========================================================= */
+
+.namecard-field input::placeholder,
+.namecard-field textarea::placeholder {
+    color: #a8b0bb !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+}
+
+.namecard-field input::-webkit-input-placeholder,
+.namecard-field textarea::-webkit-input-placeholder {
+    color: #a8b0bb !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+}
+
+.namecard-field input::-moz-placeholder,
+.namecard-field textarea::-moz-placeholder {
+    color: #a8b0bb !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+}

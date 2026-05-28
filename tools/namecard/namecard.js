@@ -454,3 +454,122 @@
         bootNamecardTool();
     }
 })();
+/* =========================================================
+   NAMECARD EMPTY INPUT PREVIEW FALLBACK
+   - input value가 비어 있어도 placeholder 예시값으로 미리보기 유지
+   - 예시 문구는 입력칸에만 흐리게 보이고, 명함은 깨지지 않게 함
+========================================================= */
+
+(function () {
+    function cleanExampleText(value, fallback) {
+        var text = String(value || '').trim();
+
+        if (!text) return fallback || '';
+
+        return text.replace(/^예시\)\s*/g, '').trim() || fallback || '';
+    }
+
+    function getInputPreviewValue(inputId, fallback) {
+        var input = document.getElementById(inputId);
+
+        if (!input) return fallback || '';
+
+        var value = String(input.value || '').trim();
+
+        if (value) return value;
+
+        return cleanExampleText(input.getAttribute('placeholder'), fallback);
+    }
+
+    function setPreviewText(previewId, text) {
+        var el = document.getElementById(previewId);
+
+        if (!el) return;
+
+        el.textContent = text || '';
+    }
+
+    function syncNamecardPreviewFallback() {
+        var tool = document.getElementById('namecardTool');
+
+        if (!tool) return;
+
+        var company = getInputPreviewValue('ncCompany', 'zimo biz');
+        var role = getInputPreviewValue('ncRole', '팀장');
+        var name = getInputPreviewValue('ncName', '김지모');
+        var summary = getInputPreviewValue('ncSummary', '울산 신규 아파트 상담 안내');
+        var address = getInputPreviewValue('ncAddress', '울산 남구 삼산로 00');
+        var phone = getInputPreviewValue('ncPhone', '010-0000-0000');
+        var landline = getInputPreviewValue('ncLandline', '052-000-0000');
+        var email = getInputPreviewValue('ncEmail', 'hello@zimo.kr');
+        var website = getInputPreviewValue('ncWebsite', 'https://www.zimo.kr');
+
+        var desc1 = getInputPreviewValue('ncDesc1', '울산 신규 아파트 상담 안내');
+        var desc2 = getInputPreviewValue('ncDesc2', '분양 조건, 혜택, 방문 예약을 빠르게 안내드립니다.');
+        var tags = getInputPreviewValue('ncTags', '현장상담, 조건안내, 방문예약');
+
+        setPreviewText('ncPreviewCompany', company);
+        setPreviewText('ncPreviewRole', role);
+        setPreviewText('ncPreviewName', name);
+        setPreviewText('ncPreviewSummary', summary);
+        setPreviewText('ncPreviewAddress', address);
+        setPreviewText('ncPreviewPhone', phone);
+        setPreviewText('ncPreviewLandline', landline);
+        setPreviewText('ncPreviewEmail', email);
+        setPreviewText('ncPreviewDesc1', desc1);
+        setPreviewText('ncPreviewDesc2', desc2);
+
+        var card = document.getElementById('ncCard');
+
+        if (card) {
+            card.href = website || 'https://www.zimo.kr';
+        }
+
+        var tagWrap = document.getElementById('ncPreviewTags');
+
+        if (tagWrap) {
+            tagWrap.innerHTML = '';
+
+            tags.split(',')
+                .map(function (tag) {
+                    return tag.trim();
+                })
+                .filter(Boolean)
+                .slice(0, 3)
+                .forEach(function (tag) {
+                    var span = document.createElement('span');
+                    span.textContent = tag;
+                    tagWrap.appendChild(span);
+                });
+        }
+
+        var companyEl = document.getElementById('ncPreviewCompany');
+
+        if (companyEl) {
+            companyEl.classList.toggle('is-long', company.length >= 8 && company.length < 12);
+            companyEl.classList.toggle('is-very-long', company.length >= 12);
+        }
+    }
+
+    document.addEventListener('input', function (event) {
+        if (!event.target.closest('#namecardTool')) return;
+
+        window.setTimeout(syncNamecardPreviewFallback, 0);
+    }, true);
+
+    document.addEventListener('change', function (event) {
+        if (!event.target.closest('#namecardTool')) return;
+
+        window.setTimeout(syncNamecardPreviewFallback, 0);
+    }, true);
+
+    var oldBootNamecardTool = window.bootNamecardTool;
+
+    window.bootNamecardTool = function () {
+        if (typeof oldBootNamecardTool === 'function') {
+            oldBootNamecardTool();
+        }
+
+        window.setTimeout(syncNamecardPreviewFallback, 0);
+    };
+})();
