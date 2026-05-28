@@ -1,0 +1,202 @@
+<section class="flyer-tool" id="flyerTool">
+    <div class="flyer-tool-head">
+        <div>
+            <p class="flyer-kicker">WEB FLYER MAKER</p>
+            <h3>웹전단 제작</h3>
+            <p>현장명, 조건, 혜택, 이미지를 넣으면 공유용 웹전단 미리보기가 만들어집니다.</p>
+        </div>
+
+
+    </div>
+
+    <div class="flyer-layout">
+        <form class="flyer-form" id="flyerForm">
+            <div class="flyer-section">
+                <div class="flyer-section-title">
+                    <strong>기본 정보</strong>
+                    <span>전단 상단에 표시됩니다</span>
+                </div>
+
+                <label class="flyer-field">
+                    <span>전단 라벨</span>
+                    <input type="text" id="flyerLabelInput" maxlength="16" placeholder="예: 프리미엄 오피스텔" />
+                    <em>최대 16자</em>
+                </label>
+
+                <label class="flyer-field">
+                    <span>현장명</span>
+                    <input type="text" id="flyerTitleInput" maxlength="18" placeholder="예: 휴먼블루드빌" />
+                    <em>최대 18자</em>
+                </label>
+
+                <label class="flyer-field">
+                    <span>한줄 카피</span>
+                    <input type="text" id="flyerCopyInput" maxlength="28" placeholder="예: 울산 시청 옆 수익형 오피스텔" />
+                    <em>최대 28자</em>
+                </label>
+
+                <label class="flyer-field">
+                    <span>위치</span>
+                    <input type="text" id="flyerLocationInput" maxlength="24" placeholder="예: 울산 시청 바로 옆" />
+                    <em>최대 24자</em>
+                </label>
+
+                <label class="flyer-field">
+                    <span>상담자</span>
+                    <input type="text" id="flyerManagerInput" maxlength="10" placeholder="예: 김지모 팀장" />
+                    <em>최대 10자</em>
+                </label>
+
+                <label class="flyer-field">
+                    <span>연락처</span>
+                    <input type="tel" id="flyerPhoneInput" maxlength="15" placeholder="예: 010-0000-0000" />
+                    <em>최대 15자</em>
+                </label>
+            </div>
+
+            <div class="flyer-section">
+                <div class="flyer-section-title">
+                    <strong>핵심 조건</strong>
+                    <span>3개까지만 노출해 화면이 깨지지 않게 합니다</span>
+                </div>
+
+                <label class="flyer-field">
+                    <span>조건 1</span>
+                    <input type="text" id="flyerPoint1Input" maxlength="18" placeholder="예: 회사보유분 특별분양" />
+                </label>
+
+                <label class="flyer-field">
+                    <span>조건 2</span>
+                    <input type="text" id="flyerPoint2Input" maxlength="18" placeholder="예: 30% 할인 조건" />
+                </label>
+
+                <label class="flyer-field">
+                    <span>조건 3</span>
+                    <input type="text" id="flyerPoint3Input" maxlength="18" placeholder="예: 4천 전후 실투자금" />
+                </label>
+            </div>
+
+            <div class="flyer-section">
+                <div class="flyer-section-title">
+                    <strong>혜택 / 안내문</strong>
+                    <span>짧게 넣을수록 전단이 안정적입니다</span>
+                </div>
+
+                <label class="flyer-field">
+                    <span>강조 문구</span>
+                    <input type="text" id="flyerBenefitInput" maxlength="24" placeholder="예: 잔여 호실 특별 조건 안내" />
+                    <em>최대 24자</em>
+                </label>
+
+                <label class="flyer-field flyer-field-wide">
+                    <span>상세 안내</span>
+                    <textarea id="flyerDescInput" maxlength="90" rows="4"
+                        placeholder="예: 회사보유분 특별 조건은 잔여 호실과 상담 시점에 따라 달라질 수 있습니다. 정확한 내용은 상담을 통해 안내드립니다."></textarea>
+                    <em>최대 90자</em>
+                </label>
+            </div>
+
+            <div class="flyer-actions">
+                <button type="button" class="flyer-save-btn" id="flyerSaveBtn">임시저장</button>
+                <button type="button" class="flyer-reset-btn" id="flyerResetBtn">초기화</button>
+            </div>
+        </form>
+
+        <aside class="flyer-preview-column">
+            <div class="flyer-preview-top">
+                <strong>미리보기</strong>
+
+                <div class="flyer-top-actions">
+                    <label class="flyer-text-action flyer-upload-text">
+                        <input type="file" id="flyerImageInput" accept="image/*" />
+                        이미지 업로드
+                    </label>
+
+                    <details class="flyer-theme-menu">
+                        <summary class="flyer-text-action">시안 선택</summary>
+
+                        <div class="flyer-theme-menu-list">
+                            <button type="button" class="flyer-color-btn is-active"
+                                data-flyer-theme="simple">심플</button>
+                            <button type="button" class="flyer-color-btn" data-flyer-theme="standard">스탠다드</button>
+                            <button type="button" class="flyer-color-btn" data-flyer-theme="premium">프리미엄</button>
+                        </div>
+                    </details>
+
+                    <div class="flyer-download-inline">
+                        <button type="button" class="flyer-text-action flyer-download-text" id="flyerDownloadBtn">
+                            다운로드 <span>1,000 G</span>
+                        </button>
+
+                        <div class="flyer-download-popover" id="flyerDownloadPopover" aria-hidden="true">
+                            <button type="button" data-download-type="pdf">
+                                <strong>PDF 다운로드</strong>
+                                <span>전단을 PDF 파일로 저장</span>
+                            </button>
+
+                            <button type="button" data-download-type="ppt">
+                                <strong>PPT 다운로드</strong>
+                                <span>편집 가능한 PPT는 다음 단계에서 연결</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flyer-preview-wrap">
+                <article class="flyer-preview flyer-theme-simple flyer-overlay-soft" id="flyerPreview">
+                    <div class="flyer-preview-hero" id="flyerPreviewHero">
+                        <div class="flyer-preview-overlay"></div>
+
+                        <div class="flyer-preview-hero-content">
+                            <span class="flyer-preview-label" id="flyerPreviewLabel">프리미엄 오피스텔</span>
+                            <h4 id="flyerPreviewTitle">휴먼블루드빌</h4>
+                            <p id="flyerPreviewCopy">울산 시청 옆 수익형 오피스텔</p>
+                            <em id="flyerPreviewLocation">울산 시청 바로 옆</em>
+                        </div>
+                    </div>
+
+                    <div class="flyer-preview-body">
+                        <div class="flyer-point-list">
+                            <div class="flyer-point flyer-ppt-group" data-ppt-group="point-1">
+                                <span>01</span>
+                                <strong id="flyerPreviewPoint1">회사보유분 특별분양</strong>
+                            </div>
+
+                            <div class="flyer-point flyer-ppt-group" data-ppt-group="point-2">
+                                <span>02</span>
+                                <strong id="flyerPreviewPoint2">30% 할인 조건</strong>
+                            </div>
+
+                            <div class="flyer-point flyer-ppt-group" data-ppt-group="point-3">
+                                <span>03</span>
+                                <strong id="flyerPreviewPoint3">4천 전후 실투자금</strong>
+                            </div>
+                        </div>
+
+                        <div class="flyer-benefit-box flyer-ppt-group" data-ppt-group="benefit">
+                            <span>BENEFIT</span>
+                            <strong id="flyerPreviewBenefit">잔여 호실 특별 조건 안내</strong>
+                            <p id="flyerPreviewDesc">
+                                회사보유분 특별 조건은 잔여 호실과 상담 시점에 따라 달라질 수 있습니다. 정확한 내용은 상담을 통해 안내드립니다.
+                            </p>
+                        </div>
+
+                        <div class="flyer-contact-box flyer-ppt-group" data-ppt-group="contact">
+                            <div>
+                                <span>상담 문의</span>
+                                <strong id="flyerPreviewManager">김지모 팀장</strong>
+                            </div>
+
+                            <a href="tel:01000000000" id="flyerPreviewPhone">010-0000-0000</a>
+                        </div>
+                    </div>
+                </article>
+
+                <p class="flyer-preview-help">
+                    PDF는 바로 저장용, PPT는 세부 편집용으로 사용합니다.
+                </p>
+            </div>
+        </aside>
+    </div>
+</section>

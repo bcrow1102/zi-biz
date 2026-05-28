@@ -879,6 +879,9 @@
         }
 
         state.currentView = viewName;
+
+        document.body.classList.toggle('is-tools-view', viewName === 'tools');
+
         if (viewName === 'tools') {
             renderToolHome();
         }
@@ -942,6 +945,39 @@
             document.body.appendChild(script);
         });
     }
+    function ensureFlyerCss() {
+        if (document.getElementById('flyerToolCss')) {
+            return;
+        }
+
+        var link = document.createElement('link');
+        link.id = 'flyerToolCss';
+        link.rel = 'stylesheet';
+        link.href = './tools/flyer/flyer.css';
+
+        document.head.appendChild(link);
+    }
+
+    function loadFlyerScript() {
+        return new Promise(function (resolve, reject) {
+            if (window.bootFlyerTool) {
+                resolve();
+                return;
+            }
+
+            var script = document.createElement('script');
+            script.id = 'flyerToolScript';
+            script.src = './tools/flyer/flyer.js';
+            script.onload = function () {
+                resolve();
+            };
+            script.onerror = function () {
+                reject(new Error('flyer.js 로드 실패'));
+            };
+
+            document.body.appendChild(script);
+        });
+    }
     function setToolFocusMode(isActive) {
         var viewTools = document.getElementById('viewTools');
 
@@ -989,10 +1025,62 @@
             })
             .catch(function () {
                 els.toolPanel.classList.remove('has-namecard-tool');
+                els.toolPanel.classList.remove('has-flyer-tool');
                 els.toolPanel.innerHTML =
                     '<div class="tool-empty">' +
                     '<h3>명함 생성기를 불러오지 못했어</h3>' +
                     '<p>tools/namecard/namecard.html, namecard.css, namecard.js 경로를 확인해줘.</p>' +
+                    '<button type="button" class="primary-btn" disabled>로드 실패</button>' +
+                    '</div>';
+            });
+    }
+    function renderFlyerTool() {
+
+        if (!els.toolPanel) return;
+
+        els.toolPanel.classList.remove('has-namecard-tool');
+        els.toolPanel.classList.remove('has-flyer-tool');
+        els.toolPanel.classList.add('has-flyer-tool');
+
+        els.toolPanel.innerHTML =
+            '<div class="tool-empty">' +
+            '<h3>웹전단 제작기 불러오는 중</h3>' +
+            '<p>웹전단 제작 화면을 준비하고 있어.</p>' +
+            '</div>';
+
+        ensureFlyerCss();
+
+        fetch('./tools/flyer/flyer.html')
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('flyer.html 로드 실패');
+                }
+
+                return response.text();
+            })
+            .then(function (html) {
+                els.toolPanel.innerHTML = html;
+
+                return loadFlyerScript();
+            })
+            .then(function () {
+                if (window.bootFlyerTool) {
+                    window.bootFlyerTool();
+                }
+
+                window.setTimeout(function () {
+                    els.toolPanel.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 120);
+            })
+            .catch(function () {
+                els.toolPanel.classList.remove('has-flyer-tool');
+                els.toolPanel.innerHTML =
+                    '<div class="tool-empty">' +
+                    '<h3>웹전단 제작기를 불러오지 못했어</h3>' +
+                    '<p>tools/flyer/flyer.html, flyer.css, flyer.js 경로를 확인해줘.</p>' +
                     '<button type="button" class="primary-btn" disabled>로드 실패</button>' +
                     '</div>';
             });
@@ -1007,6 +1095,7 @@
         if (!els.toolPanel) return;
 
         els.toolPanel.classList.remove('has-namecard-tool');
+        els.toolPanel.classList.remove('has-flyer-tool');
         els.toolPanel.innerHTML =
             '<div class="tool-empty">' +
             '<h3>제작도구를 선택해줘</h3>' +
@@ -1019,6 +1108,10 @@
 
         if (toolName === 'namecard') {
             renderNamecardTool();
+            return;
+        }
+        if (toolName === 'flyer') {
+            renderFlyerTool();
             return;
         }
 
@@ -1043,6 +1136,7 @@
         var tool = toolMap[toolName] || toolMap.image;
 
         els.toolPanel.classList.remove('has-namecard-tool');
+        els.toolPanel.classList.remove('has-flyer-tool');
 
         els.toolPanel.innerHTML =
             '<div class="tool-empty">' +
@@ -1125,7 +1219,7 @@
 
                 renderToolMessage(toolName);
 
-                if (toolName !== 'namecard') {
+                if (toolName !== 'namecard' && toolName !== 'flyer') {
                     showToolReadyMessage(toolName);
                 }
             });

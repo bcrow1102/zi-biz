@@ -4525,3 +4525,49 @@ button {
         width: 126px !important;
     }
 }
+
+/* =========================================================
+   FLYER TOOL PANEL SHOW FIX
+   - 웹전단 제작기 화면 표시
+========================================================= */
+
+#viewTools .tool-panel.has-flyer-tool {
+    display: block !important;
+    margin-top: 18px !important;
+    padding: 24px !important;
+    border-radius: var(--radius-xl) !important;
+    background: #ffffff !important;
+    box-shadow: var(--shadow) !important;
+}
+
+#viewTools.is-tool-focus-mode .tool-panel.has-flyer-tool {
+    display: block !important;
+    margin-top: 0 !important;
+}
+
+@media (max-width: 520px) {
+    #viewTools .tool-panel.has-flyer-tool {
+        padding: 18px 14px 24px !important;
+        border-radius: 26px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* =========================================================
+   TOOLS VIEW HEADER HIDE
+   - 제작툴 화면에서는 상단 헤더 숨김
+========================================================= */
+
+body.is-tools-view .app-header {
+    display: none !important;
+}
+
+body.is-tools-view .app-main {
+    padding-top: 26px;
+}
+
+@media (max-width: 760px) {
+    body.is-tools-view .app-main {
+        padding-top: 18px;
+    }
+}
