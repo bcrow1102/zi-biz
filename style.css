@@ -1836,12 +1836,6 @@ button {
     color: var(--blue);
 }
 
-
-
-.login-btn.is-logged-in #loginBtnLabel {
-    display: inline;
-}
-
 .user-avatar {
     display: none !important;
 }
@@ -3078,10 +3072,6 @@ button {
 
 /* =========================================================
    HERO EVENT IMAGE CARD OVERRIDE
-========================================================= */
-
-/* =========================================================
-   HERO EVENT IMAGE CARD OVERRIDE
    - 이미지 자체만 보이게
    - 바깥 배경/그림자 제거
 ========================================================= */
@@ -3207,17 +3197,6 @@ button {
 
     .bottom-nav {
         max-width: var(--max) !important;
-    }
-}
-
-/* =========================================================
-   PC HERO VISUAL POSITION FIX
-   - 현재 배치 그대로 오른쪽 비주얼 전체 이동
-========================================================= */
-
-@media (min-width: 761px) {
-    .hero-visual {
-        transform: translateX(90px) !important;
     }
 }
 
@@ -4150,120 +4129,6 @@ button {
 }
 
 /* =========================================================
-   MOBILE HERO MENU FIT
-   - 모바일에서 의견함 메뉴 잘림 방지
-   - PC 영향 없음
-========================================================= */
-
-@media (max-width: 760px) {
-    .hero-menu {
-        justify-content: center !important;
-        overflow-x: visible !important;
-        margin: 0 0 14px !important;
-        padding: 8px 0 10px !important;
-        width: 100% !important;
-    }
-
-    .hero-menu-item {
-        flex: 0 1 auto !important;
-        min-height: 32px !important;
-        padding: 0 9px !important;
-        font-size: 14px !important;
-        letter-spacing: -0.04em !important;
-        white-space: nowrap !important;
-    }
-
-    .hero-menu-divider {
-        flex: 0 0 auto !important;
-        height: 14px !important;
-        opacity: 0.55 !important;
-    }
-
-    .hero-menu-item:hover::after {
-        width: calc(100% - 16px) !important;
-    }
-}
-
-@media (max-width: 420px) {
-    .hero-menu-item {
-        padding: 0 7px !important;
-        font-size: 13.5px !important;
-    }
-
-    .hero-menu-divider {
-        height: 13px !important;
-    }
-}
-
-@media (max-width: 520px) {
-    .hero-menu {
-        justify-content: center;
-        gap: 0;
-        margin: 8px 0 18px;
-        padding: 8px 0 10px;
-        overflow: visible;
-    }
-
-    .hero-menu-item {
-        min-height: 30px;
-        padding: 0 8px;
-        color: #252b35;
-        font-size: 13px;
-        font-weight: 850;
-        letter-spacing: -0.04em;
-        white-space: nowrap;
-    }
-
-    .hero-menu-divider {
-        width: 1px;
-        height: 12px;
-        background: rgba(18, 24, 38, 0.22);
-    }
-
-    .hero-menu-item::after {
-        bottom: -3px;
-        height: 2px;
-    }
-
-    .hero-menu-item:hover::after,
-    .hero-menu-item.is-active::after {
-        width: calc(100% - 12px);
-    }
-}
-
-.hero-menu-item.is-active {
-    color: var(--blue);
-}
-
-.hero-menu-item.is-active::after {
-    width: calc(100% - 44px);
-}
-
-@media (max-width: 520px) {
-    .hero-menu-item.is-active::after {
-        width: calc(100% - 12px);
-    }
-}
-
-.hero-menu-item:hover::after {
-    width: 0;
-}
-
-.hero-menu-item.is-active::after {
-    width: calc(100% - 44px);
-}
-
-@media (max-width: 760px) {
-    .hero-menu-item:hover::after {
-        width: 0 !important;
-    }
-
-    .hero-menu-item.is-active::after {
-        width: calc(100% - 14px) !important;
-    }
-}
-
-/* =========================================================
    HERO MENU FINAL RESET
    - hero-menu에서는 is-active 사용 안 함
    - 밑줄 완전 제거
@@ -4288,29 +4153,6 @@ button {
 .hero-menu-item:hover,
 .hero-menu-item.is-current {
     color: var(--blue) !important;
-}
-
-/* =========================================================
-   MOBILE EVENT CARD BACKGROUND BOX REMOVE
-   - 모바일 이벤트 카드 바깥 박스/그림자 제거
-========================================================= */
-
-@media (max-width: 760px) {
-    .hero-event-card.hero-event-card--image {
-        padding: 0 !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        overflow: visible !important;
-    }
-
-    .hero-event-card.hero-event-card--image img {
-        display: block !important;
-        border-radius: 0 !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }
 }
 
 /* =========================================================
@@ -4514,18 +4356,6 @@ button {
     }
 }
 
-/* 모바일 이벤트 카드 살짝 확대 */
-@media (max-width: 420px) {
-    .hero-card {
-        grid-template-columns: minmax(0, 1fr) 126px !important;
-        gap: 16px 10px !important;
-    }
-
-    .hero-event-card.hero-event-card--image {
-        width: 126px !important;
-    }
-}
-
 /* =========================================================
    FLYER TOOL PANEL SHOW FIX
    - 웹전단 제작기 화면 표시
@@ -4569,5 +4399,312 @@ body.is-tools-view .app-main {
 @media (max-width: 760px) {
     body.is-tools-view .app-main {
         padding-top: 18px;
+    }
+}
+
+/* =========================================================
+   FLYER MODE FOOTER EDITOR
+   - 웹전단 편집모드에서는 하단 푸터를 입력창으로 사용
+   - 기존 메뉴는 햄버거 안으로 접음
+========================================================= */
+
+.flyer-footer-editor,
+.flyer-footer-menu {
+    display: none;
+}
+
+body:has(#flyerTool) .bottom-nav {
+    height: 78px;
+    grid-template-columns: 1fr;
+    padding: 10px 12px;
+    align-items: center;
+}
+
+body:has(#flyerTool) .bottom-nav>.nav-item {
+    display: none !important;
+}
+
+body:has(#flyerTool) .flyer-footer-editor {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr) 58px 44px;
+    align-items: center;
+    gap: 8px;
+}
+
+.flyer-footer-field-name {
+    min-width: 0;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border-radius: 15px;
+    background: #3182f6;
+    color: #ffffff;
+}
+
+.flyer-footer-field-name span {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1.1;
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.flyer-footer-input {
+    width: 100%;
+    height: 44px;
+    min-width: 0;
+    padding: 0 14px;
+    border: 1px solid rgba(49, 130, 246, 0.18);
+    border-radius: 15px;
+    outline: none;
+    background: #ffffff;
+    color: #202631;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+}
+
+.flyer-footer-input:focus {
+    border-color: rgba(49, 130, 246, 0.72);
+    box-shadow: 0 0 0 4px rgba(49, 130, 246, 0.1);
+}
+
+.flyer-footer-input:disabled {
+    color: #a0a7b2;
+    background: #f8fafc;
+    cursor: not-allowed;
+}
+
+.flyer-footer-count {
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background: #f8fafc;
+    color: #8a93a0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+}
+
+.flyer-footer-menu-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 15px;
+    background: #3182f6;
+    color: #ffffff;
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 650;
+    box-shadow: 0 10px 20px rgba(49, 130, 246, 0.22);
+}
+
+body:has(#flyerTool) .flyer-footer-menu {
+    position: absolute;
+    right: 12px;
+    bottom: calc(100% + 10px);
+    z-index: 5;
+    display: none;
+    width: 132px;
+    padding: 8px;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid rgba(18, 24, 38, 0.08);
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.16);
+}
+
+body:has(#flyerTool) .flyer-footer-menu.is-open {
+    display: grid;
+    gap: 5px;
+}
+
+.flyer-footer-menu button {
+    width: 100%;
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #3f4754;
+    font-size: 13px;
+    font-weight: 850;
+    letter-spacing: -0.035em;
+    text-align: left;
+}
+
+.flyer-footer-menu button:hover {
+    background: #eef4ff;
+    color: #3182f6;
+}
+
+@media (max-width: 560px) {
+    body:has(#flyerTool) .bottom-nav {
+        height: 76px;
+        padding: 9px 9px;
+    }
+
+    body:has(#flyerTool) .flyer-footer-editor {
+        grid-template-columns: 74px minmax(0, 1fr) 42px 40px;
+        gap: 6px;
+    }
+
+    .flyer-footer-field-name {
+        height: 42px;
+        padding: 0 9px;
+        border-radius: 14px;
+    }
+
+    .flyer-footer-field-name span {
+        font-size: 12px;
+        font-weight: 650;
+        line-height: 1.1;
+    }
+
+    .flyer-footer-input {
+        height: 42px;
+        padding: 0 11px;
+        border-radius: 14px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .flyer-footer-count {
+        height: 42px;
+        border-radius: 14px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .flyer-footer-menu-btn {
+        width: 40px;
+        height: 42px;
+        border-radius: 14px;
+        font-size: 19px;
+        font-weight: 650;
+    }
+
+    body:has(#flyerTool) .flyer-footer-menu {
+        right: 9px;
+        width: 124px;
+    }
+}
+
+/* =========================================================
+   FLYER MOBILE MINIMAP HIDE
+   - 모바일 웹전단 편집에서는 미니맵 숨김
+========================================================= */
+
+@media (max-width: 760px) {
+
+    body:has(#flyerTool) .flyer-minimap,
+    body:has(#flyerTool) .flyer-mini-map,
+    body:has(#flyerTool) .a6-minimap,
+    body:has(#flyerTool) .a6-mini-map,
+    body:has(#flyerTool) [class*="minimap"],
+    body:has(#flyerTool) [class*="mini-map"] {
+        display: none !important;
+    }
+}
+
+/* =========================================================
+   FLYER FOOTER EDITOR PC WIDTH FIX
+   - PC에서는 하단 입력창 폭을 전단 이미지 폭에 맞춤
+   - 모바일은 기존처럼 전체폭 유지
+========================================================= */
+
+@media (min-width: 761px) {
+    body:has(#flyerTool) .bottom-nav {
+        justify-items: center !important;
+    }
+
+    body:has(#flyerTool) .flyer-footer-editor {
+        width: min(100%, 980px) !important;
+        max-width: 980px !important;
+        margin: 0 auto !important;
+        grid-template-columns: 112px minmax(0, 1fr) 58px 44px !important;
+    }
+
+    body:has(#flyerTool) .flyer-footer-menu {
+        right: calc((100% - min(100%, 980px)) / 2 + 12px) !important;
+    }
+}
+
+/* =========================================================
+   FLYER BACK BUTTON POSITION FIX
+   - 다운로드와 분리해서 오른쪽으로 더 밀기
+   - 텍스트 추가로 기능 명확화
+========================================================= */
+
+.flyer-back-btn {
+    width: auto !important;
+    height: 34px !important;
+    min-width: 92px !important;
+    margin-left: 34px !important;
+    padding: 0 13px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    border-radius: 999px !important;
+    background: #f4f7fb !important;
+    color: #4b5563 !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.025em !important;
+    white-space: nowrap !important;
+}
+
+.flyer-back-btn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 500;
+}
+
+.flyer-back-btn strong {
+    display: inline-block;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+}
+
+.flyer-back-btn:hover {
+    background: #eef4ff !important;
+    color: #3182f6 !important;
+}
+
+/* 모바일에서는 너무 길어지지 않게 */
+@media (max-width: 560px) {
+    .flyer-back-btn {
+        min-width: 72px !important;
+        height: 32px !important;
+        margin-left: 12px !important;
+        padding: 0 10px !important;
+        gap: 4px !important;
+        font-size: 12px !important;
+    }
+
+    .flyer-back-btn span {
+        font-size: 16px;
+    }
+
+    .flyer-back-btn strong {
+        font-size: 12px;
     }
 }

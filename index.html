@@ -588,6 +588,28 @@
                 </span>
                 <strong>전체</strong>
             </button>
+            <div class="flyer-footer-editor" id="flyerFooterEditor" aria-hidden="true">
+                <div class="flyer-footer-field-name">
+                    <span id="flyerFooterEditLabel">항목 선택</span>
+                </div>
+
+                <input type="text" class="flyer-footer-input" id="flyerFooterEditInput" placeholder="전단 문구를 선택해 주세요"
+                    disabled />
+
+                <span class="flyer-footer-count" id="flyerFooterEditCount">0/0</span>
+
+                <button type="button" class="flyer-footer-menu-btn" id="flyerFooterMenuBtn" aria-label="메뉴 열기">
+                    ☰
+                </button>
+            </div>
+
+            <div class="flyer-footer-menu" id="flyerFooterMenu" aria-hidden="true">
+                <button type="button" data-view="home">홈</button>
+                <button type="button" data-view="broker">중개</button>
+                <button type="button" data-view="site">분양</button>
+                <button type="button" data-view="tools">제작</button>
+                <button type="button" data-view="more">전체</button>
+            </div>
         </nav>
     </div>
 
@@ -695,11 +717,256 @@
     </div>
 
     <script src="./supabase.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <script src="./main.js"></script>
+
+    <script>
+        (function () {
+            'use strict';
+
+            function getFooterEls() {
+                return {
+                    editor: document.getElementById('flyerFooterEditor'),
+                    label: document.getElementById('flyerFooterEditLabel'),
+                    input: document.getElementById('flyerFooterEditInput'),
+                    count: document.getElementById('flyerFooterEditCount'),
+                    menuBtn: document.getElementById('flyerFooterMenuBtn'),
+                    menu: document.getElementById('flyerFooterMenu')
+                };
+            }
+
+            function getSourceEls() {
+                var editBar = document.querySelector('.flyer-edit-bar');
+                var sourceInput = editBar ? editBar.querySelector('.flyer-edit-input') : null;
+                var label = editBar ? editBar.querySelector('.flyer-edit-bar-label span') : null;
+                var count = editBar ? editBar.querySelector('.flyer-edit-bar-label small') : null;
+
+                return {
+                    editBar: editBar,
+                    input: sourceInput,
+                    label: label,
+                    count: count
+                };
+            }
+
+            function isFlyerMode() {
+                return !!document.getElementById('flyerTool');
+            }
+
+            function syncFooterFromSource(force) {
+                var footer = getFooterEls();
+                var source = getSourceEls();
+
+                if (!footer.editor || !footer.input || !footer.label || !footer.count) return;
+
+                var active = isFlyerMode() && !!source.input;
+
+                footer.editor.setAttribute('aria-hidden', active ? 'false' : 'true');
+
+                if (!active) {
+                    footer.label.textContent = '항목 선택';
+                    footer.input.value = '';
+                    footer.input.placeholder = '전단 문구를 선택해 주세요';
+                    footer.input.disabled = true;
+                    footer.count.textContent = '0/0';
+                    return;
+                }
+
+                footer.input.disabled = !!source.input.disabled;
+                footer.input.placeholder = source.input.placeholder || '문구 입력';
+
+                if (source.input.maxLength && source.input.maxLength > 0) {
+                    footer.input.maxLength = source.input.maxLength;
+                } else {
+                    footer.input.removeAttribute('maxlength');
+                }
+
+                footer.label.textContent = source.label ? source.label.textContent : '선택 항목';
+                footer.count.textContent = source.count ? source.count.textContent : '';
+
+                if (force || document.activeElement !== footer.input) {
+                    footer.input.value = source.input.value || '';
+                }
+            }
+
+            function syncSourceFromFooter() {
+                var footer = getFooterEls();
+                var source = getSourceEls();
+
+                if (!footer.input || !source.input) return;
+
+                source.input.value = footer.input.value;
+                source.input.dispatchEvent(new Event('input', { bubbles: true }));
+
+                window.setTimeout(function () {
+                    syncFooterFromSource(true);
+                }, 0);
+            }
+
+            function closeFooterMenu() {
+                var footer = getFooterEls();
+
+                if (!footer.menu) return;
+
+                footer.menu.classList.remove('is-open');
+                footer.menu.setAttribute('aria-hidden', 'true');
+            }
+            function ensureFlyerBackButton() {
+                var actions = document.querySelector('.flyer-top-actions');
+
+                if (!actions) return;
+
+                if (document.getElementById('flyerBackBtn')) return;
+
+                var button = document.createElement('button');
+
+                button.type = 'button';
+                button.className = 'flyer-back-btn';
+                button.id = 'flyerBackBtn';
+                button.setAttribute('aria-label', '이전 화면으로 돌아가기');
+                button.innerHTML = '<span>↩</span><strong>돌아가기</strong>';
+
+                button.addEventListener('click', function () {
+                    var toolsBtn = document.querySelector('[data-view="tools"]');
+
+                    if (toolsBtn) {
+                        toolsBtn.click();
+                        return;
+                    }
+
+                    window.history.back();
+                });
+
+                actions.appendChild(button);
+            }
+            function removeCloneIds(root) {
+                if (!root) return;
+
+                if (root.removeAttribute) {
+                    root.removeAttribute('id');
+                }
+
+                root.querySelectorAll('[id]').forEach(function (el) {
+                    el.removeAttribute('id');
+                });
+            }
+
+            function ensureFlyerMiniMap() {
+                var layout = document.querySelector('.flyer-layout');
+                var previewColumn = document.querySelector('.flyer-preview-column');
+
+                if (!layout || !previewColumn) return;
+
+                if (document.getElementById('flyerMiniMap')) return;
+
+                var mini = document.createElement('aside');
+
+                mini.className = 'flyer-mini-map';
+                mini.id = 'flyerMiniMap';
+                mini.setAttribute('aria-label', '전체 미리보기');
+
+                mini.innerHTML = '' +
+                    '<div class="flyer-mini-map-head">' +
+                    '<strong>전체 보기</strong>' +
+                    '<span>실시간</span>' +
+                    '</div>' +
+                    '<div class="flyer-mini-map-body" id="flyerMiniMapBody"></div>';
+
+                layout.appendChild(mini);
+            }
+
+            function syncFlyerMiniMap() {
+                var body = document.getElementById('flyerMiniMapBody');
+
+                if (!body) return;
+
+                var previewWrap = document.querySelector('.flyer-preview-wrap');
+                var mini = document.getElementById('flyerMiniMap');
+                var isA6 = previewWrap && previewWrap.classList.contains('is-a6-mode');
+
+                if (mini) {
+                    mini.classList.toggle('is-a6-mini-map', !!isA6);
+                    mini.classList.toggle('is-a4-mini-map', !isA6);
+                }
+
+                var source = isA6
+                    ? document.getElementById('flyerA6Sheet')
+                    : document.getElementById('flyerPreview');
+
+                if (!source) return;
+
+                var clone = source.cloneNode(true);
+
+                removeCloneIds(clone);
+
+                clone.classList.add('flyer-mini-clone');
+                clone.setAttribute('aria-hidden', 'true');
+
+                body.innerHTML = '';
+                body.appendChild(clone);
+            }
+
+            function bindFooterEditor() {
+                var footer = getFooterEls();
+
+                if (!footer.input || !footer.menuBtn || !footer.menu) return;
+
+                footer.input.addEventListener('input', syncSourceFromFooter);
+
+                footer.menuBtn.addEventListener('click', function (event) {
+                    event.stopPropagation();
+
+                    var isOpen = footer.menu.classList.toggle('is-open');
+                    footer.menu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+                });
+
+                footer.menu.addEventListener('click', function () {
+                    closeFooterMenu();
+                });
+
+                document.addEventListener('click', function (event) {
+                    var footerNow = getFooterEls();
+
+                    if (!footerNow.menu || !footerNow.menuBtn) return;
+
+                    if (
+                        footerNow.menu.contains(event.target) ||
+                        footerNow.menuBtn.contains(event.target)
+                    ) {
+                        return;
+                    }
+
+                    closeFooterMenu();
+                });
+
+                document.addEventListener('click', function () {
+                    window.setTimeout(function () {
+                        syncFooterFromSource(true);
+                    }, 0);
+                });
+
+                document.addEventListener('input', function (event) {
+                    if (event.target && event.target.classList && event.target.classList.contains('flyer-edit-input')) {
+                        syncFooterFromSource(true);
+                    }
+                });
+
+                window.setInterval(function () {
+                    syncFooterFromSource(false);
+                    ensureFlyerBackButton();
+                    ensureFlyerMiniMap();
+                    syncFlyerMiniMap();
+                }, 250);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', bindFooterEditor);
+            } else {
+                bindFooterEditor();
+            }
+        })();
+    </script>
 </body>
 
 </html>

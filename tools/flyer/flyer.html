@@ -109,6 +109,9 @@
                 <strong>미리보기</strong>
 
                 <div class="flyer-top-actions">
+                    <button type="button" class="flyer-text-action flyer-size-toggle" id="flyerSizeToggleBtn">
+                        A6 전단 보기
+                    </button>
                     <details class="flyer-bg-menu">
                         <summary class="flyer-text-action">배경 선택</summary>
 
@@ -150,6 +153,7 @@
             </div>
 
             <div class="flyer-preview-wrap">
+                <div class="flyer-size-badge" id="flyerSizeBadge">A4</div>
                 <article class="flyer-preview flyer-bg-apartment flyer-theme-simple flyer-overlay-soft"
                     id="flyerPreview">
                     <div class="flyer-preview-hero" id="flyerPreviewHero">
@@ -199,6 +203,29 @@
                         </div>
                     </div>
                 </article>
+
+                </article>
+
+                <div class="flyer-a6-sheet is-hidden" id="flyerA6Sheet" aria-hidden="true">
+                    <div class="flyer-a6-cut-line flyer-a6-cut-line-x" aria-hidden="true"></div>
+                    <div class="flyer-a6-cut-line flyer-a6-cut-line-y" aria-hidden="true"></div>
+
+                    <div class="flyer-a6-grid">
+                        <article class="flyer-a6-card"></article>
+                        <article class="flyer-a6-card"></article>
+                        <article class="flyer-a6-card"></article>
+                        <article class="flyer-a6-card"></article>
+                    </div>
+                </div>
+                <div class="flyer-edit-bar" id="flyerEditBar">
+                    <div class="flyer-edit-bar-label">
+                        <span id="flyerEditFieldLabel">항목 선택</span>
+                        <small id="flyerEditCount">0 / 0</small>
+                    </div>
+
+                    <input type="text" id="flyerEditInput" class="flyer-edit-input" placeholder="미리보기에서 수정할 텍스트를 선택하세요."
+                        disabled>
+                </div>
 
                 <p class="flyer-preview-help">
                     PDF와 PPT로 다운로드 할 수 있습니다.

@@ -934,115 +934,6 @@
     top: 26.1% !important;
 }
 
-/* =========================================================
-   FLYER TOP TEXT POSITION FIX
-   - 상단 텍스트를 전단 전체 기준으로 재배치
-========================================================= */
-
-/* 안쪽 래퍼 기준 제거 */
-.flyer-preview-hero-content {
-    position: static !important;
-    width: auto !important;
-    max-width: none !important;
-    padding: 0 !important;
-}
-
-/* 전단 라벨 */
-.flyer-preview-label {
-    position: absolute !important;
-    left: 8.4% !important;
-    top: 4.45% !important;
-    z-index: 5 !important;
-    font-size: 8px !important;
-    line-height: 1 !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.04em !important;
-}
-
-/* 현장명 */
-.flyer-preview h4 {
-    position: absolute !important;
-    left: 8.2% !important;
-    top: 8.65% !important;
-    z-index: 5 !important;
-    width: 48% !important;
-    margin: 0 !important;
-    font-size: 27px !important;
-    line-height: 0.96 !important;
-    font-weight: 900 !important;
-    letter-spacing: -0.085em !important;
-    white-space: nowrap !important;
-}
-
-/* 한줄 카피 */
-.flyer-preview-hero-content p {
-    position: absolute !important;
-    left: 8.4% !important;
-    top: 16.15% !important;
-    z-index: 5 !important;
-    width: 50% !important;
-    margin: 0 !important;
-    font-size: 10px !important;
-    line-height: 1.2 !important;
-    font-weight: 700 !important;
-    letter-spacing: -0.055em !important;
-    white-space: nowrap !important;
-}
-
-/* 위치 */
-.flyer-preview-hero-content em {
-    position: absolute !important;
-    left: 12.7% !important;
-    top: 27.35% !important;
-    z-index: 5 !important;
-    width: 26% !important;
-    margin: 0 !important;
-    font-size: 8px !important;
-    line-height: 1 !important;
-    font-style: normal !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.055em !important;
-    white-space: nowrap !important;
-}
-
-/* =========================================================
-   FLYER SIZE + TEXT LEVEL FINAL ADJUST
-   - 오른쪽 미리보기 세로 길이 축소
-   - 좌측 입력영역과 레벨 맞춤
-   - 전단 텍스트 위치/크기 재정렬
-========================================================= */
-
-/* 오른쪽 전체 박스 과한 높이감 줄이기 */
-.flyer-preview-wrap {
-    padding: 16px !important;
-}
-
-/* 미리보기 상단 설명 간격 축소 */
-.flyer-preview-top {
-    margin-bottom: 10px !important;
-}
-
-/* 전단 자체 크기 축소: 720px → 560px */
-.flyer-preview {
-    max-width: 560px !important;
-    container-type: inline-size;
-}
-
-/* 하단 도움말도 살짝 줄임 */
-.flyer-preview-help {
-    margin-top: 9px !important;
-    font-size: 11px !important;
-    line-height: 1.4 !important;
-}
-
-/* 안쪽 래퍼 영향 제거 */
-.flyer-preview-hero-content {
-    position: static !important;
-    width: auto !important;
-    max-width: none !important;
-    padding: 0 !important;
-}
-
 /* =========================
    TOP TEXT
 ========================= */
@@ -1236,520 +1127,6 @@
 
     .flyer-preview-top {
         margin-bottom: 8px !important;
-    }
-}
-
-/* =========================================================
-   PREVIEW COLUMN FINAL
-   - 미리보기 제목은 박스 밖
-   - 흰 박스는 이미지/스타일 + 전단만 감쌈
-========================================================= */
-
-.flyer-preview-column {
-    position: sticky;
-    top: 24px;
-}
-
-/* 기존 sticky는 바깥 column으로 이동 */
-.flyer-preview-wrap {
-    position: static !important;
-    top: auto !important;
-    padding: 16px !important;
-    border-radius: 28px;
-    background: #ffffff;
-    border: 1px solid rgba(18, 24, 38, 0.055);
-}
-
-/* 박스 밖 미리보기 제목 */
-.flyer-preview-column>.flyer-preview-top {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 12px !important;
-    margin-bottom: 12px !important;
-    padding: 0 4px !important;
-    order: initial !important;
-}
-
-.flyer-preview-column>.flyer-preview-top strong {
-    color: #202631;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.flyer-preview-column>.flyer-preview-top span {
-    color: #8a93a0;
-    font-size: 12px;
-    font-weight: 400;
-}
-
-/* 이전 order 조정 영향 제거 */
-.flyer-control-panel,
-.flyer-preview,
-.flyer-preview-help {
-    order: initial !important;
-}
-
-/* 오른쪽 박스 내부 간격 */
-.flyer-control-panel {
-    margin-bottom: 12px !important;
-}
-
-.flyer-preview-help {
-    margin-top: 10px !important;
-}
-
-/* =========================================================
-   FLYER COST + DOWNLOAD MERGE
-   - 상단 Beta 배지 제거 후 다운로드 영역에 비용 표시
-========================================================= */
-
-/* 상단 오른쪽 배지 제거 */
-.flyer-head-badge {
-    display: none !important;
-}
-
-/* 헤더 오른쪽 배지 빠졌으니 헤더 높이 압축 */
-.flyer-tool-head {
-    margin-bottom: 14px !important;
-}
-
-/* 다운로드 + 골드 묶음 */
-.flyer-download-set {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.flyer-download-set span {
-    color: var(--gold-deep);
-    font-size: 12px;
-    line-height: 1;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-}
-
-/* 기존 다운로드 버튼 유지하면서 살짝 정돈 */
-.flyer-download-set .flyer-download-btn {
-    min-height: 38px;
-    padding: 0 16px;
-}
-
-/* =========================================================
-   FLYER FINAL LEVEL + TOSS BLUE DOWNLOAD
-   - 좌우 시작 레벨 맞춤
-   - 다운로드 버튼 토스 블루 톤 적용
-========================================================= */
-
-/* 상단 설명부 아래 여백 조금 압축 */
-.flyer-tool-head {
-    margin-bottom: 14px !important;
-}
-
-/* 오른쪽 미리보기 전체를 살짝 위로 */
-.flyer-preview-column {
-    position: sticky;
-    top: 24px;
-    margin-top: -2px !important;
-}
-
-/* 미리보기 제목줄을 좌측 기본정보 레벨에 맞춤 */
-.flyer-preview-column>.flyer-preview-top {
-    margin-bottom: 10px !important;
-    padding: 0 4px !important;
-}
-
-/* 오른쪽 흰 박스 상단 여백 살짝 압축 */
-.flyer-preview-wrap {
-    padding-top: 14px !important;
-}
-
-/* 이미지/스타일 박스도 살짝 위로 조임 */
-.flyer-control-panel {
-    margin-bottom: 10px !important;
-}
-
-/* 1,000G + 다운로드 묶음 정렬 */
-.flyer-download-set {
-    align-items: center !important;
-    gap: 6px !important;
-}
-
-.flyer-download-set span {
-    color: #b58a37 !important;
-    font-size: 12px !important;
-    font-weight: 750 !important;
-}
-
-/* 다운로드 버튼 토스 블루 */
-/* 다운로드 버튼 토스 블루 - 강제 적용 */
-.flyer-control-head .flyer-download-set .flyer-download-btn,
-button.flyer-download-btn#flyerDownloadBtn {
-    background: #3182f6 !important;
-    background-color: #3182f6 !important;
-    color: #ffffff !important;
-    border: 0 !important;
-    box-shadow: 0 8px 18px rgba(49, 130, 246, 0.22) !important;
-}
-
-.flyer-control-head .flyer-download-set .flyer-download-btn:hover,
-button.flyer-download-btn#flyerDownloadBtn:hover {
-    background: #1b64da !important;
-    background-color: #1b64da !important;
-}
-
-/* =========================================================
-   FLYER LEFT / RIGHT CONTAINER LEVEL FIX
-   - 좌측 기본정보 박스와 오른쪽 흰 컨테이너 시작 높이 맞춤
-========================================================= */
-
-.flyer-preview-column {
-    position: sticky !important;
-    top: 24px !important;
-    margin-top: 0 !important;
-    transform: none !important;
-}
-
-/* 미리보기 제목은 공간 차지하지 않게 위로 띄움 */
-.flyer-preview-column>.flyer-preview-top {
-    position: absolute !important;
-    left: 4px !important;
-    right: 4px !important;
-    top: -32px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* 오른쪽 흰 컨테이너는 컬럼 시작점에 바로 붙임 */
-.flyer-preview-wrap {
-    margin-top: 0 !important;
-}
-
-/* =========================================================
-   FLYER CONTROL PANEL CLEAN FIX
-   - 이미지/스타일 줄바꿈 방지
-   - 컨트롤 박스 높이만 자연스럽게 압축
-   - 미리보기 이미지 위로 정렬
-========================================================= */
-
-.flyer-control-panel {
-    padding: 14px 18px 16px !important;
-    margin-bottom: 10px !important;
-}
-
-.flyer-control-head {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 16px !important;
-    margin-bottom: 14px !important;
-}
-
-/* 이미지 / 스타일 줄바꿈 방지 */
-.flyer-control-head>div:first-child {
-    flex: 1 1 auto !important;
-    min-width: 180px !important;
-}
-
-.flyer-control-head strong {
-    display: block !important;
-    white-space: nowrap !important;
-    font-size: 16px !important;
-    line-height: 1.2 !important;
-}
-
-/* 서브문구는 숨김 */
-.flyer-control-head>div:first-child>span {
-    display: none !important;
-}
-
-/* 1,000G + 다운로드 영역 */
-.flyer-download-set {
-    flex: 0 0 auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 6px !important;
-}
-
-/* 아래 옵션 영역은 안정적인 3칸 */
-.flyer-control-grid {
-    display: grid !important;
-    grid-template-columns: 220px 1fr 1fr !important;
-    gap: 18px !important;
-    align-items: end !important;
-}
-
-/* 디자인 / 가독성은 밑줄형으로 다시 안정화 */
-.flyer-color-btn,
-.flyer-overlay-btn {
-    min-height: auto !important;
-    padding: 0 !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    border: 0 !important;
-    text-decoration: underline !important;
-    text-underline-offset: 4px !important;
-}
-
-/* 오른쪽 컨테이너 시작 높이만 조절 */
-.flyer-preview-column {
-    position: sticky !important;
-    top: 24px !important;
-    transform: translateY(-6px) !important;
-}
-
-/* =========================================================
-   FLYER CONTROL PANEL AFTER READABILITY REMOVE
-   - 가독성 삭제 후 이미지 업로드 + 디자인만 정렬
-   - 컨트롤 박스 높이 안정화
-========================================================= */
-
-.flyer-control-panel {
-    padding: 14px 18px 16px !important;
-    margin-bottom: 10px !important;
-}
-
-.flyer-control-head {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 18px !important;
-    margin-bottom: 14px !important;
-}
-
-.flyer-control-head>div:first-child {
-    flex: 1 1 auto !important;
-    min-width: 180px !important;
-}
-
-.flyer-control-head strong {
-    display: block !important;
-    white-space: nowrap !important;
-    font-size: 16px !important;
-    line-height: 1.2 !important;
-    font-weight: 650 !important;
-}
-
-/* 서브문구는 계속 숨김 */
-.flyer-control-head>div:first-child>span {
-    display: none !important;
-}
-
-/* 가독성 삭제 후 2칸 구조 */
-.flyer-control-grid {
-    display: grid !important;
-    grid-template-columns: 220px 1fr !important;
-    gap: 26px !important;
-    align-items: end !important;
-}
-
-/* 이미지 업로드 */
-.flyer-upload {
-    min-height: 34px !important;
-    gap: 8px !important;
-}
-
-/* 디자인 영역 */
-.flyer-theme-box {
-    min-height: auto !important;
-}
-
-.flyer-control-label {
-    margin-bottom: 8px !important;
-    font-size: 11px !important;
-    line-height: 1 !important;
-    font-weight: 650 !important;
-}
-
-/* 디자인 버튼은 밑줄형 유지 */
-.flyer-color-btn {
-    min-height: auto !important;
-    padding: 0 !important;
-    border: 0 !important;
-    background: transparent !important;
-    text-decoration: underline !important;
-    text-underline-offset: 4px !important;
-}
-
-/* 오른쪽 컨테이너 높이 미세 조정 */
-.flyer-preview-column {
-    position: sticky !important;
-    top: 24px !important;
-    transform: translateY(-6px) !important;
-}
-
-/* =========================================================
-   FLYER CONTROL CLEAN FINAL
-   - 가독성 삭제
-   - 디자인 유지
-   - 좌측 기본정보 박스와 오른쪽 흰 컨테이너 시작점 맞춤
-   - 컨트롤 박스 높이 축소
-========================================================= */
-
-/* 오른쪽 컬럼: 좌측 기본정보 박스 시작점과 맞춤 */
-.flyer-preview-column {
-    position: sticky !important;
-    top: 24px !important;
-    margin-top: 0 !important;
-    transform: none !important;
-}
-
-/* 미리보기 제목은 오른쪽 흰 박스 밖 위에 고정 */
-.flyer-preview-column>.flyer-preview-top {
-    position: absolute !important;
-    left: 4px !important;
-    right: 4px !important;
-    top: -32px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* 오른쪽 흰 컨테이너 시작점 */
-.flyer-preview-wrap {
-    margin-top: 0 !important;
-    padding: 14px !important;
-}
-
-/* 상단 컨트롤 박스 높이 압축 */
-.flyer-control-panel {
-    position: relative !important;
-    padding: 12px 18px 13px !important;
-    margin-bottom: 10px !important;
-    border-radius: 22px !important;
-}
-
-/* 제목 + 다운로드 한 줄 정렬 */
-.flyer-control-head {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 18px !important;
-    margin-bottom: 10px !important;
-}
-
-.flyer-control-head strong {
-    display: block !important;
-    color: #202631 !important;
-    font-size: 16px !important;
-    line-height: 1.2 !important;
-    font-weight: 650 !important;
-    letter-spacing: -0.035em !important;
-    white-space: nowrap !important;
-}
-
-/* 1,000G + 다운로드 */
-.flyer-download-set {
-    flex: 0 0 auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 5px !important;
-}
-
-.flyer-download-set span {
-    color: #b58a37 !important;
-    font-size: 12px !important;
-    line-height: 1 !important;
-    font-weight: 750 !important;
-    letter-spacing: -0.025em !important;
-}
-
-/* 이미지 업로드 + 디자인 2칸 */
-.flyer-control-grid {
-    display: grid !important;
-    grid-template-columns: 220px 1fr !important;
-    gap: 26px !important;
-    align-items: end !important;
-}
-
-/* 이미지 업로드 영역 높이 축소 */
-.flyer-upload {
-    width: 220px !important;
-    min-width: 220px !important;
-    max-width: 220px !important;
-    min-height: 32px !important;
-    gap: 8px !important;
-}
-
-/* 디자인 영역 */
-.flyer-theme-box {
-    min-height: auto !important;
-    padding: 0 !important;
-    border: 0 !important;
-    background: transparent !important;
-}
-
-.flyer-control-label {
-    display: block !important;
-    margin-bottom: 7px !important;
-    color: #6d7582 !important;
-    font-size: 11px !important;
-    line-height: 1 !important;
-    font-weight: 650 !important;
-    letter-spacing: -0.025em !important;
-}
-
-.flyer-option-group {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 14px !important;
-}
-
-/* 디자인 버튼만 밑줄형 유지 */
-.flyer-color-btn {
-    min-height: auto !important;
-    padding: 0 !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    color: #7b8490 !important;
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    letter-spacing: -0.025em !important;
-    text-decoration: underline !important;
-    text-underline-offset: 4px !important;
-}
-
-.flyer-color-btn.is-active {
-    color: #202631 !important;
-    font-weight: 750 !important;
-    text-decoration-thickness: 2px !important;
-}
-
-/* 가독성 버튼 혹시 남아있어도 화면에서 숨김 */
-.flyer-overlay-btn {
-    display: none !important;
-}
-
-/* 전단 이미지와 도움말 간격 */
-.flyer-preview-help {
-    margin-top: 9px !important;
-}
-
-/* 모바일 */
-@media (max-width: 760px) {
-    .flyer-preview-column>.flyer-preview-top {
-        position: static !important;
-        margin-bottom: 10px !important;
-        padding: 0 4px !important;
-    }
-
-    .flyer-control-head {
-        align-items: flex-start !important;
-    }
-
-    .flyer-control-grid {
-        grid-template-columns: 1fr !important;
-        gap: 14px !important;
-    }
-
-    .flyer-upload {
-        width: 100% !important;
-        min-width: 0 !important;
-        max-width: none !important;
     }
 }
 
@@ -2210,156 +1587,6 @@ body.is-flyer-pdf-capturing #flyerPreview * {
 }
 
 /* =========================================================
-   FLYER LEFT / RIGHT TOP LEVEL RESTORE
-   - PC에서 오른쪽 미리보기 제목줄은 공간 차지하지 않게 위로 띄움
-   - 오른쪽 흰 박스 시작점을 좌측 기본정보 박스와 맞춤
-========================================================= */
-
-@media (min-width: 1101px) {
-    .flyer-preview-column {
-        position: sticky !important;
-        top: 24px !important;
-        margin-top: 0 !important;
-        transform: none !important;
-    }
-
-    .flyer-preview-column>.flyer-preview-top {
-        position: absolute !important;
-        left: 4px !important;
-        right: 4px !important;
-        top: -32px !important;
-        margin: 0 !important;
-        padding: 0 4px !important;
-
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        gap: 16px !important;
-    }
-
-    .flyer-preview-wrap {
-        margin-top: 0 !important;
-    }
-}
-
-/* 모바일에서는 제목줄이 정상 흐름에 있어야 함 */
-@media (max-width: 1100px) {
-    .flyer-preview-column>.flyer-preview-top {
-        position: static !important;
-        margin: 0 0 10px !important;
-        padding: 0 4px !important;
-    }
-}
-
-/* =========================================================
-   FLYER TEXT ALIGN FINAL FIX
-   - 아파트 / 오피스텔 공통 문구 위치 보정
-   - 상단 현장명 / 카피 / 위치 / BENEFIT 정렬 안정화
-========================================================= */
-
-/* 상단 텍스트 공통 */
-.flyer-preview-label {
-    left: 8.4% !important;
-    top: 4.6% !important;
-    font-size: 1.5cqw !important;
-    line-height: 1 !important;
-    white-space: nowrap !important;
-}
-
-.flyer-preview h4 {
-    left: 8.2% !important;
-    top: 9.8% !important;
-    width: 48% !important;
-    margin: 0 !important;
-    font-size: 4.7cqw !important;
-    line-height: 1.02 !important;
-    letter-spacing: -0.08em !important;
-    white-space: normal !important;
-    word-break: keep-all !important;
-}
-
-.flyer-preview-hero-content p {
-    left: 8.4% !important;
-    top: 21.3% !important;
-    width: 42% !important;
-    margin: 0 !important;
-    font-size: 1.85cqw !important;
-    line-height: 1.32 !important;
-    letter-spacing: -0.045em !important;
-    white-space: normal !important;
-    word-break: keep-all !important;
-}
-
-.flyer-preview-hero-content em {
-    left: 12.8% !important;
-    top: 34.2% !important;
-    width: 28% !important;
-    margin: 0 !important;
-    font-size: 1.45cqw !important;
-    line-height: 1 !important;
-    white-space: nowrap !important;
-}
-
-/* 혜택 박스 */
-.flyer-benefit-box span {
-    top: -4.8% !important;
-    font-size: 1.2cqw !important;
-    line-height: 1 !important;
-}
-
-.flyer-benefit-box strong {
-    top: 24% !important;
-    left: 8% !important;
-    right: 8% !important;
-    font-size: 3.9cqw !important;
-    line-height: 1.16 !important;
-    white-space: normal !important;
-    word-break: keep-all !important;
-}
-
-.flyer-benefit-box p {
-    top: 56% !important;
-    left: 12% !important;
-    right: 12% !important;
-    font-size: 1.7cqw !important;
-    line-height: 1.45 !important;
-    word-break: keep-all !important;
-}
-
-/* 아파트 배경 미세 보정 */
-.flyer-bg-apartment .flyer-preview h4 {
-    top: 9.9% !important;
-}
-
-.flyer-bg-apartment .flyer-preview-hero-content p {
-    top: 21.5% !important;
-}
-
-.flyer-bg-apartment .flyer-preview-hero-content em {
-    top: 34.4% !important;
-}
-
-/* 오피스텔 배경 미세 보정 */
-.flyer-bg-office .flyer-preview h4 {
-    top: 9.5% !important;
-}
-
-.flyer-bg-office .flyer-preview-hero-content p {
-    top: 20.9% !important;
-}
-
-.flyer-bg-office .flyer-preview-hero-content em {
-    top: 33.8% !important;
-}
-
-/* 너무 긴 문구가 있으면 억지 한줄 고정하지 않기 */
-.flyer-point strong,
-#flyerPreviewBenefit,
-#flyerPreviewDesc {
-    word-break: keep-all !important;
-}
-
-/* =========================================================
    FLYER FINAL TEXT BIG + ALIGN FIX
    - 아파트 / 오피스텔 공통 문구 위치 재정렬
    - 전체 글씨를 과감하게 확대
@@ -2659,5 +1886,583 @@ body.is-flyer-pdf-capturing #flyerPreview * {
         margin-top: 7px !important;
         font-size: 11px !important;
         line-height: 1.35 !important;
+    }
+}
+
+/* =========================================================
+   FLYER CURRENT SIZE BADGE
+   - 현재 A4 / A6 편집 모드 표시
+========================================================= */
+
+.flyer-preview-wrap {
+    position: relative !important;
+}
+
+.flyer-size-badge {
+    position: absolute;
+    right: 22px;
+    top: 18px;
+    z-index: 30;
+
+    min-width: 48px;
+    height: 34px;
+    padding: 0 12px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.84);
+    border: 1px solid rgba(18, 24, 38, 0.08);
+    color: #202631;
+
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(10px);
+    pointer-events: none;
+}
+
+.flyer-preview-wrap.is-a6-mode .flyer-size-badge {
+    color: #3182f6;
+}
+
+@media (max-width: 760px) {
+    .flyer-size-badge {
+        right: 16px;
+        top: 15px;
+        min-width: 42px;
+        height: 30px;
+        padding: 0 10px;
+        font-size: 15px;
+    }
+}
+
+/* =========================================================
+   FLYER DOWNLOAD ACTION
+   - 다운로드와 Gold 비용을 하나의 액션처럼 표시
+========================================================= */
+
+.flyer-top-actions {
+    gap: 16px !important;
+}
+
+.flyer-download-inline {
+    margin-left: 10px !important;
+    padding-left: 18px !important;
+    border-left: 1px solid rgba(18, 24, 38, 0.1) !important;
+}
+
+#flyerDownloadBtn.flyer-download-text {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    color: #4f5967 !important;
+    font-weight: 700 !important;
+    transition: color 0.18s ease !important;
+}
+
+#flyerDownloadBtn.flyer-download-text span {
+    color: #b58a37 !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    transition: color 0.18s ease !important;
+}
+
+#flyerDownloadBtn.flyer-download-text:hover {
+    color: #3182f6 !important;
+}
+
+#flyerDownloadBtn.flyer-download-text:hover span {
+    color: #3182f6 !important;
+}
+
+@media (max-width: 760px) {
+    .flyer-top-actions {
+        gap: 12px !important;
+    }
+
+    .flyer-download-inline {
+        margin-left: 2px !important;
+        padding-left: 0 !important;
+        border-left: 0 !important;
+    }
+}
+
+/* =========================================================
+   FLYER EDIT TARGET SELECT
+   - 미리보기에서 현재 수정할 텍스트 위치 표시
+========================================================= */
+
+.flyer-edit-target {
+    cursor: pointer !important;
+}
+
+.flyer-edit-target.is-editing {
+    outline: 1px dashed rgba(49, 130, 246, 0.68) !important;
+    outline-offset: 4px !important;
+    border-radius: 6px !important;
+}
+
+/* A6는 카드가 작으니 점선 간격을 조금 줄임 */
+.flyer-a6-card:first-child .flyer-edit-target.is-editing {
+    outline-offset: 2px !important;
+    border-radius: 4px !important;
+}
+
+/* A6는 첫 번째 카드만 직접 편집 기준으로 사용 */
+.flyer-a6-card:not(:first-child) .flyer-edit-target {
+    cursor: default !important;
+}
+
+/* =========================================================
+   FLYER EDIT BAR
+   - 미리보기 텍스트 선택 후 하단에서 수정하는 입력바
+========================================================= */
+
+.flyer-edit-bar {
+    margin: 14px auto 0 !important;
+    width: min(100%, 560px) !important;
+    padding: 12px 14px !important;
+
+    display: grid !important;
+    grid-template-columns: 116px 1fr !important;
+    align-items: center !important;
+    gap: 12px !important;
+
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    border: 1px solid rgba(18, 24, 38, 0.08) !important;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08) !important;
+}
+
+.flyer-edit-bar-label {
+    min-width: 0 !important;
+}
+
+.flyer-edit-bar-label span {
+    display: block !important;
+    color: #202631 !important;
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.04em !important;
+    white-space: nowrap !important;
+}
+
+.flyer-edit-bar-label small {
+    display: block !important;
+    margin-top: 4px !important;
+    color: #8a94a3 !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+}
+
+.flyer-edit-input {
+    width: 100% !important;
+    height: 42px !important;
+    padding: 0 13px !important;
+
+    border-radius: 12px !important;
+    border: 1px solid rgba(49, 130, 246, 0.2) !important;
+    background: #ffffff !important;
+    color: #202631 !important;
+
+    font-size: 14px !important;
+    line-height: 1 !important;
+    font-weight: 650 !important;
+    letter-spacing: -0.04em !important;
+    outline: none !important;
+}
+
+.flyer-edit-input:focus {
+    border-color: rgba(49, 130, 246, 0.72) !important;
+    box-shadow: 0 0 0 4px rgba(49, 130, 246, 0.1) !important;
+}
+
+.flyer-edit-input:disabled {
+    color: #9aa3af !important;
+    background: #f7f9fc !important;
+    cursor: not-allowed !important;
+}
+
+@media (max-width: 760px) {
+    .flyer-edit-bar {
+        width: min(100%, 350px) !important;
+        margin-top: 11px !important;
+        padding: 11px !important;
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+        border-radius: 16px !important;
+    }
+
+    .flyer-edit-bar-label {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+    }
+
+    .flyer-edit-bar-label small {
+        margin-top: 0 !important;
+    }
+
+    .flyer-edit-input {
+        height: 40px !important;
+        font-size: 13px !important;
+    }
+}
+
+/* =========================================================
+   FLYER FORM FINAL HIDE
+   - 기존 왼쪽 입력폼은 HTML/JS 데이터용으로만 유지
+   - 화면에서는 완전히 숨김
+   - 미리보기 영역만 중앙에 표시
+========================================================= */
+
+.flyer-form {
+    display: none !important;
+}
+
+.flyer-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    justify-items: center !important;
+}
+
+.flyer-preview-column {
+    width: 100% !important;
+    max-width: 760px !important;
+    margin: 0 auto !important;
+}
+
+/* 모바일에서도 입력폼 재등장 방지 */
+@media (max-width: 1100px) {
+    .flyer-form {
+        display: none !important;
+    }
+
+    .flyer-layout {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .flyer-preview-column {
+        order: 1 !important;
+        width: 100% !important;
+        max-width: 760px !important;
+        margin: 0 auto !important;
+    }
+}
+
+/* =========================================================
+   FLYER PREVIEW BOX SIZE FIX
+   - 실제 전단 이미지 박스를 더 크게
+   - 가로는 넓게, 세로는 더 짧게
+========================================================= */
+
+.flyer-preview-column {
+    width: 100% !important;
+    max-width: 980px !important;
+    margin: 0 auto !important;
+}
+
+.flyer-preview-wrap {
+    width: 100% !important;
+    max-width: 980px !important;
+    margin: 0 auto !important;
+    padding: 14px 18px 16px !important;
+}
+
+/* 실제 전단 이미지 박스 */
+#flyerPreview.flyer-preview {
+    width: 100% !important;
+    max-width: 760px !important;
+    aspect-ratio: 941 / 1380 !important;
+    margin: 0 auto !important;
+}
+
+/* A6도 같이 너무 작지 않게 */
+#flyerA6Sheet.flyer-a6-sheet {
+    width: 100% !important;
+    max-width: 760px !important;
+    margin: 0 auto !important;
+}
+
+/* 아래 편집영역도 전단폭에 맞춤 */
+.flyer-edit-panel {
+    width: 100% !important;
+    max-width: 760px !important;
+    margin: 14px auto 0 !important;
+}
+
+/* 모바일은 넘치지 않게 */
+@media (max-width: 760px) {
+
+    .flyer-preview-column,
+    .flyer-preview-wrap,
+    #flyerPreview.flyer-preview,
+    #flyerA6Sheet.flyer-a6-sheet,
+    .flyer-edit-panel {
+        max-width: 100% !important;
+    }
+
+    .flyer-preview-wrap {
+        padding: 12px !important;
+    }
+}
+
+/* =========================================================
+   HIDE ORIGINAL FLYER EDIT BAR
+   - 기존 편집바는 JS 데이터 연동용으로만 유지
+   - 실제 입력은 하단 푸터 편집바에서 처리
+========================================================= */
+
+body:has(#flyerTool) .flyer-edit-bar {
+    position: absolute !important;
+    left: -9999px !important;
+    top: auto !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* =========================================================
+   FLYER MINI MAP FINAL WIDTH FIX
+   - 오른쪽 미니맵 컬럼/전체보기 박스 가로폭 확장
+   - 안쪽 오버레이 박스 제거
+   - 세로가 과하게 길어지지 않도록 높이 제한
+========================================================= */
+
+@media (min-width: 1101px) {
+    body:has(#flyerTool) .flyer-layout {
+        grid-template-columns: minmax(0, 760px) 390px !important;
+        column-gap: 28px !important;
+        justify-content: center !important;
+        align-items: start !important;
+    }
+
+    body:has(#flyerTool) .flyer-mini-map {
+        width: 390px !important;
+        max-width: 390px !important;
+        min-height: 360px !important;
+        padding: 14px 16px 16px !important;
+        border-radius: 26px !important;
+        justify-self: stretch !important;
+    }
+
+    .flyer-mini-map-body {
+        width: 100% !important;
+        max-width: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        overflow: hidden !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+    }
+
+    .flyer-mini-map-body .flyer-mini-clone {
+        width: 100% !important;
+        max-width: 350px !important;
+        max-height: 420px !important;
+        aspect-ratio: 941 / 1380 !important;
+        margin: 0 auto !important;
+        border-radius: 18px !important;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.13) !important;
+        pointer-events: none !important;
+    }
+
+    .flyer-mini-map-body .flyer-a6-sheet.flyer-mini-clone {
+        width: 100% !important;
+        max-width: 350px !important;
+        max-height: 390px !important;
+        aspect-ratio: 941 / 1331 !important;
+    }
+}
+
+/* =========================================================
+   FLYER MINI MAP MODE FINAL
+   - A4 미니맵은 PC에서 스크롤 따라다님
+   - A6 미니맵은 PC에서 따라다니지 않음
+   - A6 여부는 원본 preview-wrap의 is-a6-mode로 판단
+   - 모바일 영향 없음
+========================================================= */
+
+@media (min-width: 1101px) {
+
+    /* 기본값: A4 미니맵은 따라다님 */
+    body:has(#flyerTool) .flyer-layout .flyer-mini-map {
+        position: fixed !important;
+        top: 128px !important;
+        right: max(24px, calc((100vw - var(--max)) / 2 + 36px)) !important;
+        z-index: 30 !important;
+    }
+
+    /* A6 모드일 때만 미니맵 따라다니기 해제 */
+    body:has(#flyerTool) .flyer-layout:has(.flyer-preview-wrap.is-a6-mode) .flyer-mini-map {
+        position: static !important;
+        top: auto !important;
+        right: auto !important;
+        z-index: auto !important;
+        align-self: start !important;
+        justify-self: stretch !important;
+    }
+}
+
+/* =========================================================
+   FLYER FOOTER WHITE BOX PC WIDTH FINAL
+   - PC에서만 하단 흰 푸터 박스 전체 폭 축소
+   - 안쪽 입력줄은 흰 박스 안에서 꽉 차게 유지
+   - 모바일 영향 없음
+========================================================= */
+
+@media (min-width: 761px) {
+    body:has(#flyerTool) .bottom-nav {
+        width: 730px !important;
+        max-width: 730px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        justify-items: stretch !important;
+    }
+
+    body:has(#flyerTool) .flyer-footer-editor {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        grid-template-columns: 112px minmax(0, 1fr) 58px 44px !important;
+    }
+
+    body:has(#flyerTool) .flyer-footer-menu {
+        right: 12px !important;
+    }
+}
+
+/* =========================================================
+   FLYER PC EMPTY SCROLL SPACE REMOVE FINAL
+   - 미리보기 박스와 하단 푸터 사이의 불필요한 빈 스크롤 제거
+   - 전단/A6/미니맵 크기는 건드리지 않음
+   - PC 전용 / 모바일 영향 없음
+========================================================= */
+
+@media (min-width: 1101px) {
+    body:has(#flyerTool) .app-main {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        min-height: 0 !important;
+    }
+
+    body:has(#flyerTool) #viewTools {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        min-height: 0 !important;
+    }
+
+    body:has(#flyerTool) .tool-panel,
+    body:has(#flyerTool) .tool-panel.has-flyer-tool {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+    }
+
+    body:has(#flyerTool) .flyer-tool {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+    }
+
+    body:has(#flyerTool) .flyer-layout {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        min-height: 0 !important;
+    }
+
+    body:has(#flyerTool) .flyer-preview-column,
+    body:has(#flyerTool) .flyer-preview-wrap {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    body:has(#flyerTool) .flyer-preview-help {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+}
+
+/* =========================================================
+   FLYER PC HEADER OVERLAP FIX FINAL
+   - 상단 메뉴가 웹전단 제목과 겹치는 문제 해결
+   - preview-top을 absolute에서 정상 흐름으로 복귀
+   - PC 전용 / 모바일 영향 없음
+========================================================= */
+
+@media (min-width: 1101px) {
+    body:has(#flyerTool) .flyer-preview-column>.flyer-preview-top {
+        position: static !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        margin: 0 0 10px !important;
+        padding: 0 4px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 16px !important;
+    }
+
+    body:has(#flyerTool) .flyer-preview-column {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+        transform: none !important;
+    }
+
+    body:has(#flyerTool) .flyer-preview-wrap {
+        margin-top: 0 !important;
+    }
+}
+
+/* =========================================================
+   FLYER A6 MINI MAP LEVEL FIX FINAL
+   - A6에서 오른쪽 미니맵 시작 높이를 왼쪽 A6 본체와 맞춤
+   - A4 미니맵 fixed 동작에는 영향 없음
+   - PC 전용 / 모바일 영향 없음
+========================================================= */
+
+@media (min-width: 1101px) {
+    body:has(#flyerTool) .flyer-layout:has(.flyer-preview-wrap.is-a6-mode) .flyer-mini-map {
+        margin-top: 52px !important;
+    }
+}
+
+/* =========================================================
+   FLYER A6 LOWER CARDS DISABLED PREVIEW
+   - A6 원본 4등분 구조는 유지
+   - 하단 2칸만 블러/비활성 느낌
+   - 미니맵에는 영향 없음
+========================================================= */
+
+@media (min-width: 1101px) {
+
+    body:has(#flyerTool) .flyer-preview-wrap.is-a6-mode>#flyerA6Sheet .flyer-a6-card:nth-child(3),
+    body:has(#flyerTool) .flyer-preview-wrap.is-a6-mode>#flyerA6Sheet .flyer-a6-card:nth-child(4) {
+        filter: blur(1.3px) saturate(0.9) !important;
+        opacity: 0.45 !important;
+        pointer-events: none !important;
+        user-select: none !important;
     }
 }

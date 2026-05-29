@@ -946,16 +946,23 @@
         });
     }
     function ensureFlyerCss() {
-        if (document.getElementById('flyerToolCss')) {
-            return;
+        if (!document.getElementById('flyerToolCss')) {
+            var flyerCss = document.createElement('link');
+            flyerCss.id = 'flyerToolCss';
+            flyerCss.rel = 'stylesheet';
+            flyerCss.href = './tools/flyer/flyer.css';
+
+            document.head.appendChild(flyerCss);
         }
 
-        var link = document.createElement('link');
-        link.id = 'flyerToolCss';
-        link.rel = 'stylesheet';
-        link.href = './tools/flyer/flyer.css';
+        if (!document.getElementById('flyerA6ToolCss')) {
+            var flyerA6Css = document.createElement('link');
+            flyerA6Css.id = 'flyerA6ToolCss';
+            flyerA6Css.rel = 'stylesheet';
+            flyerA6Css.href = './tools/flyer/flyer-a6.css';
 
-        document.head.appendChild(link);
+            document.head.appendChild(flyerA6Css);
+        }
     }
 
     function loadFlyerScript() {
@@ -973,6 +980,38 @@
             };
             script.onerror = function () {
                 reject(new Error('flyer.js 로드 실패'));
+            };
+
+            document.body.appendChild(script);
+        });
+    }
+    function loadFlyerA6Script() {
+        return new Promise(function (resolve, reject) {
+            if (window.bootFlyerA6Tool) {
+                resolve();
+                return;
+            }
+
+            var existingScript = document.getElementById('flyerA6ToolScript');
+
+            if (existingScript) {
+                existingScript.addEventListener('load', function () {
+                    resolve();
+                });
+                existingScript.addEventListener('error', function () {
+                    reject(new Error('flyer-a6.js 로드 실패'));
+                });
+                return;
+            }
+
+            var script = document.createElement('script');
+            script.id = 'flyerA6ToolScript';
+            script.src = './tools/flyer/flyer-a6.js';
+            script.onload = function () {
+                resolve();
+            };
+            script.onerror = function () {
+                reject(new Error('flyer-a6.js 로드 실패'));
             };
 
             document.body.appendChild(script);
@@ -1061,11 +1100,18 @@
             .then(function (html) {
                 els.toolPanel.innerHTML = html;
 
-                return loadFlyerScript();
+                return loadFlyerScript()
+                    .then(function () {
+                        return loadFlyerA6Script();
+                    });
             })
             .then(function () {
                 if (window.bootFlyerTool) {
                     window.bootFlyerTool();
+                }
+
+                if (window.bootFlyerA6Tool) {
+                    window.bootFlyerA6Tool();
                 }
 
                 window.setTimeout(function () {

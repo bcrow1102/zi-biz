@@ -1,0 +1,325 @@
+/* =========================================================
+   FLYER A6 SHEET
+   - A4 한 장 안에 A6 전단 4개 배치
+   - A6 전용 배경 / 시안 관리
+   - UI 표기는 시안1 / 시안2
+========================================================= */
+
+/* A6 전환 버튼 */
+.flyer-size-toggle {
+    color: #6d7582 !important;
+}
+
+.flyer-size-toggle:hover {
+    color: #3182f6 !important;
+}
+
+/* A6 모드일 때 A4 전단 숨김 */
+.flyer-preview-wrap.is-a6-mode #flyerPreview {
+    display: none !important;
+}
+
+/* A6 모드일 때 A6 시트 표시 */
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet {
+    display: block !important;
+}
+
+/* 기본 숨김 */
+.flyer-a6-sheet.is-hidden {
+    display: none !important;
+}
+
+/* A4 종이 역할 */
+.flyer-a6-sheet {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 941 / 1331;
+    margin: 0 auto;
+    border-radius: 22px;
+    background: #ffffff;
+    border: 1px solid rgba(18, 24, 38, 0.08);
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.13);
+}
+
+/* 2 x 2 A6 배치 */
+.flyer-a6-grid {
+    position: absolute;
+    inset: 3.2%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 2.4%;
+}
+
+/* 재단선 */
+.flyer-a6-cut-line {
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0.32;
+}
+
+.flyer-a6-cut-line-x {
+    left: 3.2%;
+    right: 3.2%;
+    top: 50%;
+    border-top: 1px dashed rgba(18, 24, 38, 0.36);
+}
+
+.flyer-a6-cut-line-y {
+    top: 3.2%;
+    bottom: 3.2%;
+    left: 50%;
+    border-left: 1px dashed rgba(18, 24, 38, 0.36);
+}
+
+/* A6 카드 */
+.flyer-a6-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    background-color: #fff7d6;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid rgba(18, 24, 38, 0.08);
+}
+
+/* A6 전용 배경 이미지 */
+.flyer-a6-bg-apartment.flyer-a6-theme-01 .flyer-a6-card {
+    background-image: url("./images/a6-apt-01-bg.jpg") !important;
+}
+
+.flyer-a6-bg-apartment.flyer-a6-theme-02 .flyer-a6-card {
+    background-image: url("./images/a6-apt-02-bg.jpg") !important;
+}
+
+.flyer-a6-bg-office.flyer-a6-theme-01 .flyer-a6-card {
+    background-image: url("./images/a6-off-01-bg.jpg") !important;
+}
+
+.flyer-a6-bg-office.flyer-a6-theme-02 .flyer-a6-card {
+    background-image: url("./images/a6-off-02-bg.jpg") !important;
+}
+
+/* 카드 내부 */
+.flyer-a6-card-inner {
+    position: absolute;
+    inset: 0;
+    padding: 8.2% 8% 7%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 상단 */
+.flyer-a6-label {
+    color: #2467c9;
+    font-size: clamp(7px, 1.08vw, 12px);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+}
+
+.flyer-a6-title {
+    margin-top: 5.4%;
+    color: #082f63;
+    font-size: clamp(18px, 3.15vw, 34px);
+    line-height: 0.98;
+    font-weight: 900;
+    letter-spacing: -0.085em;
+    word-break: keep-all;
+}
+
+.flyer-a6-copy {
+    margin-top: 4.5%;
+    color: #24364d;
+    font-size: clamp(8px, 1.32vw, 15px);
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    word-break: keep-all;
+}
+
+.flyer-a6-location {
+    margin-top: 3.2%;
+    color: #334155;
+    font-size: clamp(7px, 1.05vw, 12px);
+    line-height: 1.2;
+    font-weight: 650;
+    letter-spacing: -0.04em;
+    word-break: keep-all;
+}
+
+/* 조건 */
+.flyer-a6-points {
+    display: grid;
+    gap: 5px;
+    margin-top: auto;
+    padding-bottom: 5.2%;
+}
+
+.flyer-a6-point {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 23px;
+    padding: 5px 7px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.68);
+    color: #082f63;
+    font-size: clamp(8px, 1.24vw, 14px);
+    line-height: 1.1;
+    font-weight: 850;
+    letter-spacing: -0.05em;
+    word-break: keep-all;
+}
+
+.flyer-a6-point span {
+    flex: 0 0 auto;
+    color: #2467c9;
+    font-weight: 900;
+}
+
+/* 혜택 / 안내 */
+.flyer-a6-benefit {
+    margin-bottom: 5px;
+    padding: 6px 7px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.56);
+    color: #082f63;
+}
+
+.flyer-a6-benefit strong {
+    display: block;
+    font-size: clamp(8px, 1.25vw, 14px);
+    line-height: 1.15;
+    font-weight: 900;
+    letter-spacing: -0.055em;
+    word-break: keep-all;
+}
+
+.flyer-a6-benefit p {
+    display: -webkit-box;
+    margin-top: 3px;
+    overflow: hidden;
+    color: #334155;
+    font-size: clamp(6px, 0.9vw, 10px);
+    line-height: 1.35;
+    font-weight: 550;
+    letter-spacing: -0.035em;
+    word-break: keep-all;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* 연락처 */
+.flyer-a6-contact {
+    display: grid;
+    grid-template-columns: 0.78fr 1.22fr;
+    align-items: center;
+    gap: 8px;
+    min-height: 34px;
+    padding: 7px 8px;
+    border-radius: 12px;
+    background: #082f63;
+    color: #ffffff;
+}
+
+.flyer-a6-manager {
+    font-size: clamp(8px, 1.16vw, 13px);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    word-break: keep-all;
+}
+
+.flyer-a6-phone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 26px;
+    border-radius: 999px;
+    background: #ffe74c;
+    color: #082f63;
+    font-size: clamp(10px, 1.55vw, 17px);
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+}
+
+/* 시안2는 포인트 색만 살짝 다르게 */
+.flyer-a6-theme-02 .flyer-a6-label,
+.flyer-a6-theme-02 .flyer-a6-point span {
+    color: #d63384;
+}
+
+.flyer-a6-theme-02 .flyer-a6-title,
+.flyer-a6-theme-02 .flyer-a6-copy,
+.flyer-a6-theme-02 .flyer-a6-benefit strong {
+    color: #7a174a;
+}
+
+.flyer-a6-theme-02 .flyer-a6-contact {
+    background: #7a174a;
+}
+
+.flyer-a6-theme-02 .flyer-a6-phone {
+    color: #7a174a;
+    background: #ffe4f0;
+}
+
+/* 모바일 */
+@media (max-width: 760px) {
+    .flyer-a6-sheet {
+        width: 86vw;
+        max-width: 350px;
+        border-radius: 18px;
+    }
+
+    .flyer-a6-grid {
+        inset: 3%;
+        gap: 2.2%;
+    }
+
+    .flyer-a6-card {
+        border-radius: 12px;
+    }
+
+    .flyer-a6-card-inner {
+        padding: 7.4% 7% 6%;
+    }
+
+    .flyer-a6-points {
+        gap: 4px;
+    }
+
+    .flyer-a6-point {
+        min-height: 20px;
+        padding: 4px 6px;
+    }
+
+    .flyer-a6-benefit {
+        padding: 5px 6px;
+        margin-bottom: 4px;
+    }
+
+    .flyer-a6-contact {
+        min-height: 30px;
+        padding: 6px;
+        gap: 5px;
+    }
+}
+
+/* A6 모드에서 사용하지 않는 시안 버튼 숨김 */
+.flyer-a6-theme-hidden {
+    display: none !important;
+}
+
+/* A6 모드에서 시안3 버튼 강제 숨김 */
+.flyer-theme-menu-list .flyer-color-btn.flyer-a6-theme-hidden {
+    display: none !important;
+}
