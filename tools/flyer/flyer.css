@@ -2963,3 +2963,961 @@ body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flye
     position: relative !important;
     z-index: 8 !important;
 }
+
+/* =========================================================
+   FLYER A4 TEXT POSITION FIRST PASS
+   - A4 시안1 배경 기준 텍스트 위치 1차 정렬
+   - A6 영향 없음
+   - 기존 좌표 블록은 나중에 정리
+========================================================= */
+
+/* A4 전단 기준 */
+#flyerPreview.flyer-preview {
+    container-type: inline-size !important;
+}
+
+/* 상단 라벨: 맨 위 둥근 박스 안 */
+#flyerPreview .flyer-preview-label {
+    position: absolute !important;
+    left: 8.4% !important;
+    top: 4.35% !important;
+    z-index: 20 !important;
+
+    width: 30% !important;
+    color: #082f63 !important;
+    font-size: 1.65cqw !important;
+    line-height: 1 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.04em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+/* 현장명: 상단 큰 흰 박스 안 */
+#flyerPreview h4 {
+    position: absolute !important;
+    left: 8.2% !important;
+    top: 11.4% !important;
+    z-index: 20 !important;
+
+    width: 52% !important;
+    margin: 0 !important;
+    color: #082f63 !important;
+    font-size: 5.35cqw !important;
+    line-height: 1.02 !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.085em !important;
+    word-break: keep-all !important;
+    white-space: normal !important;
+    text-shadow: none !important;
+}
+
+/* 한줄 카피: 현장명 아래 */
+#flyerPreview .flyer-preview-hero-content p {
+    position: absolute !important;
+    left: 8.4% !important;
+    top: 20.3% !important;
+    z-index: 20 !important;
+
+    width: 52% !important;
+    margin: 0 !important;
+    color: #24364d !important;
+    font-size: 2.05cqw !important;
+    line-height: 1.28 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.05em !important;
+    word-break: keep-all !important;
+    white-space: normal !important;
+}
+
+/* 위치: 네이비 바 안 */
+#flyerPreview .flyer-preview-hero-content em {
+    position: absolute !important;
+    left: 15.2% !important;
+    top: 29.85% !important;
+    z-index: 20 !important;
+
+    width: 30% !important;
+    margin: 0 !important;
+    color: #ffffff !important;
+    font-size: 1.75cqw !important;
+    line-height: 1 !important;
+    font-style: normal !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.05em !important;
+    white-space: nowrap !important;
+}
+
+/* 조건 번호는 배경 이미지에 이미 있으므로 숨김 */
+#flyerPreview .flyer-point span {
+    display: none !important;
+}
+
+/* 조건 텍스트: 01/02/03 박스 안 */
+#flyerPreview .flyer-point {
+    position: absolute !important;
+    left: 23.2% !important;
+    width: 50% !important;
+    z-index: 20 !important;
+}
+
+#flyerPreview .flyer-point:nth-child(1) {
+    top: 43.65% !important;
+}
+
+#flyerPreview .flyer-point:nth-child(2) {
+    top: 53.15% !important;
+}
+
+#flyerPreview .flyer-point:nth-child(3) {
+    top: 62.65% !important;
+}
+
+#flyerPreview .flyer-point strong {
+    display: block !important;
+    color: #082f63 !important;
+    font-size: 3.05cqw !important;
+    line-height: 1.1 !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.065em !important;
+    white-space: nowrap !important;
+}
+
+/* 혜택 박스 */
+#flyerPreview .flyer-benefit-box {
+    position: absolute !important;
+    left: 8.1% !important;
+    top: 70.25% !important;
+    width: 83.8% !important;
+    height: 16.2% !important;
+    z-index: 20 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    text-align: center !important;
+}
+
+/* BENEFIT: 상단 노란 pill 안 */
+#flyerPreview .flyer-benefit-box span {
+    position: absolute !important;
+    left: 50% !important;
+    top: 6.8% !important;
+    transform: translateX(-50%) !important;
+
+    color: #082f63 !important;
+    font-size: 1.55cqw !important;
+    line-height: 1 !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.08em !important;
+    white-space: nowrap !important;
+}
+
+/* 강조 문구 */
+#flyerPreview .flyer-benefit-box strong {
+    position: absolute !important;
+    left: 10% !important;
+    right: 10% !important;
+    top: 33% !important;
+
+    color: #082f63 !important;
+    font-size: 3.65cqw !important;
+    line-height: 1.15 !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.075em !important;
+    word-break: keep-all !important;
+    white-space: normal !important;
+}
+
+/* 상세 안내 */
+#flyerPreview .flyer-benefit-box p {
+    position: absolute !important;
+    left: 12% !important;
+    right: 12% !important;
+    top: 58% !important;
+
+    margin: 0 !important;
+    color: #333842 !important;
+    font-size: 1.75cqw !important;
+    line-height: 1.45 !important;
+    font-weight: 550 !important;
+    letter-spacing: -0.04em !important;
+    word-break: keep-all !important;
+}
+
+/* 하단 상담 박스 */
+#flyerPreview .flyer-contact-box {
+    position: absolute !important;
+    left: 3.4% !important;
+    top: 91.1% !important;
+    width: 93.2% !important;
+    height: 6.4% !important;
+    z-index: 20 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* 상담 문의 / 상담자 */
+#flyerPreview .flyer-contact-box>div {
+    position: absolute !important;
+    left: 17.2% !important;
+    top: 19% !important;
+}
+
+#flyerPreview .flyer-contact-box span {
+    display: block !important;
+    color: #f8d94d !important;
+    font-size: 1.35cqw !important;
+    line-height: 1 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+}
+
+#flyerPreview .flyer-contact-box strong {
+    display: block !important;
+    margin-top: 8% !important;
+    color: #ffffff !important;
+    font-size: 2.65cqw !important;
+    line-height: 1 !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.065em !important;
+    white-space: nowrap !important;
+}
+
+/* 전화번호: 하단 노란 pill 안 */
+#flyerPreview .flyer-contact-box a {
+    position: absolute !important;
+    right: 8.2% !important;
+    top: 24% !important;
+    width: 43% !important;
+    height: 52% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    color: #082f63 !important;
+    font-size: 3.25cqw !important;
+    line-height: 1 !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.01em !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+}
+
+/* =========================================================
+   FLYER A4 TEXT POSITION SECOND PASS
+   - 상단 텍스트 기준 컨테이너를 A4 전체 기준으로 보정
+   - A4 시안1 기준 2차 정렬
+   - A6 영향 없음
+========================================================= */
+
+/* 상단 텍스트 컨테이너를 전단 전체 기준으로 변경 */
+#flyerPreview .flyer-preview-hero-content {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 20 !important;
+    pointer-events: none !important;
+}
+
+/* 라벨: 상단 작은 둥근 박스 안 */
+#flyerPreview .flyer-preview-label {
+    left: 9.4% !important;
+    top: 4.15% !important;
+    width: 30% !important;
+
+    font-size: 1.55cqw !important;
+    text-align: center !important;
+}
+
+/* 현장명: 큰 흰 박스 안으로 내림 */
+#flyerPreview h4 {
+    left: 9.0% !important;
+    top: 11.2% !important;
+    width: 52% !important;
+
+    font-size: 4.95cqw !important;
+    line-height: 1.04 !important;
+    white-space: normal !important;
+}
+
+/* 한줄 카피: 현장명 아래 */
+#flyerPreview .flyer-preview-hero-content p {
+    left: 9.2% !important;
+    top: 21.4% !important;
+    width: 50% !important;
+
+    font-size: 2.05cqw !important;
+    line-height: 1.25 !important;
+}
+
+/* 위치: 네이비 바 안 */
+#flyerPreview .flyer-preview-hero-content em {
+    left: 14.8% !important;
+    top: 30.85% !important;
+    width: 28% !important;
+
+    font-size: 1.8cqw !important;
+    color: #ffffff !important;
+    text-align: left !important;
+}
+
+/* 조건 텍스트: 박스 중앙으로 */
+#flyerPreview .flyer-point {
+    left: 25.5% !important;
+    width: 48% !important;
+}
+
+#flyerPreview .flyer-point:nth-child(1) {
+    top: 43.95% !important;
+}
+
+#flyerPreview .flyer-point:nth-child(2) {
+    top: 53.45% !important;
+}
+
+#flyerPreview .flyer-point:nth-child(3) {
+    top: 62.95% !important;
+}
+
+#flyerPreview .flyer-point strong {
+    font-size: 2.95cqw !important;
+    line-height: 1.05 !important;
+}
+
+/* =========================================================
+   FLYER A4 TEXT POSITION THIRD PASS
+   - A4 원본 + 미니맵 복제본 동시 적용
+   - 전체 텍스트 2단계 확대
+========================================================= */
+
+#flyerPreview .flyer-preview-hero-content,
+.flyer-mini-clone .flyer-preview-hero-content {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 20 !important;
+    pointer-events: none !important;
+}
+
+/* 상단 라벨 */
+#flyerPreview .flyer-preview-label,
+.flyer-mini-clone .flyer-preview-label {
+    left: 9.4% !important;
+    top: 4.1% !important;
+    width: 30% !important;
+
+    font-size: 1.85cqw !important;
+    line-height: 1 !important;
+    text-align: center !important;
+}
+
+/* 현장명 */
+#flyerPreview h4,
+.flyer-mini-clone h4 {
+    left: 9.0% !important;
+    top: 10.7% !important;
+    width: 52% !important;
+
+    font-size: 5.55cqw !important;
+    line-height: 1.03 !important;
+    white-space: normal !important;
+}
+
+/* 한줄 카피 */
+#flyerPreview .flyer-preview-hero-content p,
+.flyer-mini-clone .flyer-preview-hero-content p {
+    left: 9.2% !important;
+    top: 21.1% !important;
+    width: 50% !important;
+
+    font-size: 2.35cqw !important;
+    line-height: 1.25 !important;
+}
+
+/* 위치 */
+#flyerPreview .flyer-preview-hero-content em,
+.flyer-mini-clone .flyer-preview-hero-content em {
+    left: 14.8% !important;
+    top: 30.6% !important;
+    width: 30% !important;
+
+    font-size: 2.05cqw !important;
+    line-height: 1 !important;
+    text-align: left !important;
+}
+
+/* 조건 번호는 배경에 있으므로 숨김 */
+#flyerPreview .flyer-point span,
+.flyer-mini-clone .flyer-point span {
+    display: none !important;
+}
+
+/* 조건 텍스트 */
+#flyerPreview .flyer-point,
+.flyer-mini-clone .flyer-point {
+    left: 25.5% !important;
+    width: 50% !important;
+    z-index: 20 !important;
+}
+
+#flyerPreview .flyer-point:nth-child(1),
+.flyer-mini-clone .flyer-point:nth-child(1) {
+    top: 43.8% !important;
+}
+
+#flyerPreview .flyer-point:nth-child(2),
+.flyer-mini-clone .flyer-point:nth-child(2) {
+    top: 53.3% !important;
+}
+
+#flyerPreview .flyer-point:nth-child(3),
+.flyer-mini-clone .flyer-point:nth-child(3) {
+    top: 62.8% !important;
+}
+
+#flyerPreview .flyer-point strong,
+.flyer-mini-clone .flyer-point strong {
+    font-size: 3.35cqw !important;
+    line-height: 1.05 !important;
+}
+
+/* 혜택 박스 */
+#flyerPreview .flyer-benefit-box,
+.flyer-mini-clone .flyer-benefit-box {
+    left: 8.1% !important;
+    top: 70.25% !important;
+    width: 83.8% !important;
+    height: 16.2% !important;
+    z-index: 20 !important;
+}
+
+#flyerPreview .flyer-benefit-box span,
+.flyer-mini-clone .flyer-benefit-box span {
+    top: 6.8% !important;
+    font-size: 1.85cqw !important;
+}
+
+#flyerPreview .flyer-benefit-box strong,
+.flyer-mini-clone .flyer-benefit-box strong {
+    left: 9% !important;
+    right: 9% !important;
+    top: 32% !important;
+    font-size: 4.05cqw !important;
+    line-height: 1.14 !important;
+}
+
+#flyerPreview .flyer-benefit-box p,
+.flyer-mini-clone .flyer-benefit-box p {
+    left: 11% !important;
+    right: 11% !important;
+    top: 58% !important;
+    font-size: 2.05cqw !important;
+    line-height: 1.42 !important;
+}
+
+/* 하단 상담 박스 */
+#flyerPreview .flyer-contact-box,
+.flyer-mini-clone .flyer-contact-box {
+    left: 3.4% !important;
+    top: 91.1% !important;
+    width: 93.2% !important;
+    height: 6.4% !important;
+    z-index: 20 !important;
+}
+
+#flyerPreview .flyer-contact-box>div,
+.flyer-mini-clone .flyer-contact-box>div {
+    left: 17.2% !important;
+    top: 18% !important;
+}
+
+#flyerPreview .flyer-contact-box span,
+.flyer-mini-clone .flyer-contact-box span {
+    font-size: 1.55cqw !important;
+}
+
+#flyerPreview .flyer-contact-box strong,
+.flyer-mini-clone .flyer-contact-box strong {
+    font-size: 2.95cqw !important;
+}
+
+#flyerPreview .flyer-contact-box a,
+.flyer-mini-clone .flyer-contact-box a {
+    right: 8.2% !important;
+    top: 23% !important;
+    width: 43% !important;
+    height: 52% !important;
+
+    font-size: 3.55cqw !important;
+}
+
+/* =========================================================
+   FLYER A4 ORIGINAL FONT SIZE UP
+   - 원본 A4 전단 글씨만 2단계 확대
+   - 미니맵 영향 없음
+   - A6 영향 없음
+========================================================= */
+
+/* 상단 라벨 */
+#flyerPreview .flyer-preview-label {
+    font-size: 2.05cqw !important;
+}
+
+/* 현장명 */
+#flyerPreview h4 {
+    font-size: 6.15cqw !important;
+    line-height: 1.02 !important;
+}
+
+/* 한줄 카피 */
+#flyerPreview .flyer-preview-hero-content p {
+    font-size: 2.65cqw !important;
+    line-height: 1.22 !important;
+}
+
+/* 위치 */
+#flyerPreview .flyer-preview-hero-content em {
+    font-size: 2.35cqw !important;
+}
+
+/* 조건 텍스트 */
+#flyerPreview .flyer-point strong {
+    font-size: 3.8cqw !important;
+    line-height: 1.05 !important;
+}
+
+/* 혜택 상단 BENEFIT */
+#flyerPreview .flyer-benefit-box span {
+    font-size: 2.05cqw !important;
+}
+
+/* 혜택 강조 문구 */
+#flyerPreview .flyer-benefit-box strong {
+    font-size: 4.55cqw !important;
+    line-height: 1.12 !important;
+}
+
+/* 혜택 상세 안내 */
+#flyerPreview .flyer-benefit-box p {
+    font-size: 2.35cqw !important;
+    line-height: 1.38 !important;
+}
+
+/* 상담 문의 */
+#flyerPreview .flyer-contact-box span {
+    font-size: 1.8cqw !important;
+}
+
+/* 상담자 */
+#flyerPreview .flyer-contact-box strong {
+    font-size: 3.35cqw !important;
+}
+
+/* 전화번호 */
+#flyerPreview .flyer-contact-box a {
+    font-size: 4.05cqw !important;
+}
+
+/* =========================================================
+   FLYER A4 EDIT CLICK RESTORE + FONT UP
+   - 텍스트 선택 클릭 복구
+   - 원본 A4 글씨만 현재보다 2단계 추가 확대
+   - 미니맵/A6 영향 최소화
+========================================================= */
+
+/* 상단 텍스트 컨테이너는 클릭을 막지 않게 복구 */
+#flyerPreview .flyer-preview-hero-content {
+    pointer-events: auto !important;
+}
+
+/* 편집 대상 텍스트는 확실히 클릭 가능하게 */
+#flyerPreview .flyer-edit-target,
+#flyerPreview .flyer-preview-label,
+#flyerPreview h4,
+#flyerPreview .flyer-preview-hero-content p,
+#flyerPreview .flyer-preview-hero-content em,
+#flyerPreview .flyer-point strong,
+#flyerPreview .flyer-benefit-box span,
+#flyerPreview .flyer-benefit-box strong,
+#flyerPreview .flyer-benefit-box p,
+#flyerPreview .flyer-contact-box span,
+#flyerPreview .flyer-contact-box strong,
+#flyerPreview .flyer-contact-box a {
+    pointer-events: auto !important;
+}
+
+/* 상단 라벨 */
+#flyerPreview .flyer-preview-label {
+    font-size: 2.25cqw !important;
+}
+
+/* 현장명 */
+#flyerPreview h4 {
+    font-size: 6.55cqw !important;
+    line-height: 1.01 !important;
+}
+
+/* 한줄 카피 */
+#flyerPreview .flyer-preview-hero-content p {
+    font-size: 2.95cqw !important;
+    line-height: 1.2 !important;
+}
+
+/* 위치 */
+#flyerPreview .flyer-preview-hero-content em {
+    font-size: 2.6cqw !important;
+}
+
+/* 조건 텍스트 */
+#flyerPreview .flyer-point strong {
+    font-size: 4.15cqw !important;
+    line-height: 1.04 !important;
+}
+
+/* BENEFIT */
+#flyerPreview .flyer-benefit-box span {
+    font-size: 2.25cqw !important;
+}
+
+/* 혜택 강조 문구 */
+#flyerPreview .flyer-benefit-box strong {
+    font-size: 4.95cqw !important;
+    line-height: 1.1 !important;
+}
+
+/* 혜택 상세 안내 */
+#flyerPreview .flyer-benefit-box p {
+    font-size: 2.6cqw !important;
+    line-height: 1.34 !important;
+}
+
+/* 상담 문의 */
+#flyerPreview .flyer-contact-box span {
+    font-size: 2cqw !important;
+}
+
+/* 상담자 */
+#flyerPreview .flyer-contact-box strong {
+    font-size: 3.7cqw !important;
+}
+
+/* 전화번호 */
+#flyerPreview .flyer-contact-box a {
+    font-size: 4.45cqw !important;
+}
+
+/* =========================================================
+   FLYER TOP RESET BUTTON
+   - 숨겨진 폼 안 초기화 버튼을 상단 액션으로 이동한 뒤 스타일 정리
+========================================================= */
+
+.flyer-reset-top-btn {
+    color: #9a6b1f !important;
+    font-weight: 750 !important;
+}
+
+.flyer-reset-top-btn:hover {
+    color: #d97706 !important;
+}
+
+/* =========================================================
+   FLYER TOP MENU CLICK FIX
+   - 배경 선택 / 시안 선택 드롭다운 클릭 복구
+   - 전단 텍스트 편집 레이어와 충돌 방지
+========================================================= */
+
+.flyer-preview-column>.flyer-preview-top {
+    position: relative !important;
+    z-index: 300 !important;
+    pointer-events: auto !important;
+}
+
+.flyer-top-actions,
+.flyer-top-actions *,
+.flyer-bg-menu,
+.flyer-bg-menu *,
+.flyer-theme-menu,
+.flyer-theme-menu *,
+.flyer-download-inline,
+.flyer-download-inline * {
+    pointer-events: auto !important;
+}
+
+.flyer-bg-menu-list,
+.flyer-theme-menu-list,
+.flyer-download-popover {
+    z-index: 999 !important;
+}
+
+.flyer-bg-btn,
+.flyer-color-btn {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* =========================================================
+   FLYER FONT SIZE UP MORE
+   - 현재 상태에서 폰트만 1단계 더 확대
+   - 위치는 유지
+========================================================= */
+
+/* 상단 라벨 */
+.flyer-preview-label {
+    font-size: 2.15cqw !important;
+}
+
+/* 현장명 */
+.flyer-preview h4 {
+    font-size: 6.45cqw !important;
+    line-height: 0.98 !important;
+}
+
+/* 한줄 카피 */
+.flyer-preview-hero-content p {
+    font-size: 2.55cqw !important;
+    line-height: 1.26 !important;
+}
+
+/* 위치 */
+.flyer-preview-hero-content em {
+    font-size: 2.1cqw !important;
+}
+
+/* 조건 01/02/03 */
+.flyer-point span {
+    font-size: 4.45cqw !important;
+}
+
+.flyer-point strong {
+    font-size: 4.4cqw !important;
+    line-height: 1.08 !important;
+}
+
+/* BENEFIT */
+.flyer-benefit-box span {
+    font-size: 1.85cqw !important;
+}
+
+.flyer-benefit-box strong {
+    font-size: 5.15cqw !important;
+    line-height: 1.12 !important;
+}
+
+.flyer-benefit-box p {
+    font-size: 2.2cqw !important;
+    line-height: 1.4 !important;
+}
+
+/* 하단 상담영역 */
+.flyer-contact-box span {
+    font-size: 1.8cqw !important;
+}
+
+.flyer-contact-box strong {
+    font-size: 3.8cqw !important;
+}
+
+.flyer-contact-box a {
+    font-size: 4.2cqw !important;
+}
+
+/* =========================================================
+   FLYER A4 FONT SIZE FORCE UP
+   - #flyerPreview 기준으로 원본 A4 폰트 강제 확대
+   - 미니맵 영향 없음
+========================================================= */
+
+#flyerPreview .flyer-preview-label {
+    font-size: 2.45cqw !important;
+}
+
+#flyerPreview h4 {
+    font-size: 7.1cqw !important;
+    line-height: 0.98 !important;
+}
+
+#flyerPreview .flyer-preview-hero-content p {
+    font-size: 3.15cqw !important;
+    line-height: 1.2 !important;
+}
+
+#flyerPreview .flyer-preview-hero-content em {
+    font-size: 2.85cqw !important;
+}
+
+#flyerPreview .flyer-point strong {
+    font-size: 4.65cqw !important;
+    line-height: 1.04 !important;
+}
+
+#flyerPreview .flyer-benefit-box span {
+    font-size: 2.45cqw !important;
+}
+
+#flyerPreview .flyer-benefit-box strong {
+    font-size: 5.55cqw !important;
+    line-height: 1.08 !important;
+}
+
+#flyerPreview .flyer-benefit-box p {
+    font-size: 2.85cqw !important;
+    line-height: 1.32 !important;
+}
+
+#flyerPreview .flyer-contact-box span {
+    font-size: 2.2cqw !important;
+}
+
+#flyerPreview .flyer-contact-box strong {
+    font-size: 4.1cqw !important;
+}
+
+#flyerPreview .flyer-contact-box a {
+    font-size: 4.9cqw !important;
+}
+
+/* =========================================================
+   FLYER A4 FONT SIZE FORCE UP XL
+   - 원본 A4 폰트 더 크게 확대
+   - 미니맵 영향 없음
+   - 위치는 유지
+========================================================= */
+
+/* 상단 라벨 */
+#flyerPreview .flyer-preview-label {
+    font-size: 2.75cqw !important;
+}
+
+/* 현장명 */
+#flyerPreview h4 {
+    font-size: 7.8cqw !important;
+    line-height: 0.96 !important;
+}
+
+/* 한줄 카피 */
+#flyerPreview .flyer-preview-hero-content p {
+    font-size: 3.55cqw !important;
+    line-height: 1.16 !important;
+}
+
+/* 위치 */
+#flyerPreview .flyer-preview-hero-content em {
+    font-size: 3.2cqw !important;
+}
+
+/* 조건 텍스트 */
+#flyerPreview .flyer-point strong {
+    font-size: 5.25cqw !important;
+    line-height: 1.02 !important;
+}
+
+/* BENEFIT */
+#flyerPreview .flyer-benefit-box span {
+    font-size: 2.75cqw !important;
+}
+
+/* 혜택 강조 문구 */
+#flyerPreview .flyer-benefit-box strong {
+    font-size: 6.25cqw !important;
+    line-height: 1.04 !important;
+}
+
+/* 혜택 상세 안내 */
+#flyerPreview .flyer-benefit-box p {
+    font-size: 3.25cqw !important;
+    line-height: 1.26 !important;
+}
+
+/* 상담 문의 */
+#flyerPreview .flyer-contact-box span {
+    font-size: 2.55cqw !important;
+}
+
+/* 상담자 */
+#flyerPreview .flyer-contact-box strong {
+    font-size: 4.75cqw !important;
+}
+
+/* 전화번호 */
+#flyerPreview .flyer-contact-box a {
+    font-size: 5.65cqw !important;
+}
+
+/* =========================================================
+   FLYER LOCATION TEXT CENTER FINAL
+   - 원본 A4와 미니맵 위치 문구를 각각 보정
+========================================================= */
+
+/* 원본 A4: 조금 더 위로 */
+#flyerPreview .flyer-preview-hero-content em {
+    left: 16.2% !important;
+    top: 28.75% !important;
+}
+
+/* 미니맵: 현재가 좋아서 유지 */
+.flyer-mini-clone .flyer-preview-hero-content em {
+    left: 16.2% !important;
+    top: 29.25% !important;
+}
+
+/* =========================================================
+   FLYER A4 LOWER SECTION TUNE ONLY
+   - 원본 A4 하단부만 조정
+   - 미니맵 영향 없음
+   - 혜택 줄간격 완화 / 전화번호 pill 안으로 보정 / 이름 옆 막대기 제거
+========================================================= */
+
+/* BENEFIT 큰 제목 */
+#flyerPreview .flyer-benefit-box strong {
+    left: 8% !important;
+    right: 8% !important;
+    top: 22% !important;
+    font-size: 5.85cqw !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.06em !important;
+}
+
+/* BENEFIT 상세 설명 */
+#flyerPreview .flyer-benefit-box p {
+    left: 11% !important;
+    right: 11% !important;
+    top: 54% !important;
+    font-size: 2.85cqw !important;
+    line-height: 1.42 !important;
+    letter-spacing: -0.035em !important;
+}
+
+/* 전화번호: 노란 pill 안으로 보정 */
+#flyerPreview .flyer-contact-box a {
+    right: 7.2% !important;
+    top: 23% !important;
+    width: 40.5% !important;
+    height: 52% !important;
+    font-size: 5.05cqw !important;
+    letter-spacing: -0.035em !important;
+}
+
+/* 상담자 영역 */
+#flyerPreview .flyer-contact-box>div {
+    left: 17.2% !important;
+    top: 18% !important;
+    border-left: 0 !important;
+}
+
+/* 상담자 이름 옆 막대기 제거 */
+#flyerPreview .flyer-contact-box>div::before,
+#flyerPreview .flyer-contact-box>div::after {
+    display: none !important;
+    content: none !important;
+}

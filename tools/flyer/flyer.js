@@ -304,6 +304,10 @@
     function resetFlyer() {
         var els = getEls();
 
+        var currentBackground = getActiveValue('data-flyer-bg', 'apartment');
+        var currentTheme = getActiveValue('data-flyer-theme', 'simple');
+        var currentOverlay = getActiveValue('data-flyer-overlay', 'soft');
+
         if (els.form) {
             els.form.reset();
         }
@@ -315,13 +319,15 @@
         }
 
         clearCustomFlyerBackground();
-        setBackground('apartment');
-        setTheme('simple');
-        setOverlay('soft');
+
+        setBackground(currentBackground);
+        setTheme(currentTheme);
+        setOverlay(currentOverlay);
+
         closeDownloadPopover();
         updatePreview();
 
-        showFlyerToast('웹전단 입력값을 초기화했어.');
+        showFlyerToast('현재 시안은 유지하고 입력값만 초기화했어.');
     }
 
     function closeDownloadPopover() {
