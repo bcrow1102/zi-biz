@@ -2,6 +2,7 @@
     'use strict';
 
     var FLYER_DRAFT_KEY = 'zimo_biz_flyer_draft_v2';
+    var flyerCustomBgObjectUrl = '';
 
     function safeText(value, fallback) {
         var text = String(value || '').trim();
@@ -55,7 +56,13 @@
             resetBtn: document.getElementById('flyerResetBtn'),
 
             downloadBtn: document.getElementById('flyerDownloadBtn'),
-            downloadPopover: document.getElementById('flyerDownloadPopover')
+            downloadPopover: document.getElementById('flyerDownloadPopover'),
+
+            bgUploadInput: document.getElementById('flyerBgUploadInput'),
+            bgUploadLabel: document.getElementById('flyerBgUploadLabel'),
+            previewWrap: document.querySelector('.flyer-preview-wrap'),
+            a6Sheet: document.getElementById('flyerA6Sheet'),
+            generalHeroImage: document.getElementById('flyerGeneralHeroImage')
         };
     }
 
@@ -127,18 +134,75 @@
     }
     function setBackground(background) {
         var els = getEls();
+        var bg = background || 'apartment';
 
         if (!els.preview) return;
 
-        ['apartment', 'office'].forEach(function (name) {
+        ['apartment', 'office', 'general'].forEach(function (name) {
             els.preview.classList.remove('flyer-bg-' + name);
         });
 
-        els.preview.classList.add('flyer-bg-' + background);
+        els.preview.classList.add('flyer-bg-' + bg);
 
         document.querySelectorAll('[data-flyer-bg]').forEach(function (button) {
-            button.classList.toggle('is-active', button.getAttribute('data-flyer-bg') === background);
+            button.classList.toggle('is-active', button.getAttribute('data-flyer-bg') === bg);
         });
+
+        if (els.bgUploadLabel) {
+            els.bgUploadLabel.classList.toggle('is-hidden', bg !== 'general');
+        }
+
+        if (bg === 'general' && !flyerCustomBgObjectUrl) {
+            showFlyerToast('일반 배경은 이미지를 업로드해서 사용할 수 있어.');
+        }
+    }
+    function applyCustomFlyerBackground(file) {
+        var els = getEls();
+
+        if (!file || !file.type || file.type.indexOf('image/') !== 0) {
+            showFlyerToast('이미지 파일만 업로드할 수 있어.');
+            return;
+        }
+
+        if (flyerCustomBgObjectUrl) {
+            URL.revokeObjectURL(flyerCustomBgObjectUrl);
+        }
+
+        flyerCustomBgObjectUrl = URL.createObjectURL(file);
+
+        var bgValue = 'url("' + flyerCustomBgObjectUrl + '")';
+
+        if (els.preview) {
+            els.preview.style.setProperty('--flyer-custom-hero-bg', bgValue);
+            els.preview.classList.add('has-custom-hero-image');
+        }
+
+        setBackground('general');
+        saveDraft(false);
+        showFlyerToast('상단 이미지가 적용됐어.');
+    }
+
+    function clearCustomFlyerBackground() {
+        var els = getEls();
+
+        if (flyerCustomBgObjectUrl) {
+            URL.revokeObjectURL(flyerCustomBgObjectUrl);
+            flyerCustomBgObjectUrl = '';
+        }
+
+        [els.preview, els.previewWrap, els.a6Sheet].forEach(function (target) {
+            if (!target) return;
+            target.style.removeProperty('--flyer-custom-bg');
+            target.style.removeProperty('--flyer-custom-hero-bg');
+        });
+
+        if (els.preview) {
+            els.preview.classList.remove('has-custom-hero-image');
+        }
+
+        if (els.bgUploadInput) {
+            els.bgUploadInput.value = '';
+        }
     }
 
     function setTheme(theme) {
@@ -250,6 +314,7 @@
             // 삭제 실패 시에도 화면은 초기화한다.
         }
 
+        clearCustomFlyerBackground();
         setBackground('apartment');
         setTheme('simple');
         setOverlay('soft');
@@ -413,7 +478,9 @@
 
         document.querySelectorAll('[data-flyer-bg]').forEach(function (button) {
             button.addEventListener('click', function () {
-                setBackground(button.getAttribute('data-flyer-bg') || 'apartment');
+                var nextBg = button.getAttribute('data-flyer-bg') || 'apartment';
+
+                setBackground(nextBg);
                 saveDraft(false);
 
                 var bgMenu = button.closest('.flyer-bg-menu');
@@ -423,6 +490,15 @@
                 }
             });
         });
+        if (els.bgUploadInput) {
+            els.bgUploadInput.addEventListener('change', function () {
+                var file = els.bgUploadInput.files && els.bgUploadInput.files[0];
+
+                if (!file) return;
+
+                applyCustomFlyerBackground(file);
+            });
+        }
 
         document.querySelectorAll('[data-flyer-theme]').forEach(function (button) {
             button.addEventListener('click', function () {

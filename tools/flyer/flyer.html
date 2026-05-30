@@ -118,6 +118,8 @@
                         <div class="flyer-bg-menu-list">
                             <button type="button" class="flyer-bg-btn is-active" data-flyer-bg="apartment">아파트</button>
                             <button type="button" class="flyer-bg-btn" data-flyer-bg="office">오피스텔</button>
+                            <button type="button" class="flyer-bg-btn" data-flyer-bg="general">일반</button>
+
                         </div>
                     </details>
 
@@ -154,10 +156,16 @@
 
             <div class="flyer-preview-wrap">
                 <div class="flyer-size-badge" id="flyerSizeBadge">A4</div>
+
+                <label class="flyer-bg-upload is-hidden" id="flyerBgUploadLabel">
+                    <input type="file" id="flyerBgUploadInput" accept="image/*">
+                    <span>일반 배경 이미지 업로드</span>
+                </label>
                 <article class="flyer-preview flyer-bg-apartment flyer-theme-simple flyer-overlay-soft"
                     id="flyerPreview">
                     <div class="flyer-preview-hero" id="flyerPreviewHero">
                         <div class="flyer-preview-overlay"></div>
+                        <div class="flyer-general-hero-image" id="flyerGeneralHeroImage"></div>
 
                         <div class="flyer-preview-hero-content">
                             <span class="flyer-preview-label" id="flyerPreviewLabel">프리미엄 오피스텔</span>
@@ -202,7 +210,6 @@
                             <a href="tel:01000000000" id="flyerPreviewPhone">010-0000-0000</a>
                         </div>
                     </div>
-                </article>
 
                 </article>
 

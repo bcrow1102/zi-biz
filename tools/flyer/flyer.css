@@ -2466,3 +2466,500 @@ body:has(#flyerTool) .flyer-edit-bar {
         user-select: none !important;
     }
 }
+
+/* =========================================================
+   FLYER GENERAL BACKGROUND UPLOAD FINAL
+   - 배경 선택: 일반 추가
+   - 사용자가 직접 업로드한 이미지를 A4/A6 배경으로 사용
+   - 업로드 배경은 현재 브라우저 미리보기용
+========================================================= */
+
+.flyer-bg-upload {
+    display: block !important;
+    margin-top: 6px !important;
+    padding: 9px 10px !important;
+    border-radius: 10px !important;
+    background: #fff8e8 !important;
+    color: #b58a37 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-align: left !important;
+    cursor: pointer !important;
+}
+
+.flyer-bg-upload:hover {
+    background: #fff2d2 !important;
+}
+
+.flyer-bg-upload input {
+    display: none !important;
+}
+
+.flyer-bg-upload.is-hidden {
+    display: none !important;
+}
+
+/* A4 일반 업로드 배경 */
+.flyer-preview.flyer-bg-general {
+    background-image: var(--flyer-custom-bg,
+            linear-gradient(135deg, #fff8dd 0%, #ffffff 100%)) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+/* A6 일반 업로드 배경 */
+body:has(#flyerTool) .flyer-preview-wrap:has(#flyerPreview.flyer-bg-general) #flyerA6Sheet .flyer-a6-card {
+    background-image: var(--flyer-custom-bg,
+            linear-gradient(135deg, #fff8dd 0%, #ffffff 100%)) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+/* =========================================================
+   FLYER GENERAL UPLOAD IN PREVIEW FINAL
+   - 일반 배경 선택 시 미리보기 화면 안에 업로드 버튼 표시
+   - 드롭다운 안에서는 업로드 노출하지 않음
+========================================================= */
+
+.flyer-bg-menu-list .flyer-bg-upload {
+    display: none !important;
+}
+
+.flyer-preview-wrap>.flyer-bg-upload {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 42px !important;
+    margin: 0 0 10px !important;
+    border-radius: 16px !important;
+    background: #fff8e8 !important;
+    border: 1px dashed rgba(181, 138, 55, 0.45) !important;
+    color: #b58a37 !important;
+    font-size: 13px !important;
+    font-weight: 750 !important;
+    letter-spacing: -0.025em !important;
+    cursor: pointer !important;
+}
+
+.flyer-preview-wrap>.flyer-bg-upload:hover {
+    background: #fff2d2 !important;
+}
+
+.flyer-preview-wrap>.flyer-bg-upload input {
+    display: none !important;
+}
+
+.flyer-preview-wrap>.flyer-bg-upload.is-hidden {
+    display: none !important;
+}
+
+/* =========================================================
+   FLYER GENERAL UPLOAD BUTTON COMPACT FINAL
+   - 일반 배경 업로드 버튼을 작은 보조 버튼으로 축소
+   - 미리보기 위쪽에서 과하게 튀지 않게 정리
+========================================================= */
+
+body:has(#flyerTool) .flyer-preview-wrap>.flyer-bg-upload {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    max-width: fit-content !important;
+    min-height: 30px !important;
+    margin: 0 4px 8px auto !important;
+    padding: 0 11px !important;
+    border-radius: 999px !important;
+    background: #fff8e8 !important;
+    border: 1px solid rgba(181, 138, 55, 0.35) !important;
+    color: #b58a37 !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.025em !important;
+    cursor: pointer !important;
+}
+
+body:has(#flyerTool) .flyer-preview-wrap>.flyer-bg-upload:hover {
+    background: #fff2d2 !important;
+    border-color: rgba(181, 138, 55, 0.55) !important;
+}
+
+body:has(#flyerTool) .flyer-preview-wrap>.flyer-bg-upload input {
+    display: none !important;
+}
+
+body:has(#flyerTool) .flyer-preview-wrap>.flyer-bg-upload.is-hidden {
+    display: none !important;
+}
+
+/* =========================================================
+   FLYER GENERAL DEFAULT BACKGROUND FINAL
+   - 일반 선택 시 기본 제공 배경 표시
+   - 사용자가 이미지 업로드하면 업로드 이미지가 우선 적용
+========================================================= */
+
+/* A4 일반 기본 배경 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general {
+    background-image: var(--flyer-custom-bg,
+            url("./images/flyer-general-simple-bg.jpg")) !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+/* A6 일반 기본 배경 */
+body:has(#flyerTool) .flyer-preview-wrap:has(#flyerPreview.flyer-bg-general) #flyerA6Sheet .flyer-a6-card {
+    background-image: var(--flyer-custom-bg,
+            url("./images/flyer-general-simple-bg.jpg")) !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+/* =========================================================
+   FLYER GENERAL DEFAULT + HERO UPLOAD FINAL
+   - 일반 기본 배경은 flyer-general-simple-bg.jpg 사용
+   - 업로드 이미지는 전단 전체가 아니라 상단부에만 표시
+========================================================= */
+
+/* 일반 기본 배경 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general {
+    background-image: url("./images/flyer-general-simple-bg.jpg") !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+/* 상단 업로드 이미지 슬롯 기본 숨김 */
+body:has(#flyerTool) .flyer-general-hero-image {
+    display: none !important;
+}
+
+/* =========================================================
+   FLYER GENERAL HERO FULL WAVE AREA FINAL
+   - 일반 업로드 이미지를 상단 + 노란 물결 영역까지 확장
+   - 하단은 흰 섹션 시작선에 맞춰 물결처럼 컷
+========================================================= */
+
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-general-hero-image {
+    position: absolute !important;
+    left: 0.8% !important;
+    top: 0.7% !important;
+    z-index: 2 !important;
+
+    display: block !important;
+    width: 98.4% !important;
+    height: 46.8% !important;
+
+    border-radius: 24px 24px 0 0 !important;
+    background-image: var(--flyer-custom-hero-bg) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+
+    overflow: hidden !important;
+    pointer-events: none !important;
+
+    clip-path: polygon(0 0,
+            100% 0,
+            100% 82%,
+            95% 81.5%,
+            89% 81.2%,
+            82% 81.6%,
+            74% 82.8%,
+            66% 84.6%,
+            57% 86.6%,
+            48% 88.0%,
+            39% 88.7%,
+            30% 88.1%,
+            22% 86.6%,
+            14% 84.1%,
+            7% 81.0%,
+            0 77.5%) !important;
+}
+
+/* 일반 배경에서는 텍스트가 업로드 이미지 위로 올라오게 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general .flyer-preview-hero-content {
+    z-index: 6 !important;
+}
+
+/* 일반 배경 업로드 버튼 축소 */
+body:has(#flyerTool) .flyer-preview-wrap>.flyer-bg-upload {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    max-width: fit-content !important;
+    min-height: 30px !important;
+    margin: 0 4px 8px auto !important;
+    padding: 0 11px !important;
+    border-radius: 999px !important;
+    background: #fff8e8 !important;
+    border: 1px solid rgba(181, 138, 55, 0.35) !important;
+    color: #b58a37 !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.025em !important;
+    cursor: pointer !important;
+}
+
+body:has(#flyerTool) .flyer-preview-wrap>.flyer-bg-upload:hover {
+    background: #fff2d2 !important;
+    border-color: rgba(181, 138, 55, 0.55) !important;
+}
+
+body:has(#flyerTool) .flyer-preview-wrap>.flyer-bg-upload input {
+    display: none !important;
+}
+
+body:has(#flyerTool) .flyer-preview-wrap>.flyer-bg-upload.is-hidden {
+    display: none !important;
+}
+
+/* =========================================================
+   FLYER GENERAL HERO FULL AREA OVERRIDE FINAL
+   - 일반 업로드 이미지는 상단 노란 히어로 영역 전체에만 표시
+   - 01/02/03 이하 영역은 기존 일반 배경 유지
+   - 이전 오른쪽 슬롯 좌표/전체 배경 변수 덮어쓰기
+========================================================= */
+
+/* 일반 기본 배경은 항상 우리 기본 노랑 배경 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general {
+    background-image: url("./images/flyer-general-simple-bg.jpg") !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+/* 상단 업로드 이미지 슬롯 기본 숨김 */
+body:has(#flyerTool) .flyer-general-hero-image {
+    display: none !important;
+}
+
+/* =========================================================
+   FLYER GENERAL HERO FULL WAVE AREA FINAL
+   - 일반 업로드 이미지를 상단 + 노란 물결 영역까지 확장
+   - 하단은 흰 섹션 시작선에 맞춰 물결처럼 컷
+========================================================= */
+
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-general-hero-image {
+    position: absolute !important;
+    left: 0.8% !important;
+    top: 0.7% !important;
+    z-index: 2 !important;
+
+    display: block !important;
+    width: 98.4% !important;
+    height: 46.8% !important;
+
+    border-radius: 24px 24px 0 0 !important;
+    background-image: var(--flyer-custom-hero-bg) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+
+    overflow: hidden !important;
+    pointer-events: none !important;
+
+    clip-path: polygon(0 0,
+            100% 0,
+            100% 82%,
+            95% 81.5%,
+            89% 81.2%,
+            82% 81.6%,
+            74% 82.8%,
+            66% 84.6%,
+            57% 86.6%,
+            48% 88%,
+            39% 88.7%,
+            30% 88.1%,
+            22% 86.6%,
+            14% 84.1%,
+            7% 81%,
+            0 77.5%) !important;
+}
+
+/* =========================================================
+   FLYER GENERAL HERO IMAGE READABILITY FINAL
+   - 일반 업로드 이미지 위 텍스트 가독성 확보
+   - 이미지 자체는 유지하되 상단 텍스트 영역만 은은하게 밝힘
+========================================================= */
+
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-general-hero-image::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    display: block !important;
+    pointer-events: none !important;
+
+    background:
+        linear-gradient(90deg,
+            rgba(255, 246, 190, 0.72) 0%,
+            rgba(255, 246, 190, 0.46) 34%,
+            rgba(255, 255, 255, 0.16) 62%,
+            rgba(255, 255, 255, 0.04) 100%) !important;
+}
+
+/* =========================================================
+   FLYER GENERAL HERO IMAGE FINAL OVERRIDE
+   - 업로드 이미지를 상단 히어로 물결 영역까지 확장
+   - 노란 오버레이 제거 → 일반 화이트 오버레이로 변경
+   - 오른쪽 하단 노란 물결 잔여 영역 최소화
+========================================================= */
+
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-general-hero-image {
+    position: absolute !important;
+    left: 0.8% !important;
+    top: 0.7% !important;
+    z-index: 2 !important;
+
+    display: block !important;
+    width: 98.4% !important;
+    height: 47.6% !important;
+
+    border-radius: 24px 24px 0 0 !important;
+    background-image: var(--flyer-custom-hero-bg) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+
+    overflow: hidden !important;
+    pointer-events: none !important;
+
+    clip-path: polygon(0 0,
+            100% 0,
+            100% 91%,
+            94% 90.2%,
+            88% 89.4%,
+            80% 88.8%,
+            72% 88.6%,
+            64% 89.2%,
+            55% 90.4%,
+            46% 91.4%,
+            37% 91.2%,
+            28% 89.6%,
+            19% 86.6%,
+            10% 82.4%,
+            0 77.8%) !important;
+}
+
+/* 노란 오버레이 제거: 일반적인 흰색 가독성 오버레이 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-general-hero-image::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    display: block !important;
+    pointer-events: none !important;
+
+    background:
+        linear-gradient(90deg,
+            rgba(255, 255, 255, 0.58) 0%,
+            rgba(255, 255, 255, 0.34) 32%,
+            rgba(255, 255, 255, 0.14) 58%,
+            rgba(255, 255, 255, 0.02) 100%) !important;
+}
+
+/* =========================================================
+   FLYER GENERAL HERO TEXT PANELS FINAL
+   - 일반 업로드 이미지가 상단을 덮어도
+   - 텍스트 입력 영역 구조를 CSS로 다시 생성
+========================================================= */
+
+/* 상단 히어로 위에 텍스트 박스/위치 바를 다시 그림 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 6.1% !important;
+    top: 5.3% !important;
+    z-index: 4 !important;
+
+    width: 63.5% !important;
+    height: 17.5% !important;
+
+    border-radius: 18px !important;
+    background: rgba(255, 250, 225, 0.82) !important;
+    border: 1px solid rgba(255, 255, 255, 0.52) !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08) !important;
+    pointer-events: none !important;
+}
+
+/* 위치 입력용 네이비 바 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 6.1% !important;
+    top: 29.4% !important;
+    z-index: 4 !important;
+
+    width: 51.5% !important;
+    height: 4.7% !important;
+
+    border-radius: 999px !important;
+    background: #082f63 !important;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12) !important;
+    pointer-events: none !important;
+}
+
+/* 텍스트는 박스보다 위 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-preview-label,
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image h4,
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-preview-hero-content p,
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-preview-hero-content em {
+    z-index: 6 !important;
+}
+
+/* 일반 업로드 상태에서 위치 문구는 네이비 바 안에 맞춤 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-preview-hero-content em {
+    color: #ffffff !important;
+    left: 13.1% !important;
+    top: 31.15% !important;
+}
+
+/* =========================================================
+   FLYER GENERAL UPLOAD MID BOX FIX
+   - 업로드 상태에서 중간 네이비 바 제거
+   - 첫 번째 조건 텍스트 박스(이영자실장이다굿) 다시 생성
+   - 이미지가 조금 가려져도 박스 구조 우선
+========================================================= */
+
+/* 중간 네이비 바 완전 제거 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* 첫 번째 조건 줄을 박스 위로 올림 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-point:nth-child(1) {
+    z-index: 7 !important;
+}
+
+/* 첫 번째 조건 줄 뒤에 흰 박스 다시 생성 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-point:nth-child(1)::before {
+    content: "" !important;
+    position: absolute !important;
+    left: -11.8% !important;
+    top: -23% !important;
+    width: 145% !important;
+    height: 152% !important;
+
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(232, 206, 104, 0.72) !important;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06) !important;
+
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+
+/* 첫 번째 조건 텍스트는 박스 위에 선명하게 */
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-point:nth-child(1) span,
+body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flyer-point:nth-child(1) strong {
+    position: relative !important;
+    z-index: 8 !important;
+}
