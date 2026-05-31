@@ -3106,31 +3106,6 @@ button {
     pointer-events: none !important;
 }
 
-@media (max-width: 760px) {
-    .hero-event-card.hero-event-card--image {
-        grid-area: event !important;
-        position: relative !important;
-        inset: auto !important;
-        width: 128px !important;
-        height: auto !important;
-        min-height: 0 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        overflow: visible !important;
-        transform: none !important;
-        z-index: 4 !important;
-    }
-
-    .hero-event-card.hero-event-card--image img {
-        border-radius: 0 !important;
-        box-shadow: none !important;
-    }
-}
-
 @media (max-width: 420px) {
     .hero-event-card.hero-event-card--image {
         width: 116px !important;
@@ -4706,5 +4681,179 @@ body:has(#flyerTool) .flyer-footer-menu.is-open {
 
     .flyer-back-btn strong {
         font-size: 12px;
+    }
+}
+
+/* =========================================================
+   NAMECARD DIRECT EDIT FINAL
+   - 명함도 전단처럼 미리보기 클릭 수정
+   - 기존 전체 폼 숨김
+   - 모바일 미니맵 없음
+========================================================= */
+
+#namecardTool.is-namecard-direct-edit .namecard-old-form-hidden {
+    display: none !important;
+}
+
+#namecardTool.is-namecard-direct-edit .namecard-template-visible {
+    display: block !important;
+}
+
+#namecardTool .namecard-editable-text {
+    cursor: text !important;
+    border-radius: 7px !important;
+    outline: 1px dashed transparent !important;
+    outline-offset: 3px !important;
+    transition:
+        background-color 0.15s ease,
+        outline-color 0.15s ease,
+        box-shadow 0.15s ease !important;
+}
+
+#namecardTool .namecard-editable-text:hover {
+    background: rgba(49, 130, 246, 0.05) !important;
+    outline-color: rgba(49, 130, 246, 0.25) !important;
+}
+
+#namecardTool .namecard-editable-text.is-namecard-selected {
+    background: rgba(49, 130, 246, 0.08) !important;
+    outline-color: #3182f6 !important;
+    box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.06) !important;
+}
+
+.namecard-inline-editor {
+    width: 100%;
+    margin: 16px auto 12px !important;
+    padding: 12px !important;
+    display: grid !important;
+    grid-template-columns: 118px minmax(0, 1fr) 54px !important;
+    align-items: center !important;
+    gap: 8px !important;
+    border: 1px solid rgba(18, 24, 38, 0.07) !important;
+    border-radius: 18px !important;
+    background: #ffffff !important;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06) !important;
+}
+
+.namecard-inline-label {
+    min-width: 0 !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 10px !important;
+    border-radius: 15px !important;
+    background: #3182f6 !important;
+    color: #ffffff !important;
+}
+
+.namecard-inline-label span {
+    display: block !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    line-height: 1.1 !important;
+    font-weight: 650 !important;
+    letter-spacing: -0.03em !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    text-align: center !important;
+}
+
+.namecard-inline-label small {
+    display: none !important;
+}
+
+#namecardInlineInput {
+    width: 100% !important;
+    height: 44px !important;
+    min-width: 0 !important;
+    padding: 0 13px !important;
+    border: 1px solid rgba(18, 24, 38, 0.08) !important;
+    border-radius: 15px !important;
+    outline: none !important;
+    background: #f8fafc !important;
+    color: #252b35 !important;
+    font-family: var(--font) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.03em !important;
+}
+
+#namecardInlineInput:focus {
+    border-color: rgba(49, 130, 246, 0.55) !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(49, 130, 246, 0.1) !important;
+}
+
+#namecardInlineInput:disabled {
+    color: #9aa2ad !important;
+    background: #f2f4f8 !important;
+    cursor: default !important;
+}
+
+#namecardInlineCount {
+    height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 15px !important;
+    background: #f6f7fa !important;
+    color: #8b929d !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.02em !important;
+}
+
+/* 모바일: 명함은 미니맵 없이 직접 터치 수정 */
+@media (max-width: 760px) {
+
+    #namecardTool [class*="minimap"],
+    #namecardTool [class*="mini-map"],
+    #namecardTool .namecard-minimap,
+    #namecardTool .namecard-mini-map {
+        display: none !important;
+    }
+
+    .namecard-inline-editor {
+        position: sticky !important;
+        bottom: 10px !important;
+        z-index: 30 !important;
+        width: calc(100% - 4px) !important;
+        margin: 14px auto 8px !important;
+        padding: 10px !important;
+        grid-template-columns: 94px minmax(0, 1fr) 44px !important;
+        gap: 7px !important;
+        border-radius: 18px !important;
+    }
+
+    .namecard-inline-label {
+        height: 42px !important;
+        padding: 0 8px !important;
+        border-radius: 14px !important;
+    }
+
+    .namecard-inline-label span {
+        font-size: 12px !important;
+        font-weight: 650 !important;
+    }
+
+    #namecardInlineInput {
+        height: 42px !important;
+        padding: 0 11px !important;
+        border-radius: 14px !important;
+        font-size: 13px !important;
+    }
+
+    #namecardInlineCount {
+        height: 42px !important;
+        border-radius: 14px !important;
+        font-size: 11px !important;
+    }
+
+    #namecardTool .namecard-editable-text {
+        min-height: 20px !important;
+        outline-offset: 2px !important;
     }
 }

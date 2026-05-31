@@ -573,3 +573,703 @@
         window.setTimeout(syncNamecardPreviewFallback, 0);
     };
 })();
+/* =========================================================
+   NAMECARD DIRECT EDIT FINAL
+   - 명함 미리보기 직접 클릭 수정
+   - 미니맵 없음
+   - 기존 입력폼은 데이터 저장용으로만 유지
+========================================================= */
+
+(function () {
+    'use strict';
+
+    var selectedKey = null;
+
+    var EDIT_FIELDS = [
+        {
+            key: 'company',
+            label: '현장명 / 회사명',
+            inputId: 'ncCompany',
+            previewId: 'ncPreviewCompany',
+            placeholder: '예시) 문수로 써밋 블루밍',
+            maxLength: 18
+        },
+        {
+            key: 'role',
+            label: '직함',
+            inputId: 'ncRole',
+            previewId: 'ncPreviewRole',
+            placeholder: '예시) 팀장',
+            maxLength: 8
+        },
+        {
+            key: 'name',
+            label: '이름',
+            inputId: 'ncName',
+            previewId: 'ncPreviewName',
+            placeholder: '예시) 김지모',
+            maxLength: 8
+        },
+        {
+            key: 'summary',
+            label: '한 줄 소개',
+            inputId: 'ncSummary',
+            previewId: 'ncPreviewSummary',
+            placeholder: '예시) 울산 신규 아파트 상담 안내',
+            maxLength: 24
+        },
+        {
+            key: 'address',
+            label: '주소',
+            inputId: 'ncAddress',
+            previewId: 'ncPreviewAddress',
+            placeholder: '예시) 울산 남구 삼산로 00',
+            maxLength: 28
+        },
+        {
+            key: 'phone',
+            label: '휴대폰',
+            inputId: 'ncPhone',
+            previewId: 'ncPreviewPhone',
+            placeholder: '예시) 010-0000-0000',
+            maxLength: 16
+        },
+        {
+            key: 'landline',
+            label: '대표번호',
+            inputId: 'ncLandline',
+            previewId: 'ncPreviewLandline',
+            placeholder: '예시) 052-000-0000',
+            maxLength: 16
+        },
+        {
+            key: 'email',
+            label: '이메일',
+            inputId: 'ncEmail',
+            previewId: 'ncPreviewEmail',
+            placeholder: '예시) hello@zimo.kr',
+            maxLength: 32
+        },
+        {
+            key: 'desc1',
+            label: '설명 1줄',
+            inputId: 'ncDesc1',
+            previewId: 'ncPreviewDesc1',
+            placeholder: '예시) 울산 신규 아파트 상담 안내',
+            maxLength: 28
+        },
+        {
+            key: 'desc2',
+            label: '설명 2줄',
+            inputId: 'ncDesc2',
+            previewId: 'ncPreviewDesc2',
+            placeholder: '예시) 분양 조건, 혜택, 방문 예약을 빠르게 안내드립니다.',
+            maxLength: 42
+        },
+        {
+            key: 'tags',
+            label: '태그 3개',
+            inputId: 'ncTags',
+            previewId: 'ncPreviewTags',
+            placeholder: '예시) 현장상담, 조건안내, 방문예약',
+            maxLength: 28
+        }
+    ];
+
+    function $(id) {
+        return document.getElementById(id);
+    }
+
+    function getTool() {
+        return $('namecardTool');
+    }
+
+    function getField(key) {
+        return EDIT_FIELDS.find(function (field) {
+            return field.key === key;
+        });
+    }
+
+    function getInput(key) {
+        var field = getField(key);
+        return field ? $(field.inputId) : null;
+    }
+
+    function getPreview(key) {
+        var field = getField(key);
+        return field && field.previewId ? $(field.previewId) : null;
+    }
+
+    function getInputValue(key) {
+        var input = getInput(key);
+        return input ? String(input.value || '') : '';
+    }
+
+    function setInputValue(key, value) {
+        var input = getInput(key);
+
+        if (!input) return;
+
+        input.value = value;
+
+        input.dispatchEvent(new Event('input', {
+            bubbles: true
+        }));
+
+        input.dispatchEvent(new Event('change', {
+            bubbles: true
+        }));
+    }
+
+
+    function createInlineEditor(tool) {
+        var existing = $('namecardEditBar');
+
+        if (existing) return existing;
+
+        var editBar = document.createElement('div');
+        editBar.className = 'namecard-edit-bar';
+        editBar.id = 'namecardEditBar';
+
+        editBar.innerHTML = '' +
+            '<div class="namecard-edit-bar-label">' +
+            '   <span id="namecardEditLabel">항목 선택</span>' +
+            '   <small id="namecardEditCount">0/0</small>' +
+            '</div>' +
+            '<input type="text" class="namecard-edit-input" id="namecardEditInput" placeholder="명함 문구를 선택해 주세요" disabled />' +
+            '<button type="button" class="namecard-edit-reset" id="namecardEditClearBtn" aria-label="선택 항목 비우기">×</button>';
+
+        var previewArea = tool.querySelector('.namecard-preview-area');
+        var actions = tool.querySelector('.namecard-actions');
+
+        if (previewArea && actions) {
+            previewArea.insertBefore(editBar, actions);
+        } else if (previewArea) {
+            previewArea.appendChild(editBar);
+        } else {
+            tool.appendChild(editBar);
+        }
+
+        return editBar;
+    }
+
+    function markEditTargets() {
+        EDIT_FIELDS.forEach(function (field) {
+            var preview = getPreview(field.key);
+
+            if (!preview || preview.dataset.namecardEditTarget === 'true') return;
+
+            preview.dataset.namecardEditTarget = 'true';
+            preview.dataset.namecardField = field.key;
+            preview.classList.add('namecard-edit-target');
+            preview.setAttribute('tabindex', '0');
+            preview.setAttribute('role', 'button');
+            preview.setAttribute('title', field.label + ' 수정');
+        });
+    }
+    function updatePreviewSelected(key) {
+        EDIT_FIELDS.forEach(function (field) {
+            var preview = getPreview(field.key);
+
+            if (preview) {
+                preview.classList.toggle('is-namecard-selected', field.key === key);
+            }
+        });
+    }
+
+
+    function updateEditor(key) {
+        var field = getField(key);
+        var input = $('namecardEditInput');
+        var label = $('namecardEditLabel');
+        var count = $('namecardEditCount');
+        var title = $('namecardSelectedTitle');
+
+        if (!field || !input || !label || !count) return;
+
+        selectedKey = key;
+
+        var value = getInputValue(key);
+
+        input.disabled = false;
+        input.value = value;
+        input.placeholder = field.placeholder;
+        input.maxLength = field.maxLength;
+
+        label.textContent = field.label;
+        count.textContent = String(value.length) + '/' + String(field.maxLength);
+
+        if (title) {
+            title.textContent = field.label;
+        }
+
+        updatePreviewSelected(key);
+
+        window.setTimeout(function () {
+            input.focus();
+            input.select();
+        }, 0);
+    }
+
+    function selectField(key) {
+        if (!getField(key)) return;
+        updateEditor(key);
+    }
+
+    function bindPreviewSelect(tool) {
+        if (tool.dataset.namecardPreviewSelectBound === 'true') return;
+
+        tool.dataset.namecardPreviewSelectBound = 'true';
+
+        tool.addEventListener('click', function (event) {
+            var target = event.target.closest('.namecard-edit-target');
+
+            if (!target || !tool.contains(target)) return;
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            selectField(target.getAttribute('data-namecard-field'));
+        });
+
+        tool.addEventListener('keydown', function (event) {
+            if (event.key !== 'Enter' && event.key !== ' ') return;
+
+            var target = event.target.closest('.namecard-edit-target');
+
+            if (!target || !tool.contains(target)) return;
+
+            event.preventDefault();
+
+            selectField(target.getAttribute('data-namecard-field'));
+        });
+    }
+
+
+    function bindEditorInput() {
+        var input = $('namecardEditInput');
+        var clearBtn = $('namecardEditClearBtn');
+
+        if (input && input.dataset.namecardEditInputBound !== 'true') {
+            input.dataset.namecardEditInputBound = 'true';
+
+            input.addEventListener('input', function () {
+                var field = getField(selectedKey);
+                var count = $('namecardEditCount');
+
+                if (!field) return;
+
+                setInputValue(selectedKey, input.value);
+
+                if (count) {
+                    count.textContent = String(input.value.length) + '/' + String(field.maxLength);
+                }
+            });
+        }
+
+        if (clearBtn && clearBtn.dataset.namecardClearBound !== 'true') {
+            clearBtn.dataset.namecardClearBound = 'true';
+
+            clearBtn.addEventListener('click', function () {
+                var input = $('namecardEditInput');
+
+                if (!selectedKey || !input) return;
+
+                input.value = '';
+                input.dispatchEvent(new Event('input', {
+                    bubbles: true
+                }));
+                input.focus();
+            });
+        }
+    }
+
+    function bindTemplateMini() {
+        var template = $('ncTemplate');
+
+        if (!template || template.dataset.namecardTemplateMiniBound === 'true') return;
+
+        template.dataset.namecardTemplateMiniBound = 'true';
+
+        template.addEventListener('change', function () {
+            var label = document.querySelector('.namecard-template-current');
+
+            if (label) {
+                label.textContent = template.options[template.selectedIndex].textContent || '시안 1';
+            }
+        });
+    }
+
+    function createWebsiteEditAction(toolbar) {
+        if (!toolbar) return;
+        if ($('namecardWebsiteEditBtn')) return;
+
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'namecard-top-text-action namecard-website-edit-btn';
+        button.id = 'namecardWebsiteEditBtn';
+        button.textContent = '연결 주소';
+
+        button.addEventListener('click', function () {
+            selectField('website');
+        });
+
+        toolbar.appendChild(button);
+    }
+    function moveTemplateSelectToPreview(tool) {
+        var template = $('ncTemplate');
+        var website = $('ncWebsite');
+        var previewTop = tool.querySelector('.namecard-preview-top');
+        var resetBtn = $('ncResetBtn');
+        var actions = tool.querySelector('.namecard-actions');
+
+        if (!template || !previewTop) return;
+
+        var toolbar = $('namecardPreviewToolbar');
+
+        if (!toolbar) {
+            toolbar = document.createElement('div');
+            toolbar.className = 'namecard-preview-toolbar';
+            toolbar.id = 'namecardPreviewToolbar';
+            previewTop.appendChild(toolbar);
+        }
+
+        if (website && !$('namecardWebsiteTopField')) {
+            var websiteWrap = document.createElement('label');
+            websiteWrap.className = 'namecard-website-top-field';
+            websiteWrap.id = 'namecardWebsiteTopField';
+
+            websiteWrap.innerHTML = '' +
+                '<span>연결 주소 입력</span>' +
+                '<input type="url" id="namecardWebsiteTopInput" placeholder="예시) https://www.zimo.kr" />';
+
+            toolbar.insertBefore(websiteWrap, toolbar.firstChild);
+
+            var websiteMirror = $('namecardWebsiteTopInput');
+
+            websiteMirror.value = website.value || '';
+
+            websiteMirror.addEventListener('input', function () {
+                website.value = websiteMirror.value;
+
+                website.dispatchEvent(new Event('input', {
+                    bubbles: true
+                }));
+
+                website.dispatchEvent(new Event('change', {
+                    bubbles: true
+                }));
+            });
+
+            website.addEventListener('input', function () {
+                if (websiteMirror.value !== website.value) {
+                    websiteMirror.value = website.value || '';
+                }
+            });
+
+            website.addEventListener('change', function () {
+                if (websiteMirror.value !== website.value) {
+                    websiteMirror.value = website.value || '';
+                }
+            });
+        }
+        createWebsiteEditAction(toolbar);
+
+        if (!$('namecardPreviewTemplateControl')) {
+            var previewScene = tool.querySelector('.namecard-preview-scene');
+
+            if (previewScene) {
+                var wrap = document.createElement('label');
+                wrap.className = 'namecard-preview-template-control namecard-preview-template-control--inside';
+                wrap.id = 'namecardPreviewTemplateControl';
+
+                wrap.innerHTML = '' +
+                    '<span>시안 선택</span>' +
+                    '<select id="namecardPreviewTemplateSelect">' +
+                    '   <option value="template-red">시안 1</option>' +
+                    '   <option value="template-blue">시안 2</option>' +
+                    '</select>';
+
+                previewScene.appendChild(wrap);
+
+                var mirror = $('namecardPreviewTemplateSelect');
+
+                mirror.value = template.value || 'template-red';
+
+                mirror.addEventListener('change', function () {
+                    template.value = mirror.value;
+
+                    template.dispatchEvent(new Event('change', {
+                        bubbles: true
+                    }));
+                });
+
+                template.addEventListener('change', function () {
+                    mirror.value = template.value || 'template-red';
+                });
+            }
+        }
+
+        if (resetBtn && !resetBtn.classList.contains('is-in-namecard-toolbar')) {
+            resetBtn.classList.add('is-in-namecard-toolbar');
+            toolbar.appendChild(resetBtn);
+        }
+
+        if (actions && !actions.classList.contains('is-in-namecard-toolbar')) {
+            actions.classList.add('is-in-namecard-toolbar');
+            toolbar.appendChild(actions);
+        }
+    }
+
+    function bootDirectNamecardEdit() {
+        var tool = getTool();
+
+        if (!tool) return;
+
+        tool.classList.add('is-namecard-direct-final');
+
+        createInlineEditor(tool);
+        moveTemplateSelectToPreview(tool);
+
+        markEditTargets();
+        bindPreviewSelect(tool);
+        bindEditorInput();
+        bindTemplateMini();
+
+        if (!selectedKey) {
+            selectField('name');
+        }
+    }
+
+    var previousBoot = window.bootNamecardTool;
+
+    window.bootNamecardTool = function () {
+        if (typeof previousBoot === 'function') {
+            previousBoot();
+        }
+
+        window.setTimeout(bootDirectNamecardEdit, 0);
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        window.setTimeout(bootDirectNamecardEdit, 0);
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('[data-tool="namecard"]')) return;
+
+        window.setTimeout(bootDirectNamecardEdit, 250);
+    });
+})();
+
+/* =========================================================
+   NAMECARD TAG EACH EDIT FINAL
+   - 하단 설명 태그를 버튼 하나씩 직접 수정
+   - ncTags 값은 내부적으로 콤마 문자열 유지
+========================================================= */
+
+(function () {
+    'use strict';
+
+    var activeTagIndex = null;
+
+    function $(id) {
+        return document.getElementById(id);
+    }
+
+    function cleanExampleText(value, fallback) {
+        var text = String(value || '').trim();
+
+        if (!text) return fallback || '';
+
+        return text.replace(/^예시\)\s*/g, '').trim() || fallback || '';
+    }
+
+    function getTagInputValue() {
+        var input = $('ncTags');
+
+        if (!input) return '현장상담, 조건안내, 방문예약';
+
+        var value = String(input.value || '').trim();
+
+        if (value) return value;
+
+        return cleanExampleText(input.getAttribute('placeholder'), '현장상담, 조건안내, 방문예약');
+    }
+
+    function getTags() {
+        var tags = getTagInputValue()
+            .split(',')
+            .map(function (tag) {
+                return tag.trim();
+            })
+            .filter(Boolean)
+            .slice(0, 3);
+
+        while (tags.length < 3) {
+            tags.push('');
+        }
+
+        return tags;
+    }
+
+    function setTags(tags) {
+        var input = $('ncTags');
+
+        if (!input) return;
+
+        input.value = tags
+            .map(function (tag) {
+                return String(tag || '').trim();
+            })
+            .filter(Boolean)
+            .join(', ');
+
+        input.dispatchEvent(new Event('input', {
+            bubbles: true
+        }));
+
+        input.dispatchEvent(new Event('change', {
+            bubbles: true
+        }));
+    }
+
+    function markTagButtons() {
+        var wrap = $('ncPreviewTags');
+
+        if (!wrap) return;
+
+        /* 전체 태그 영역이 아니라, 태그 하나하나만 선택되게 */
+        wrap.classList.remove('namecard-edit-target');
+        wrap.removeAttribute('data-namecard-field');
+        wrap.removeAttribute('tabindex');
+        wrap.removeAttribute('role');
+        wrap.removeAttribute('title');
+
+        Array.prototype.forEach.call(wrap.querySelectorAll('span'), function (span, index) {
+            span.classList.add('namecard-tag-edit-target');
+            span.dataset.namecardTagIndex = String(index);
+            span.setAttribute('tabindex', '0');
+            span.setAttribute('role', 'button');
+            span.setAttribute('title', '태그 ' + String(index + 1) + ' 수정');
+        });
+    }
+
+    function markActiveTag(index) {
+        var wrap = $('ncPreviewTags');
+
+        if (!wrap) return;
+
+        Array.prototype.forEach.call(wrap.querySelectorAll('span'), function (span, spanIndex) {
+            span.classList.toggle('is-namecard-selected', spanIndex === index);
+        });
+    }
+
+    function selectTag(index) {
+        var tags = getTags();
+        var editInput = $('namecardEditInput');
+        var editLabel = $('namecardEditLabel');
+        var editCount = $('namecardEditCount');
+
+        if (!editInput || !editLabel || !editCount) return;
+
+        activeTagIndex = index;
+
+        editLabel.textContent = '태그 ' + String(index + 1);
+        editInput.disabled = false;
+        editInput.value = tags[index] || '';
+        editInput.placeholder = '예시) 현장상담';
+        editInput.maxLength = 10;
+        editCount.textContent = String(editInput.value.length) + '/10';
+
+        markActiveTag(index);
+
+        window.setTimeout(function () {
+            editInput.focus();
+            editInput.select();
+        }, 0);
+    }
+
+    document.addEventListener('click', function (event) {
+        var tag = event.target.closest('#ncPreviewTags span');
+
+        if (!tag) {
+            if (event.target.closest('.namecard-edit-target')) {
+                activeTagIndex = null;
+            }
+
+            return;
+        }
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        markTagButtons();
+
+        var index = Number(tag.dataset.namecardTagIndex || '0');
+
+        selectTag(index);
+    }, true);
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+
+        var tag = event.target.closest('#ncPreviewTags span');
+
+        if (!tag) return;
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        var index = Number(tag.dataset.namecardTagIndex || '0');
+
+        selectTag(index);
+    }, true);
+
+    document.addEventListener('input', function (event) {
+        var editInput = $('namecardEditInput');
+
+        if (!editInput || event.target !== editInput) return;
+        if (activeTagIndex === null) return;
+
+        event.stopImmediatePropagation();
+
+        var tags = getTags();
+        var editCount = $('namecardEditCount');
+
+        tags[activeTagIndex] = editInput.value;
+
+        setTags(tags);
+
+        if (editCount) {
+            editCount.textContent = String(editInput.value.length) + '/10';
+        }
+
+        window.setTimeout(function () {
+            markTagButtons();
+            markActiveTag(activeTagIndex);
+        }, 0);
+    }, true);
+
+    document.addEventListener('DOMContentLoaded', function () {
+        window.setTimeout(markTagButtons, 300);
+    });
+
+    document.addEventListener('input', function (event) {
+        if (!event.target.closest('#namecardTool')) return;
+
+        window.setTimeout(markTagButtons, 0);
+    }, true);
+
+    document.addEventListener('change', function (event) {
+        if (!event.target.closest('#namecardTool')) return;
+
+        window.setTimeout(markTagButtons, 0);
+    }, true);
+
+    window.setInterval(function () {
+        if ($('namecardTool')) {
+            markTagButtons();
+        }
+    }, 800);
+})();
