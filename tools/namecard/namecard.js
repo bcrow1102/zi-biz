@@ -767,12 +767,24 @@
             preview.setAttribute('title', field.label + ' 수정');
         });
     }
+
     function updatePreviewSelected(key) {
+        var tool = getTool();
+
+        if (tool) {
+            Array.prototype.forEach.call(
+                tool.querySelectorAll('.is-namecard-selected'),
+                function (el) {
+                    el.classList.remove('is-namecard-selected');
+                }
+            );
+        }
+
         EDIT_FIELDS.forEach(function (field) {
             var preview = getPreview(field.key);
 
-            if (preview) {
-                preview.classList.toggle('is-namecard-selected', field.key === key);
+            if (preview && field.key === key) {
+                preview.classList.add('is-namecard-selected');
             }
         });
     }
@@ -1157,9 +1169,21 @@
 
     function markActiveTag(index) {
         var wrap = $('ncPreviewTags');
+        var tool = $('namecardTool');
+
+        /* 일반 입력 항목 선택 표시 먼저 전부 제거 */
+        if (tool) {
+            Array.prototype.forEach.call(
+                tool.querySelectorAll('.namecard-edit-target.is-namecard-selected'),
+                function (el) {
+                    el.classList.remove('is-namecard-selected');
+                }
+            );
+        }
 
         if (!wrap) return;
 
+        /* 태그는 선택한 태그 하나만 표시 */
         Array.prototype.forEach.call(wrap.querySelectorAll('span'), function (span, spanIndex) {
             span.classList.toggle('is-namecard-selected', spanIndex === index);
         });
@@ -1272,4 +1296,36 @@
             markTagButtons();
         }
     }, 800);
+})();
+/* =========================================================
+   NAMECARD EDIT MODE LINK BLOCK FINAL
+   - 편집 화면에서는 명함 카드 클릭 시 연결주소 이동 방지
+   - 카톡/문자 공유용 실제 페이지에서는 링크 사용 가능
+========================================================= */
+
+(function () {
+    'use strict';
+
+    function isNamecardEditMode() {
+        var tool = document.getElementById('namecardTool');
+
+        return !!(
+            tool &&
+            tool.classList.contains('is-namecard-direct-final')
+        );
+    }
+
+    function blockEditModeCardLink(event) {
+        if (!isNamecardEditMode()) return;
+
+        var card = event.target.closest('#ncCard');
+
+        if (!card) return;
+
+        /* 편집 화면에서는 링크 이동만 막고, 텍스트 선택 클릭은 계속 전달 */
+        event.preventDefault();
+    }
+
+    document.addEventListener('click', blockEditModeCardLink, true);
+    document.addEventListener('dblclick', blockEditModeCardLink, true);
 })();

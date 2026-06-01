@@ -3699,3 +3699,178 @@
         transform: translateY(-2px) !important;
     }
 }
+
+/* =========================================================
+   NAMECARD TEMPLATE 2 MOBILE TOP LINE + PERSON GAP FINAL FIX
+   - 시안2 모바일 전용
+   - 팀장/김지모 사이 여백 축소
+   - 배경 밑줄에 현장명/이름이 걸리는 문제 보정
+========================================================= */
+
+@media (max-width: 760px) {
+
+    /* 시안2 상단 전체를 배경 밑줄보다 살짝 위로 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-blue .namecard-card-top {
+        min-height: 38px !important;
+        align-items: flex-start !important;
+    }
+
+    /* 현장명: 배경 밑줄에 걸리지 않게 위로 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-blue #ncPreviewCompany {
+        transform: translateY(-2px) !important;
+    }
+
+    /* 팀장/김지모 묶음: 위로 올리고 내부 간격 압축 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-blue .namecard-person {
+        transform: translateY(-7px) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+        row-gap: 0 !important;
+        min-width: 68px !important;
+        padding-left: 10px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card.template-blue .namecard-person span {
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 10px !important;
+        line-height: 1 !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card.template-blue .namecard-person strong {
+        margin: -4px 0 0 0 !important;
+        padding: 0 !important;
+        font-size: 12.5px !important;
+        line-height: 1 !important;
+        letter-spacing: 0.05em !important;
+    }
+
+    /* 세로 막대도 텍스트 높이에 맞춤 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-blue .namecard-person::before {
+        top: 1px !important;
+        height: 25px !important;
+    }
+
+    /* HTML 구분선은 공간만 최소 사용하고 보이지 않게 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-blue .namecard-divider {
+        height: 1px !important;
+        margin: 9px 0 8px !important;
+        opacity: 0 !important;
+    }
+}
+
+/* =========================================================
+   NAMECARD PC FONT SIZE UP FINAL
+   - PC에서만 명함 안 텍스트 전체 한 단계 확대
+   - 모바일 영향 없음
+========================================================= */
+
+@media (min-width: 901px) {
+
+    /* 현장명 */
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-logo {
+        font-size: 34px !important;
+        line-height: 0.98 !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-logo.is-long {
+        font-size: 29px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-logo.is-very-long {
+        font-size: 25px !important;
+    }
+
+    /* 직함 */
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-person span {
+        font-size: 14px !important;
+        line-height: 1 !important;
+    }
+
+    /* 이름 */
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-person strong {
+        font-size: 18px !important;
+        line-height: 1 !important;
+        letter-spacing: 0.11em !important;
+    }
+
+    /* 현장 설명 */
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-card-middle strong {
+        font-size: 16px !important;
+        line-height: 1.35 !important;
+    }
+
+    /* 주소 */
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-card-middle p {
+        font-size: 14px !important;
+        line-height: 1.35 !important;
+    }
+
+    /* Mobile / Tel / E-mail 전체 */
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-info-col {
+        font-size: 14px !important;
+        line-height: 1.25 !important;
+        gap: 8px !important;
+    }
+
+    /* 하단 정보 줄 간격 */
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-card-bottom {
+        row-gap: 8px !important;
+        column-gap: 18px !important;
+    }
+
+    /* 이름 옆 세로선도 커진 글씨에 맞춤 */
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-person::before {
+        height: 42px !important;
+    }
+}
+
+/* =========================================================
+   NAMECARD PC BOTTOM CONTACT FONT SIZE UP FINAL
+   - PC에서만 하단 Mobile / Tel / E-mail 한 단계 더 확대
+   - 상단/중간 텍스트 영향 없음
+========================================================= */
+
+@media (min-width: 901px) {
+
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-card-bottom {
+        row-gap: 9px !important;
+        column-gap: 20px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-info-col {
+        font-size: 15.5px !important;
+        line-height: 1.25 !important;
+        gap: 8px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-info-col span {
+        font-size: 15.5px !important;
+        line-height: 1.25 !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card .namecard-info-col strong {
+        font-size: 15.5px !important;
+        line-height: 1.25 !important;
+    }
+}
+
+/* =========================================================
+   NAMECARD TEMPLATE 1 PC TOP GROUP DOWN FINAL
+   - PC에서만 시안1 상단 현장명/직함/이름 전체 한 줄 아래로
+   - 시안2 / 모바일 영향 없음
+========================================================= */
+
+@media (min-width: 901px) {
+
+    /* 시안1 상단 전체 묶음 아래로 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-red .namecard-card-top {
+        transform: translateY(8px) !important;
+    }
+
+    /* 상단을 내린 만큼 중간 여백이 너무 벌어지지 않게 보정 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-red .namecard-divider {
+        margin-top: 18px !important;
+    }
+}
