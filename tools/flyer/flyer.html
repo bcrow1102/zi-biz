@@ -91,10 +91,16 @@
                 </label>
 
                 <label class="flyer-field flyer-field-wide">
-                    <span>상세 안내</span>
-                    <textarea id="flyerDescInput" maxlength="90" rows="4"
-                        placeholder="예: 회사보유분 특별 조건은 잔여 호실과 상담 시점에 따라 달라질 수 있습니다. 정확한 내용은 상담을 통해 안내드립니다."></textarea>
-                    <em>최대 90자</em>
+                    <span>상세 안내 1줄</span>
+                    <input type="text" id="flyerDesc1Input" maxlength="42"
+                        placeholder="예: 회사보유분 특별 조건은 잔여 호실 상담 시점에 따라 달라질 수 있습니다." />
+                    <em>최대 42자</em>
+                </label>
+
+                <label class="flyer-field flyer-field-wide">
+                    <span>상세 안내 2줄</span>
+                    <input type="text" id="flyerDesc2Input" maxlength="42" placeholder="예: 정확한 내용은 상담을 통해 안내드립니다." />
+                    <em>최대 42자</em>
                 </label>
             </div>
 
@@ -108,24 +114,58 @@
                 <strong>미리보기</strong>
 
                 <div class="flyer-top-actions">
-                    <button type="button" class="flyer-text-action flyer-size-toggle" id="flyerSizeToggleBtn">
-                        A6 전단 보기
-                    </button>
-                    <button type="button" class="flyer-text-action flyer-reset-top-btn" id="flyerResetBtn">
-                        초기화
-                    </button>
-                    <details class="flyer-bg-menu">
-                        <summary class="flyer-text-action">배경 선택</summary>
+                    <div class="flyer-action-row">
+                        <button type="button" class="flyer-text-action flyer-size-toggle" id="flyerSizeToggleBtn">
+                            A6 전단 보기
+                        </button>
 
-                        <div class="flyer-bg-menu-list">
-                            <button type="button" class="flyer-bg-btn is-active" data-flyer-bg="apartment">아파트</button>
-                            <button type="button" class="flyer-bg-btn" data-flyer-bg="office">오피스텔</button>
-                            <button type="button" class="flyer-bg-btn" data-flyer-bg="general">일반</button>
+                        <span class="flyer-action-divider" aria-hidden="true">|</span>
 
+                        <details class="flyer-bg-menu">
+                            <summary class="flyer-text-action">배경 선택</summary>
+
+                            <div class="flyer-bg-menu-list">
+                                <button type="button" class="flyer-bg-btn is-active"
+                                    data-flyer-bg="apartment">아파트</button>
+                                <button type="button" class="flyer-bg-btn" data-flyer-bg="office">오피스텔</button>
+                                <button type="button" class="flyer-bg-btn" data-flyer-bg="general">일반</button>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="flyer-action-row">
+                        <button type="button" class="flyer-text-action flyer-reset-top-btn" id="flyerResetBtn">
+                            초기화
+                        </button>
+
+                        <span class="flyer-action-divider" aria-hidden="true">|</span>
+
+                        <div class="flyer-download-inline">
+                            <button type="button" class="flyer-text-action flyer-download-text" id="flyerDownloadBtn">
+                                다운로드 <span>1,000 G</span>
+                            </button>
+
+                            <div class="flyer-download-popover" id="flyerDownloadPopover" aria-hidden="true">
+                                <button type="button" data-download-type="pdf">
+                                    <strong>PDF 다운로드</strong>
+                                    <span>전단을 PDF 파일로 저장</span>
+                                </button>
+
+                                <button type="button" data-download-type="ppt">
+                                    <strong>PPT 다운로드</strong>
+                                    <span>편집 가능한 PPT는 다음 단계에서 연결</span>
+                                </button>
+                            </div>
                         </div>
-                    </details>
+                    </div>
+                </div>
+            </div>
 
-                    <details class="flyer-theme-menu">
+            <div class="flyer-preview-wrap">
+                <div class="flyer-preview-badge-row">
+                    <div class="flyer-size-badge" id="flyerSizeBadge">A4</div>
+
+                    <details class="flyer-theme-menu flyer-theme-menu-inside">
                         <summary class="flyer-text-action">시안 선택</summary>
 
                         <div class="flyer-theme-menu-list">
@@ -135,34 +175,13 @@
                             <button type="button" class="flyer-color-btn" data-flyer-theme="premium">프리미엄</button>
                         </div>
                     </details>
-
-                    <div class="flyer-download-inline">
-                        <button type="button" class="flyer-text-action flyer-download-text" id="flyerDownloadBtn">
-                            다운로드 <span>1,000 G</span>
-                        </button>
-
-                        <div class="flyer-download-popover" id="flyerDownloadPopover" aria-hidden="true">
-                            <button type="button" data-download-type="pdf">
-                                <strong>PDF 다운로드</strong>
-                                <span>전단을 PDF 파일로 저장</span>
-                            </button>
-
-                            <button type="button" data-download-type="ppt">
-                                <strong>PPT 다운로드</strong>
-                                <span>편집 가능한 PPT는 다음 단계에서 연결</span>
-                            </button>
-                        </div>
-                    </div>
                 </div>
-            </div>
-
-            <div class="flyer-preview-wrap">
-                <div class="flyer-size-badge" id="flyerSizeBadge">A4</div>
 
                 <label class="flyer-bg-upload is-hidden" id="flyerBgUploadLabel">
                     <input type="file" id="flyerBgUploadInput" accept="image/*">
                     <span>일반 배경 이미지 업로드</span>
                 </label>
+
                 <article class="flyer-preview flyer-bg-apartment flyer-theme-simple flyer-overlay-soft"
                     id="flyerPreview">
                     <div class="flyer-preview-hero" id="flyerPreviewHero">
@@ -198,8 +217,9 @@
                         <div class="flyer-benefit-box flyer-ppt-group" data-ppt-group="benefit">
                             <span>BENEFIT</span>
                             <strong id="flyerPreviewBenefit">잔여 호실 특별 조건 안내</strong>
-                            <p id="flyerPreviewDesc">
-                                회사보유분 특별 조건은 잔여 호실과 상담 시점에 따라 달라질 수 있습니다. 정확한 내용은 상담을 통해 안내드립니다.
+                            <p id="flyerPreviewDesc" class="flyer-preview-desc-lines">
+                                <span id="flyerPreviewDesc1">회사보유분 특별 조건은 잔여 호실 상담 시점에 따라 달라질 수 있습니다.</span>
+                                <span id="flyerPreviewDesc2">정확한 내용은 상담을 통해 안내드립니다.</span>
                             </p>
                         </div>
 
@@ -212,7 +232,6 @@
                             <a href="tel:01000000000" id="flyerPreviewPhone">010-0000-0000</a>
                         </div>
                     </div>
-
                 </article>
 
                 <div class="flyer-a6-sheet is-hidden" id="flyerA6Sheet" aria-hidden="true">
@@ -226,6 +245,7 @@
                         <article class="flyer-a6-card"></article>
                     </div>
                 </div>
+
                 <div class="flyer-edit-bar" id="flyerEditBar">
                     <div class="flyer-edit-bar-label">
                         <span id="flyerEditFieldLabel">항목 선택</span>
@@ -236,9 +256,6 @@
                         disabled>
                 </div>
 
-                <p class="flyer-preview-help">
-                    PDF와 PPT로 다운로드 할 수 있습니다.
-                </p>
             </div>
         </aside>
     </div>

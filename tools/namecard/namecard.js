@@ -224,7 +224,7 @@
     function updateTemplate(templateName) {
         if (!els.card) return;
 
-        els.card.classList.remove('template-red', 'template-blue');
+        els.card.classList.remove('template-red', 'template-blue', 'template-gold');
         els.card.classList.add(templateName || defaults.template);
     }
 
@@ -383,20 +383,59 @@
     }
 
     function resetForm() {
+        var currentTemplate = defaults.template;
+
+        if (els.template && els.template.value) {
+            currentTemplate = els.template.value;
+        }
+
         Object.keys(defaults).forEach(function (key) {
-            if (els[key]) {
-                els[key].value = defaults[key];
+            if (!els[key]) return;
+
+            if (key === 'template') {
+                els[key].value = currentTemplate;
+                return;
             }
+
+            els[key].value = defaults[key];
         });
 
         try {
-            localStorage.removeItem(DRAFT_KEY);
+            var data = getData();
+            data.template = currentTemplate;
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
         } catch (error) {
-            // 삭제 실패 시에도 초기화 화면은 유지한다.
+            // 저장 실패 시에도 초기화 화면은 유지한다.
         }
 
         updatePreview();
-        setHelper('기본 예시값으로 초기화했습니다.');
+
+        var mirror = document.getElementById('namecardPreviewTemplateSelect');
+
+        if (mirror) {
+            mirror.value = currentTemplate;
+        }
+
+        var websiteMirror = document.getElementById('namecardWebsiteTopInput');
+
+        if (websiteMirror && els.website) {
+            websiteMirror.value = els.website.value || '';
+        }
+
+        var editInput = document.getElementById('namecardEditInput');
+        var editCount = document.getElementById('namecardEditCount');
+        var selectedTarget = document.querySelector('#namecardTool .namecard-edit-target.is-namecard-selected');
+        var selectedField = selectedTarget ? selectedTarget.getAttribute('data-namecard-field') : '';
+
+        if (editInput && selectedField && els[selectedField]) {
+            editInput.value = els[selectedField].value || '';
+
+            if (editCount && editInput.maxLength && editInput.maxLength > 0) {
+                editCount.textContent = String(editInput.value.length) + '/' + String(editInput.maxLength);
+            }
+        }
+
+        setHelper('현재 시안 기준으로 초기화했습니다.');
     }
 
     function bindEvents() {
@@ -1000,6 +1039,7 @@
                     '<select id="namecardPreviewTemplateSelect">' +
                     '   <option value="template-red">시안 1</option>' +
                     '   <option value="template-blue">시안 2</option>' +
+                    '   <option value="template-gold">시안 3</option>' +
                     '</select>';
 
                 previewScene.appendChild(wrap);

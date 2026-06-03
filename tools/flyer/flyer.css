@@ -3900,18 +3900,18 @@ body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flye
 
 /* 전화번호: 노란 pill 안으로 보정 */
 #flyerPreview .flyer-contact-box a {
-    right: 7.2% !important;
+    right: 11.2% !important;
     top: 23% !important;
     width: 40.5% !important;
     height: 52% !important;
-    font-size: 5.05cqw !important;
+    font-size: 5.45cqw !important;
     letter-spacing: -0.035em !important;
 }
 
 /* 상담자 영역 */
 #flyerPreview .flyer-contact-box>div {
     left: 17.2% !important;
-    top: 18% !important;
+    top: 13.5% !important;
     border-left: 0 !important;
 }
 
@@ -3938,14 +3938,16 @@ body:has(#flyerTool) .flyer-preview.flyer-bg-general.has-custom-hero-image .flye
 
 .flyer-bg-office.flyer-theme-simple .flyer-contact-box>div {
     left: 18.7% !important;
-    top: 17% !important;
+    top: 12% !important;
 }
 
 .flyer-bg-office.flyer-theme-simple .flyer-contact-box a {
-    right: 6.1% !important;
+    right: 10.1% !important;
     top: 18.5% !important;
     width: 44.5% !important;
     height: 58% !important;
+    font-size: 5.45cqw !important;
+    letter-spacing: -0.035em !important;
 }
 
 /* =========================================================
@@ -4866,4 +4868,894 @@ body .flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-premium 
 .flyer-mini-map-body .flyer-mini-clone .flyer-benefit-box span,
 body.is-flyer-pdf-capturing #flyerPreview .flyer-benefit-box span {
     display: none !important;
+}
+
+/* =========================================================
+   FLYER MOBILE PC-LAYOUT TRANSFORM SCALE FINAL
+   - 모바일에서 PC 기준 760px 전단을 그대로 렌더링
+   - 화면에서만 transform으로 축소 표시
+   - 텍스트/좌표/폰트 개별 모바일 조정 금지
+========================================================= */
+
+@media (max-width: 760px) {
+    body:has(#flyerTool) .flyer-preview-wrap {
+        position: relative !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 10px 8px 18px !important;
+        border-radius: 22px !important;
+        overflow: hidden !important;
+    }
+
+    body:has(#flyerTool) #flyerPreview.flyer-preview {
+        width: 760px !important;
+        max-width: 760px !important;
+        aspect-ratio: 941 / 1380 !important;
+
+        position: relative !important;
+        left: 50% !important;
+
+        transform: translateX(-50%) scale(0.38) !important;
+        transform-origin: top center !important;
+
+        margin: 0 0 -690px 0 !important;
+    }
+
+    body:has(#flyerTool) .flyer-preview-help {
+        margin-top: 8px !important;
+        margin-bottom: 88px !important;
+        font-size: 11px !important;
+        line-height: 1.35 !important;
+    }
+
+    body:has(#flyerTool) .flyer-preview-column,
+    body:has(#flyerTool) .flyer-edit-panel {
+        max-width: 100% !important;
+    }
+}
+
+/* =========================================================
+   FLYER MOBILE TOP ACTIONS FINAL 3
+   - 모바일 상단 제목/돌아가기/액션 2줄 최종 정렬
+   - PC 영향 없음
+========================================================= */
+
+/* PC에서는 row/divider 구조가 기존 한 줄 흐름을 방해하지 않게 */
+.flyer-action-row {
+    display: contents;
+}
+
+.flyer-action-divider {
+    display: none;
+}
+
+@media (max-width: 760px) {
+
+    /* 제목 영역 */
+    body:has(#flyerTool) .flyer-tool-head {
+        position: relative !important;
+        margin-bottom: 14px !important;
+        padding-right: 0 !important;
+    }
+
+    body:has(#flyerTool) .flyer-title-row {
+        display: grid !important;
+        grid-template-columns: 1fr auto !important;
+        align-items: center !important;
+        column-gap: 12px !important;
+        width: 100% !important;
+        padding-right: 0 !important;
+    }
+
+    body:has(#flyerTool) .flyer-title-row h3 {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        margin: 0 !important;
+
+        font-size: 26px !important;
+        line-height: 1.15 !important;
+        white-space: nowrap !important;
+    }
+
+    body:has(#flyerTool) .flyer-title-row p {
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+        margin-top: 8px !important;
+
+        font-size: 12px !important;
+        line-height: 1.35 !important;
+    }
+
+    /* 돌아가기: JS로 title-row 안으로 이동된 상태 기준 */
+    body:has(#flyerTool) #flyerBackBtn.flyer-back-btn {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        justify-self: end !important;
+        align-self: center !important;
+
+        position: static !important;
+        top: auto !important;
+        right: auto !important;
+        left: auto !important;
+        bottom: auto !important;
+        z-index: auto !important;
+
+        width: auto !important;
+        min-width: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        transform: none !important;
+
+        color: #6d7582 !important;
+        font-size: 12px !important;
+        line-height: 1 !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.03em !important;
+        white-space: nowrap !important;
+        cursor: pointer !important;
+    }
+
+    body:has(#flyerTool) #flyerBackBtn.flyer-back-btn span,
+    body:has(#flyerTool) #flyerBackBtn.flyer-back-btn strong {
+        display: inline-flex !important;
+        align-items: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        color: inherit !important;
+        font: inherit !important;
+        line-height: 1 !important;
+        text-decoration: none !important;
+    }
+
+    body:has(#flyerTool) #flyerBackBtn.flyer-back-btn:hover {
+        color: #3182f6 !important;
+    }
+
+    body:has(#flyerTool) #flyerBackBtn.flyer-back-btn:hover strong {
+        text-decoration: underline !important;
+        text-decoration-color: #3182f6 !important;
+        text-underline-offset: 4px !important;
+        text-decoration-thickness: 1px !important;
+    }
+
+    /* 미리보기 + 오른쪽 2줄 액션 */
+    body:has(#flyerTool) .flyer-preview-column>.flyer-preview-top {
+        display: grid !important;
+        grid-template-columns: auto minmax(248px, 1fr) !important;
+        align-items: start !important;
+        column-gap: 16px !important;
+
+        margin: 16px 0 14px !important;
+        padding: 0 2px !important;
+    }
+
+    body:has(#flyerTool) .flyer-preview-column>.flyer-preview-top>strong {
+        grid-column: 1 !important;
+        grid-row: 1 / span 2 !important;
+
+        color: #202631 !important;
+        font-size: 20px !important;
+        line-height: 1.25 !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.04em !important;
+        white-space: nowrap !important;
+    }
+
+    body:has(#flyerTool) .flyer-top-actions {
+        grid-column: 2 !important;
+        justify-self: end !important;
+
+        width: 248px !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        row-gap: 10px !important;
+
+        align-items: start !important;
+        justify-items: stretch !important;
+        white-space: nowrap !important;
+    }
+
+    body:has(#flyerTool) .flyer-action-row {
+        display: grid !important;
+        grid-template-columns: 108px 18px minmax(0, 1fr) !important;
+        align-items: center !important;
+        column-gap: 0 !important;
+
+        min-height: 20px !important;
+        white-space: nowrap !important;
+    }
+
+    body:has(#flyerTool) .flyer-action-row>.flyer-text-action:first-child,
+    body:has(#flyerTool) .flyer-action-row>#flyerResetBtn {
+        justify-self: end !important;
+    }
+
+    body:has(#flyerTool) .flyer-action-row>.flyer-bg-menu,
+    body:has(#flyerTool) .flyer-action-row>.flyer-download-inline {
+        justify-self: start !important;
+    }
+
+    body:has(#flyerTool) .flyer-action-divider {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        width: 18px !important;
+        height: 14px !important;
+        transform: translateY(-1px) !important;
+
+        color: rgba(79, 89, 103, 0.36) !important;
+        font-size: 12px !important;
+        line-height: 1 !important;
+        font-weight: 500 !important;
+    }
+
+    /* 단어 hover 밑줄만 */
+    body:has(#flyerTool) .flyer-text-action,
+    body:has(#flyerTool) .flyer-bg-menu summary.flyer-text-action,
+    body:has(#flyerTool) #flyerDownloadBtn.flyer-download-text {
+        min-height: auto !important;
+        width: auto !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 4px !important;
+
+        color: #4f5967 !important;
+        font-size: 13px !important;
+        line-height: 1.25 !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.03em !important;
+
+        text-decoration: none !important;
+        text-underline-offset: 5px !important;
+        text-decoration-thickness: 1px !important;
+        cursor: pointer !important;
+    }
+
+    body:has(#flyerTool) .flyer-text-action:hover,
+    body:has(#flyerTool) .flyer-bg-menu summary.flyer-text-action:hover,
+    body:has(#flyerTool) #flyerDownloadBtn.flyer-download-text:hover {
+        color: #3182f6 !important;
+        text-decoration: underline !important;
+        text-decoration-color: #3182f6 !important;
+    }
+
+    body:has(#flyerTool) #flyerResetBtn.flyer-reset-top-btn {
+        color: #9a742d !important;
+    }
+
+    body:has(#flyerTool) #flyerResetBtn.flyer-reset-top-btn:hover {
+        color: #3182f6 !important;
+    }
+
+    body:has(#flyerTool) #flyerDownloadBtn.flyer-download-text span {
+        color: #9a742d !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        text-decoration: none !important;
+    }
+
+    body:has(#flyerTool) #flyerDownloadBtn.flyer-download-text:hover span {
+        color: #3182f6 !important;
+        text-decoration: underline !important;
+        text-decoration-color: #3182f6 !important;
+        text-underline-offset: 5px !important;
+    }
+
+    body:has(#flyerTool) .flyer-download-inline {
+        position: relative !important;
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+        border-left: 0 !important;
+    }
+
+    body:has(#flyerTool) .flyer-bg-menu {
+        position: relative !important;
+    }
+
+    body:has(#flyerTool) .flyer-bg-menu summary {
+        list-style: none !important;
+    }
+
+    body:has(#flyerTool) .flyer-bg-menu summary::-webkit-details-marker {
+        display: none !important;
+    }
+
+    body:has(#flyerTool) .flyer-bg-menu-list {
+        top: 24px !important;
+        left: 0 !important;
+        right: auto !important;
+    }
+
+    body:has(#flyerTool) .flyer-download-inline .flyer-download-popover {
+        top: 24px !important;
+        left: auto !important;
+        right: 0 !important;
+        width: 220px !important;
+    }
+}
+
+/* =========================================================
+   FLYER MOBILE TOP ACTION ALIGN FIX 4
+   - 돌아가기 오른쪽 끝 정렬
+   - 초기화 시작점을 A6 전단 보기의 A와 맞춤
+   - 막대기 x축 유지
+   - PC 영향 없음
+========================================================= */
+
+@media (max-width: 760px) {
+
+    /* title-row 부모가 실제 카드 폭 전체를 먹게 함 */
+    body:has(#flyerTool) .flyer-tool-head {
+        width: 100% !important;
+    }
+
+    body:has(#flyerTool) .flyer-tool-head>div {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    body:has(#flyerTool) .flyer-title-row {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto !important;
+        align-items: center !important;
+        column-gap: 12px !important;
+    }
+
+    body:has(#flyerTool) #flyerBackBtn.flyer-back-btn {
+        grid-column: 2 !important;
+        justify-self: end !important;
+        align-self: center !important;
+        position: static !important;
+        margin-left: auto !important;
+    }
+
+    /* 미리보기 + 액션 전체 */
+    body:has(#flyerTool) .flyer-preview-column>.flyer-preview-top {
+        grid-template-columns: auto minmax(228px, 1fr) !important;
+        column-gap: 18px !important;
+    }
+
+    body:has(#flyerTool) .flyer-top-actions {
+        width: 228px !important;
+        justify-self: end !important;
+        row-gap: 10px !important;
+    }
+
+    /*
+       핵심:
+       첫 칸 시작점을 고정.
+       그래서 초기화가 A6 전단 보기의 A 밑에서 시작함.
+       막대기는 두 줄 모두 같은 2번째 칸.
+    */
+    body:has(#flyerTool) .flyer-action-row {
+        display: grid !important;
+        grid-template-columns: 88px 18px minmax(0, 1fr) !important;
+        align-items: center !important;
+        column-gap: 0 !important;
+        min-height: 20px !important;
+        white-space: nowrap !important;
+    }
+
+    body:has(#flyerTool) .flyer-action-row>.flyer-text-action:first-child,
+    body:has(#flyerTool) .flyer-action-row>#flyerResetBtn {
+        justify-self: start !important;
+    }
+
+    body:has(#flyerTool) .flyer-action-divider {
+        width: 18px !important;
+        justify-self: center !important;
+    }
+
+    body:has(#flyerTool) .flyer-action-row>.flyer-bg-menu,
+    body:has(#flyerTool) .flyer-action-row>.flyer-download-inline {
+        justify-self: start !important;
+    }
+}
+
+/* =========================================================
+   FLYER MOBILE PREVIEW WRAP HEIGHT FIX 1
+   - 모바일 흰색 전단 박스 하단 여백 축소
+   - 전체 페이지/하단 고정바는 건드리지 않음
+   - PC 영향 없음
+========================================================= */
+
+@media (max-width: 760px) {
+
+    /*
+       전단은 scale(0.38)로 보이지만 원래 높이가 남음.
+       margin-bottom 음수값을 더 크게 해서 남는 흰 박스 높이를 줄임.
+       기존 -690px → -760px
+    */
+    body:has(#flyerTool) #flyerPreview.flyer-preview {
+        margin-bottom: -700px !important;
+    }
+
+    /*
+       PDF/PPT 문구 아래 여백 축소.
+       기존 88px → 38px
+    */
+    body:has(#flyerTool) .flyer-preview-help {
+        margin-bottom: 38px !important;
+    }
+
+    /*
+       흰 박스 자체 아래 padding도 살짝 축소.
+    */
+    body:has(#flyerTool) .flyer-preview-wrap {
+        padding-bottom: 8px !important;
+    }
+}
+
+/* =========================================================
+   FLYER MOBILE OUTER BOTTOM SPACE FIX 2
+   - 모바일 전체 배경 하단 여백만 추가 축소
+   - 전단 박스 내부는 건드리지 않음
+   - PC 영향 없음
+========================================================= */
+
+@media (max-width: 760px) {
+    body:has(#flyerTool) .app-main {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        min-height: 0 !important;
+    }
+
+    body:has(#flyerTool) #viewTools {
+        padding-bottom: 48px !important;
+        margin-bottom: 0 !important;
+        min-height: 0 !important;
+    }
+
+    body:has(#flyerTool) .tool-panel,
+    body:has(#flyerTool) .tool-panel.has-flyer-tool {
+        padding-bottom: 48px !important;
+        margin-bottom: 0 !important;
+        min-height: 0 !important;
+    }
+
+    body:has(#flyerTool) .flyer-tool,
+    body:has(#flyerTool) .flyer-layout,
+    body:has(#flyerTool) .flyer-preview-column {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        min-height: 0 !important;
+    }
+}
+
+/* =========================================================
+   FLYER MOBILE TOP ACTION RIGHT SHIFT FIX 1
+   - 모바일 상단 액션 전체를 오른쪽으로 이동
+   - A6/초기화 시작점 유지
+   - 막대기 x축 유지
+   - PC 영향 없음
+========================================================= */
+
+@media (max-width: 760px) {
+    body:has(#flyerTool) .flyer-preview-column>.flyer-preview-top {
+        grid-template-columns: auto minmax(238px, 1fr) !important;
+        column-gap: 24px !important;
+    }
+
+    body:has(#flyerTool) .flyer-top-actions {
+        width: 238px !important;
+        justify-self: end !important;
+        transform: translateX(10px) !important;
+    }
+}
+
+/* =========================================================
+   FLYER PC A4 OFFICE SIAN1 CONTACT PREVIEW FIX 1
+   - 오피스텔 시안1 실제 A4 미리보기 하단만 강제 보정
+   - 미니맵이 아니라 본 미리보기 기준
+========================================================= */
+
+@media (min-width: 761px) {
+    body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-simple .flyer-contact-box>div {
+        left: 17.7% !important;
+        top: 12% !important;
+        border-left: 0 !important;
+        padding-left: 0 !important;
+    }
+
+    body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-simple a#flyerPreviewPhone {
+        right: 10.1% !important;
+        top: 18.5% !important;
+        width: 44.5% !important;
+        height: 58% !important;
+        font-size: 5.95cqw !important;
+        letter-spacing: -0.055em !important;
+
+        align-items: flex-start !important;
+        padding-top: 0.55% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* =========================================================
+   FLYER MOBILE OFFICE SIAN1 CONTACT FIX 1
+   - 모바일 오피스텔 시안1 하단 상담/전화 보정
+========================================================= */
+
+@media (max-width: 760px) {
+    body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-simple .flyer-contact-box>div {
+        left: 17.7% !important;
+        top: 12% !important;
+        border-left: 0 !important;
+        padding-left: 0 !important;
+    }
+
+    body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-simple a#flyerPreviewPhone {
+        right: 10.1% !important;
+        top: 18.5% !important;
+        width: 44.5% !important;
+        height: 58% !important;
+        font-size: 5.95cqw !important;
+        letter-spacing: -0.055em !important;
+
+        align-items: flex-start !important;
+        padding-top: 0.55% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* =========================================================
+   FLYER OFFICE SIAN2 TEXT READABILITY FINAL 1
+   - 오피스텔 시안2 전체 텍스트 가독성 보정
+   - 흰색 / 밝은 노랑 / 진한 자주만 사용
+   - 위치 조정 전 색상 기준 고정
+========================================================= */
+
+/* 기준 색상 */
+#flyerPreview.flyer-bg-office.flyer-theme-standard,
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard {
+    --office2-dark: #3b0028;
+    --office2-deep: #4a0030;
+    --office2-white: #ffffff;
+    --office2-yellow: #fff36a;
+    --office2-black: #17171c;
+
+    --flyer-main: var(--office2-dark) !important;
+    --flyer-sub: var(--office2-black) !important;
+    --flyer-accent: var(--office2-yellow) !important;
+    --flyer-benefit: var(--office2-dark) !important;
+    --flyer-phone: var(--office2-deep) !important;
+}
+
+/* 상단 라벨 - 핑크 배경 위 */
+#flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-standard .flyer-preview-label {
+    position: absolute !important;
+    left: 5.5% !important;
+    top: 4.2% !important;
+    width: 31% !important;
+    z-index: 80 !important;
+
+    color: var(--office2-yellow) !important;
+    font-size: 3.25cqw !important;
+    line-height: 1 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.045em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    text-shadow: 0 1px 3px rgba(70, 0, 40, 0.7) !important;
+}
+
+/* 미니맵 상단 라벨 */
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-preview-label {
+    position: absolute !important;
+    left: 5.5% !important;
+    top: 4.2% !important;
+    width: 31% !important;
+
+    color: var(--office2-yellow) !important;
+    font-size: 3.25cqw !important;
+    line-height: 1 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.045em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    text-shadow: 0 1px 3px rgba(70, 0, 40, 0.7) !important;
+}
+
+/* 현장명 - 흰 박스 위 */
+#flyerPreview.flyer-bg-office.flyer-theme-standard h4,
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard h4 {
+    color: var(--office2-dark) !important;
+    font-weight: 950 !important;
+    text-shadow: none !important;
+}
+
+/* 한줄 카피 - 흰 박스 위 */
+#flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-standard .flyer-preview-hero-content p {
+    top: 19.8% !important;
+    color: var(--office2-black) !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+}
+
+/* 미니맵 한줄 카피 */
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-preview-hero-content p {
+    top: 19.8% !important;
+    color: var(--office2-black) !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+}
+
+/* 위치 - 진한 핑크 바 위 */
+#flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-standard .flyer-preview-hero-content em {
+    top: 27.2% !important;
+    color: var(--office2-white) !important;
+    font-weight: 950 !important;
+    text-shadow: 0 1px 3px rgba(70, 0, 40, 0.65) !important;
+}
+
+/* 미니맵 위치 문구 */
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-preview-hero-content em {
+    top: 27.2% !important;
+    color: var(--office2-white) !important;
+    font-weight: 950 !important;
+    text-shadow: 0 1px 3px rgba(70, 0, 40, 0.65) !important;
+}
+
+/* 조건 번호 01 / 02 / 03 */
+#flyerPreview.flyer-bg-office.flyer-theme-standard .flyer-point span,
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-point span {
+    color: var(--office2-white) !important;
+    font-weight: 950 !important;
+    text-shadow: 0 1px 3px rgba(80, 0, 45, 0.55) !important;
+}
+
+/* 조건 문구 */
+#flyerPreview.flyer-bg-office.flyer-theme-standard .flyer-point strong,
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-point strong {
+    color: #082f63 !important;
+    font-weight: 950 !important;
+    text-shadow: none !important;
+}
+
+/* 조건 1/2/3 위치 - 오피스텔 시안2 */
+#flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-standard .flyer-point:nth-child(1) {
+    top: 43.15% !important;
+}
+
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-point:nth-child(1) {
+    top: 43.15% !important;
+}
+
+#flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-standard .flyer-point:nth-child(2) {
+    top: 52.25% !important;
+}
+
+#flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-standard .flyer-point:nth-child(3) {
+    top: 61.15% !important;
+}
+
+/* 미니맵 조건 1/2/3 위치 - 오피스텔 시안2 */
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-point:nth-child(1) {
+    top: 43.35% !important;
+}
+
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-point:nth-child(2) {
+    top: 52.25% !important;
+}
+
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-point:nth-child(3) {
+    top: 61.15% !important;
+}
+
+/* 혜택 제목 */
+#flyerPreview.flyer-bg-office.flyer-theme-standard .flyer-benefit-box strong,
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-benefit-box strong {
+    color: var(--office2-dark) !important;
+    font-weight: 950 !important;
+    text-shadow: none !important;
+}
+
+/* 혜택 설명 */
+#flyerPreview.flyer-bg-office.flyer-theme-standard .flyer-benefit-box p,
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-benefit-box p {
+    color: var(--office2-black) !important;
+    font-weight: 700 !important;
+    text-shadow: none !important;
+}
+
+/* 미니맵 혜택 설명 줄바꿈 보정 */
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-benefit-box p {
+    left: 16% !important;
+    right: 16% !important;
+    width: auto !important;
+
+    text-align: center !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+}
+
+/* 하단 상담문의 */
+#flyerPreview.flyer-bg-office.flyer-theme-standard .flyer-contact-box span,
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-contact-box span {
+    color: var(--office2-yellow) !important;
+    font-weight: 950 !important;
+    text-shadow: 0 1px 3px rgba(70, 0, 40, 0.65) !important;
+}
+
+/* 하단 이름 */
+#flyerPreview.flyer-bg-office.flyer-theme-standard .flyer-contact-box strong,
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-contact-box strong {
+    color: var(--office2-white) !important;
+    font-weight: 950 !important;
+    text-shadow: 0 1px 3px rgba(70, 0, 40, 0.65) !important;
+}
+
+/* 전화번호 */
+#flyerPreview.flyer-bg-office.flyer-theme-standard .flyer-contact-box a,
+.flyer-mini-map-body .flyer-mini-clone.flyer-bg-office.flyer-theme-standard .flyer-contact-box a {
+    color: var(--office2-deep) !important;
+    font-weight: 950 !important;
+    text-shadow: none !important;
+}
+
+/* 하단 위치 - 본 미리보기만 보정 */
+body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-standard .flyer-contact-box>div {
+    position: absolute !important;
+    left: 17.2% !important;
+    top: 13.5% !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-standard .flyer-contact-box a {
+    right: 8.6% !important;
+    font-size: 5.2cqw !important;
+    letter-spacing: -0.04em !important;
+}
+
+/* 하단 상담문의/이름 내부 간격 보정 - 본 미리보기만 */
+body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-standard .flyer-contact-box span {
+    display: block !important;
+    transform: translateY(-2px) !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-standard .flyer-contact-box strong {
+    display: block !important;
+    margin-top: 7% !important;
+    transform: translateY(-6px) !important;
+}
+
+/* =========================================================
+   FLYER DETAIL DESC TWO FIELD FIX
+   - 상세 안내를 1줄/2줄 독립 요소로 분리
+========================================================= */
+
+#flyerPreview .flyer-preview-desc-lines,
+.flyer-mini-map-body .flyer-mini-clone .flyer-preview-desc-lines {
+    display: grid !important;
+    gap: 0.18em !important;
+    white-space: normal !important;
+}
+
+#flyerPreview .flyer-preview-desc-lines span,
+.flyer-mini-map-body .flyer-mini-clone .flyer-preview-desc-lines span {
+    display: block !important;
+    width: 100% !important;
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+}
+
+/* =========================================================
+   FLYER DETAIL DESC SPAN POSITION FIX
+   - benefit 라벨 span 스타일이 상세 안내 1/2줄 span에 먹는 문제 수정
+========================================================= */
+
+/* BENEFIT 라벨은 benefit-box의 직접 자식 span만 적용 */
+#flyerPreview .flyer-benefit-box>span,
+.flyer-mini-map-body .flyer-mini-clone .flyer-benefit-box>span {
+    position: absolute !important;
+    left: 50% !important;
+    top: -8.4% !important;
+    transform: translateX(-50%) !important;
+}
+
+/* 상세 안내 p 위치는 기존 위치 유지 */
+#flyerPreview .flyer-benefit-box p.flyer-preview-desc-lines,
+.flyer-mini-map-body .flyer-mini-clone .flyer-benefit-box p.flyer-preview-desc-lines {
+    position: absolute !important;
+    left: 13% !important;
+    right: 13% !important;
+    top: 54% !important;
+    margin: 0 !important;
+
+    display: grid !important;
+    gap: 0.18em !important;
+    text-align: center !important;
+    white-space: normal !important;
+}
+
+/* 상세 안내 1줄/2줄은 absolute 해제 */
+#flyerPreview .flyer-benefit-box p.flyer-preview-desc-lines>span,
+.flyer-mini-map-body .flyer-mini-clone .flyer-benefit-box p.flyer-preview-desc-lines>span {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+
+    color: inherit !important;
+    font: inherit !important;
+    line-height: inherit !important;
+    letter-spacing: inherit !important;
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+}
+
+/* =========================================================
+   FLYER DESC LINE SELECT OUTLINE FIX
+   - 상세 안내 1줄/2줄 선택 점선 박스 표시
+========================================================= */
+
+#flyerPreview .flyer-benefit-box p.flyer-preview-desc-lines>span {
+    position: relative !important;
+    z-index: 8 !important;
+    display: block !important;
+    min-height: 1.25em !important;
+    padding: 1px 4px !important;
+    border-radius: 5px !important;
+    pointer-events: auto !important;
+    cursor: text !important;
+}
+
+#flyerPreview .flyer-benefit-box p.flyer-preview-desc-lines>span.is-flyer-editing {
+    outline: 1.5px dashed rgba(49, 130, 246, 0.9) !important;
+    outline-offset: 3px !important;
+    background: rgba(49, 130, 246, 0.045) !important;
+}
+
+/* =========================================================
+   FLYER DESC LINE MOBILE SELECT STABLE FIX
+   - 모바일에서도 상세 안내 1줄/2줄 선택 박스 안정화
+========================================================= */
+
+#flyerPreview .flyer-benefit-box p.flyer-preview-desc-lines {
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+}
+
+#flyerPreview .flyer-benefit-box p.flyer-preview-desc-lines>span {
+    position: relative !important;
+    z-index: 20 !important;
+    display: block !important;
+    min-height: 1.28em !important;
+    padding: 2px 5px !important;
+    border-radius: 5px !important;
+    pointer-events: auto !important;
+    cursor: text !important;
+}
+
+#flyerPreview .flyer-benefit-box p.flyer-preview-desc-lines>span.is-flyer-editing {
+    outline: 1.5px dashed rgba(49, 130, 246, 0.95) !important;
+    outline-offset: 2px !important;
+    background: rgba(49, 130, 246, 0.06) !important;
 }

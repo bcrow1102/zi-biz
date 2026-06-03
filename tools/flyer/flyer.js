@@ -27,7 +27,8 @@
             point3Input: document.getElementById('flyerPoint3Input'),
 
             benefitInput: document.getElementById('flyerBenefitInput'),
-            descInput: document.getElementById('flyerDescInput'),
+            desc1Input: document.getElementById('flyerDesc1Input'),
+            desc2Input: document.getElementById('flyerDesc2Input'),
 
             managerInput: document.getElementById('flyerManagerInput'),
             phoneInput: document.getElementById('flyerPhoneInput'),
@@ -48,6 +49,8 @@
 
             previewBenefit: document.getElementById('flyerPreviewBenefit'),
             previewDesc: document.getElementById('flyerPreviewDesc'),
+            previewDesc1: document.getElementById('flyerPreviewDesc1'),
+            previewDesc2: document.getElementById('flyerPreviewDesc2'),
 
             previewManager: document.getElementById('flyerPreviewManager'),
             previewPhone: document.getElementById('flyerPreviewPhone'),
@@ -86,7 +89,8 @@
             point3: els.point3Input ? els.point3Input.value : '',
 
             benefit: els.benefitInput ? els.benefitInput.value : '',
-            desc: els.descInput ? els.descInput.value : '',
+            desc1: els.desc1Input ? els.desc1Input.value : '',
+            desc2: els.desc2Input ? els.desc2Input.value : '',
 
             manager: els.managerInput ? els.managerInput.value : '',
             phone: els.phoneInput ? els.phoneInput.value : '',
@@ -118,9 +122,15 @@
 
         setText(els.previewBenefit, els.benefitInput && els.benefitInput.value, '잔여 호실 특별 조건 안내');
         setText(
-            els.previewDesc,
-            els.descInput && els.descInput.value,
-            '회사보유분 특별 조건은 잔여 호실과 상담 시점에 따라 달라질 수 있습니다. 정확한 내용은 상담을 통해 안내드립니다.'
+            els.previewDesc1,
+            els.desc1Input && els.desc1Input.value,
+            '회사보유분 특별 조건은 잔여 호실 상담 시점에 따라 달라질 수 있습니다.'
+        );
+
+        setText(
+            els.previewDesc2,
+            els.desc2Input && els.desc2Input.value,
+            '정확한 내용은 상담을 통해 안내드립니다.'
         );
 
         setText(els.previewManager, els.managerInput && els.managerInput.value, '김지모 팀장');
@@ -289,7 +299,8 @@
         if (els.point3Input) els.point3Input.value = data.point3 || '';
 
         if (els.benefitInput) els.benefitInput.value = data.benefit || '';
-        if (els.descInput) els.descInput.value = data.desc || '';
+        if (els.desc1Input) els.desc1Input.value = data.desc1 || data.desc || '';
+        if (els.desc2Input) els.desc2Input.value = data.desc2 || '';
 
         if (els.managerInput) els.managerInput.value = data.manager || '';
         if (els.phoneInput) els.phoneInput.value = data.phone || '';
@@ -470,7 +481,8 @@
             els.point2Input,
             els.point3Input,
             els.benefitInput,
-            els.descInput,
+            els.desc1Input,
+            els.desc2Input,
             els.managerInput,
             els.phoneInput
         ].forEach(function (input) {
@@ -572,22 +584,23 @@
         document.addEventListener('click', closeDownloadPopover);
     }
 
+
     function showFlyerToast(message) {
-        var oldToast = document.querySelector('.tool-action-toast');
+        var oldToast = document.querySelector('.flyer-toast');
 
         if (oldToast) {
             oldToast.remove();
         }
 
         var toast = document.createElement('div');
-        toast.className = 'tool-action-toast';
+        toast.className = 'flyer-toast';
         toast.textContent = message;
 
         document.body.appendChild(toast);
 
-        window.setTimeout(function () {
+        window.requestAnimationFrame(function () {
             toast.classList.add('is-show');
-        }, 20);
+        });
 
         window.setTimeout(function () {
             toast.classList.remove('is-show');
@@ -598,9 +611,176 @@
         }, 1800);
     }
 
+    /* 상세 안내 1줄/2줄을 각각 독립 편집 대상으로 강제 */
+    function bindFlyerDescLineEdit() {
+        var editInput = document.getElementById('flyerEditInput');
+        var editLabel = document.getElementById('flyerEditFieldLabel');
+        var editCount = document.getElementById('flyerEditCount');
+        var descBox = document.getElementById('flyerPreviewDesc');
+
+        if (!editInput || !descBox) return;
+        if (descBox.dataset.descLineEditBound === 'true') return;
+
+        descBox.dataset.descLineEditBound = 'true';
+
+        function selectDescLine(previewEl, sourceInput, label, max) {
+            if (!previewEl || !sourceInput) return;
+
+            document.querySelectorAll('.is-flyer-editing').forEach(function (el) {
+                el.classList.remove('is-flyer-editing');
+            });
+
+            previewEl.classList.add('is-flyer-editing');
+
+            editInput.disabled = false;
+            editInput.value = sourceInput.value || previewEl.textContent.trim();
+            editInput.maxLength = max;
+
+            if (editLabel) {
+                editLabel.textContent = label;
+            }
+
+            if (editCount) {
+                editCount.textContent = String(editInput.value.length) + ' / ' + max;
+            }
+
+            editInput.focus();
+            editInput.select();
+
+            editInput.oninput = function () {
+                sourceInput.value = editInput.value;
+                previewEl.textContent = safeText(editInput.value, previewEl.textContent);
+
+                if (editCount) {
+                    editCount.textContent = String(editInput.value.length) + ' / ' + max;
+                }
+
+                saveDraft(false);
+            };
+        }
+
+        function pickDescLine(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+
+            var line1 = document.getElementById('flyerPreviewDesc1');
+            var line2 = document.getElementById('flyerPreviewDesc2');
+            var input1 = document.getElementById('flyerDesc1Input');
+            var input2 = document.getElementById('flyerDesc2Input');
+
+            if (!line1 || !line2 || !input1 || !input2) return;
+
+            var target = event.target;
+
+            if (target === line1) {
+                selectDescLine(line1, input1, '상세 안내 1줄', 42);
+                return;
+            }
+
+            if (target === line2) {
+                selectDescLine(line2, input2, '상세 안내 2줄', 42);
+                return;
+            }
+
+            /*
+                모바일에서는 축소/스케일 때문에 span 정확히 터치가 안 될 수 있음.
+                그래서 터치 Y좌표가 1줄/2줄 중 어디에 더 가까운지로 선택.
+            */
+            var clientY = event.clientY;
+
+            if (event.touches && event.touches[0]) {
+                clientY = event.touches[0].clientY;
+            }
+
+            if (event.changedTouches && event.changedTouches[0]) {
+                clientY = event.changedTouches[0].clientY;
+            }
+
+            var rect1 = line1.getBoundingClientRect();
+            var rect2 = line2.getBoundingClientRect();
+
+            var center1 = rect1.top + rect1.height / 2;
+            var center2 = rect2.top + rect2.height / 2;
+
+            if (Math.abs(clientY - center1) <= Math.abs(clientY - center2)) {
+                selectDescLine(line1, input1, '상세 안내 1줄', 42);
+            } else {
+                selectDescLine(line2, input2, '상세 안내 2줄', 42);
+            }
+        }
+
+        descBox.addEventListener('click', pickDescLine, true);
+        descBox.addEventListener('touchstart', pickDescLine, true);
+    }
+
+    /* 웹전단 모바일 돌아가기 버튼을 제목줄 안으로 안정 이동 */
+    function mountFlyerBackButtonToTitle() {
+        var flyerTool = document.getElementById('flyerTool');
+        if (!flyerTool) return false;
+
+        var titleRow = flyerTool.querySelector('.flyer-title-row');
+        if (!titleRow) return false;
+
+        /*
+            #flyerBackBtn은 flyer.html 안에 없고,
+            공통 화면 쪽에서 만들어질 가능성이 높다.
+            그래서 id 우선, class 보조로 찾는다.
+        */
+        var backBtn =
+            document.getElementById('flyerBackBtn') ||
+            document.querySelector('.flyer-back-btn');
+
+        if (!backBtn) return false;
+
+        var descText = titleRow.querySelector('p');
+
+        backBtn.classList.add('flyer-back-btn');
+
+        /*
+            이전 CSS/JS 테스트에서 inline position이 남아 있으면
+            title-row 안으로 옮겨도 계속 틀어질 수 있으니 제거한다.
+        */
+        backBtn.removeAttribute('style');
+
+        /*
+            핵심:
+            appendChild로 맨 뒤에 붙이지 말고,
+            h3 다음 / 설명문 p 앞에 꽂는다.
+            DOM 순서: h3 → 돌아가기 → 설명문
+        */
+        if (backBtn.parentElement !== titleRow || backBtn.nextElementSibling !== descText) {
+            titleRow.insertBefore(backBtn, descText || null);
+        }
+
+        return true;
+    }
+
+    function watchFlyerBackButtonToTitle() {
+        if (mountFlyerBackButtonToTitle()) return;
+
+        var retryCount = 0;
+        var timer = window.setInterval(function () {
+            retryCount += 1;
+
+            if (mountFlyerBackButtonToTitle() || retryCount >= 20) {
+                window.clearInterval(timer);
+            }
+        }, 100);
+    }
+
     window.bootFlyerTool = function () {
+        watchFlyerBackButtonToTitle();
+
         bindInputs();
         loadDraft();
         updatePreview();
+
+        bindFlyerDescLineEdit();
+
+        window.requestAnimationFrame(function () {
+            mountFlyerBackButtonToTitle();
+            bindFlyerDescLineEdit();
+        });
     };
 })();

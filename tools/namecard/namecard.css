@@ -1838,11 +1838,29 @@
 }
 
 /* =========================================================
-   NAMECARD CAPTION SAKURA BACKGROUND FINAL
-   - 하단 설명란 벚꽃 배경 적용
+   NAMECARD CAPTION TEMPLATE BACKGROUND FINAL
+   - 시안1/2/3 하단부 배경 각각 다르게 연결
 ========================================================= */
 
+/* 공통 기본 */
 #namecardTool .namecard-caption--apartment {
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: center right !important;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* 기존 CSS 장식 제거 */
+#namecardTool .namecard-caption--apartment::before,
+#namecardTool .namecard-caption--apartment::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* -----------------------------
+   시안1 : 기존 사쿠라 유지
+----------------------------- */
+#namecardTool .namecard-card.template-red+.namecard-caption--apartment {
     background:
         linear-gradient(90deg,
             rgba(255, 255, 255, 0.82) 0%,
@@ -1853,14 +1871,75 @@
     background-position: center right !important;
     background-repeat: no-repeat !important;
     border: 1px solid rgba(238, 183, 160, 0.22) !important;
-    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08) !important;
 }
 
-/* 기존 CSS에서 만들던 건물/격자 장식 제거 */
-#namecardTool .namecard-caption--apartment::before,
-#namecardTool .namecard-caption--apartment::after {
-    content: none !important;
-    display: none !important;
+#namecardTool .namecard-card.template-red+.namecard-caption--apartment p:first-child {
+    color: #2f394a !important;
+}
+
+#namecardTool .namecard-card.template-red+.namecard-caption--apartment p+p {
+    color: #6b7280 !important;
+}
+
+/* -----------------------------
+   시안2 : 베이지 페이퍼 하단
+----------------------------- */
+#namecardTool .namecard-card.template-blue+.namecard-caption--apartment {
+    background:
+        linear-gradient(90deg,
+            rgba(255, 255, 255, 0.26) 0%,
+            rgba(255, 255, 255, 0.08) 52%,
+            rgba(255, 255, 255, 0.02) 100%),
+        url("./images/namecard-caption-02.jpg") !important;
+    background-size: cover !important;
+    background-position: center right !important;
+    background-repeat: no-repeat !important;
+    border: 1px solid rgba(177, 160, 132, 0.24) !important;
+}
+
+#namecardTool .namecard-card.template-blue+.namecard-caption--apartment p:first-child {
+    color: #4f4638 !important;
+}
+
+#namecardTool .namecard-card.template-blue+.namecard-caption--apartment p+p {
+    color: #7a6f60 !important;
+}
+
+#namecardTool .namecard-card.template-blue+.namecard-caption--apartment .namecard-tag-list span {
+    background: rgba(255, 255, 255, 0.58) !important;
+    border: 1px solid rgba(177, 160, 132, 0.24) !important;
+    color: #6e6252 !important;
+}
+
+/* -----------------------------
+   시안3 : 블랙 + 골드 웨이브 하단
+----------------------------- */
+#namecardTool .namecard-card.template-gold+.namecard-caption--apartment {
+    background:
+        linear-gradient(90deg,
+            rgba(5, 5, 5, 0.12) 0%,
+            rgba(5, 5, 5, 0.06) 55%,
+            rgba(5, 5, 5, 0.00) 100%),
+        url("./images/namecard-caption-03.jpg") !important;
+    background-size: cover !important;
+    background-position: center right !important;
+    background-repeat: no-repeat !important;
+    border: none !important;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18) !important;
+}
+
+#namecardTool .namecard-card.template-gold+.namecard-caption--apartment p:first-child {
+    color: #f3e6b3 !important;
+}
+
+#namecardTool .namecard-card.template-gold+.namecard-caption--apartment p+p {
+    color: rgba(243, 230, 179, 0.78) !important;
+}
+
+#namecardTool .namecard-card.template-gold+.namecard-caption--apartment .namecard-tag-list span {
+    background: rgba(216, 193, 138, 0.12) !important;
+    border: 1px solid rgba(216, 193, 138, 0.22) !important;
+    color: #e6d29b !important;
 }
 
 /* =========================================================
@@ -3873,4 +3952,631 @@
     #namecardTool.is-namecard-direct-final .namecard-card.template-red .namecard-divider {
         margin-top: 18px !important;
     }
+}
+
+/* =========================================================
+   NAMECARD TEMPLATE 3 GOLD CSS STRUCTURE FINAL
+   - 이미지: 검은 골지 + 금색 외곽 테두리만 사용
+   - 내부 금선/다이아/우측선/하단 구분선은 CSS로 생성
+========================================================= */
+
+#namecardTool .namecard-card.template-gold {
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 18px !important;
+    background-color: #080808 !important;
+    background-image: url("./images/namecard-bg-03.jpg") !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: 100% 100% !important;
+    color: #d8c18a !important;
+    box-shadow: none !important;
+}
+
+/* 기존 광택/흰 효과 제거 */
+#namecardTool .namecard-card.template-gold::before,
+#namecardTool .namecard-card.template-gold::after,
+#namecardTool .namecard-card.template-gold .namecard-card-inner::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* 시안3 내부는 절대배치 기준 */
+#namecardTool .namecard-card.template-gold .namecard-card-inner {
+    position: relative !important;
+    z-index: 2 !important;
+    height: 100% !important;
+    padding: 0 !important;
+}
+
+/* 기존 divider를 시안3 상단 금선으로 재사용 */
+#namecardTool .namecard-card.template-gold .namecard-divider {
+    position: absolute !important;
+    left: 8.5% !important;
+    right: 8.5% !important;
+    top: 36.5% !important;
+    height: 1px !important;
+    margin: 0 !important;
+    border-radius: 999px !important;
+    opacity: 1 !important;
+    background: rgba(216, 193, 138, 0.64) !important;
+}
+
+/* 중앙 다이아몬드 */
+#namecardTool .namecard-card.template-gold .namecard-divider::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    width: 9px !important;
+    height: 9px !important;
+    background: #d8c18a !important;
+    transform: translate(-50%, -50%) rotate(45deg) !important;
+    box-shadow: 0 0 6px rgba(216, 193, 138, 0.20) !important;
+}
+
+/* 상단: 현장명 / 직함·이름 */
+#namecardTool .namecard-card.template-gold .namecard-card-top {
+    position: absolute !important;
+    left: 10.2% !important;
+    right: 10.2% !important;
+    top: 20.8% !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 18px !important;
+}
+
+/* 우측 세로선은 person::before로 생성 */
+#namecardTool .namecard-card.template-gold .namecard-person::before {
+    content: "" !important;
+    position: absolute !important;
+    left: -15px !important;
+    top: -1px !important;
+    width: 1px !important;
+    height: 34px !important;
+    border-radius: 999px !important;
+    opacity: 1 !important;
+    background: rgba(216, 193, 138, 0.62) !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-logo {
+    max-width: 60% !important;
+    color: #d8c18a !important;
+    font-size: 34px !important;
+    line-height: 1 !important;
+    font-weight: 780 !important;
+    letter-spacing: -0.07em !important;
+    white-space: nowrap !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.38) !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-logo.is-long {
+    font-size: 32px !important;
+    letter-spacing: -0.085em !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-logo.is-very-long {
+    font-size: 28px !important;
+    letter-spacing: -0.09em !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-person {
+    position: relative !important;
+    min-width: 92px !important;
+    padding-left: 0 !important;
+    display: grid !important;
+    gap: 8px !important;
+    justify-items: start !important;
+    color: #d8c18a !important;
+    text-align: left !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-person span {
+    color: #d8c18a !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 520 !important;
+    letter-spacing: -0.02em !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-person strong {
+    color: #d8c18a !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    font-weight: 680 !important;
+    letter-spacing: 0.12em !important;
+}
+
+/* 중단: 한 줄 소개 / 주소 */
+#namecardTool .namecard-card.template-gold .namecard-card-middle {
+    position: absolute !important;
+    left: 10.2% !important;
+    right: 10.2% !important;
+    top: 49.5% !important;
+    display: grid !important;
+    gap: 8px !important;
+    min-height: 0 !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-card-middle strong {
+    color: #d8c18a !important;
+    font-size: 17px !important;
+    line-height: 1.25 !important;
+    font-weight: 650 !important;
+    letter-spacing: -0.03em !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-card-middle p {
+    color: #d8c18a !important;
+    font-size: 13px !important;
+    line-height: 1.25 !important;
+    font-weight: 430 !important;
+    letter-spacing: -0.025em !important;
+}
+
+/* 하단: Mobile ㅣ Tel ㅣ E-mail */
+#namecardTool .namecard-card.template-gold .namecard-card-bottom {
+    position: absolute !important;
+    left: 10.2% !important;
+    right: 10.2% !important;
+    bottom: 16.5% !important;
+    display: grid !important;
+    grid-template-columns: 1.22fr 1.02fr 1.16fr !important;
+    column-gap: 16px !important;
+    row-gap: 0 !important;
+    align-items: center !important;
+}
+
+/* 하단 구분선 2개만 생성 */
+#namecardTool .namecard-card.template-gold .namecard-card-bottom::before,
+#namecardTool .namecard-card.template-gold .namecard-card-bottom::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 50% !important;
+    width: 1px !important;
+    height: 26px !important;
+    border-radius: 999px !important;
+    background: rgba(216, 193, 138, 0.56) !important;
+    transform: translateY(-50%) !important;
+    pointer-events: none !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-card-bottom::before {
+    left: 33% !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-card-bottom::after {
+    left: 61.5% !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-info-col,
+#namecardTool .namecard-card.template-gold .namecard-info-col--wide {
+    grid-column: auto !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 5px !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    color: #d8c18a !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-info-col span {
+    flex: 0 0 auto !important;
+    color: #d8c18a !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    font-weight: 650 !important;
+    letter-spacing: -0.02em !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-info-col strong {
+    min-width: 0 !important;
+    color: #d8c18a !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    font-weight: 450 !important;
+    letter-spacing: -0.02em !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+}
+
+/* 선택 점선이 금색 배경에서 너무 튀지 않게 */
+#namecardTool .namecard-card.template-gold .namecard-edit-target:hover {
+    background: rgba(216, 193, 138, 0.08) !important;
+    outline-color: rgba(216, 193, 138, 0.38) !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-edit-target.is-namecard-selected {
+    background: rgba(216, 193, 138, 0.12) !important;
+    outline-color: rgba(216, 193, 138, 0.78) !important;
+    box-shadow: 0 0 0 3px rgba(216, 193, 138, 0.08) !important;
+}
+
+/* 모바일 시안3 */
+@media (max-width: 760px) {
+    #namecardTool .namecard-card.template-gold {
+        background-size: 100% 100% !important;
+        border-radius: 15px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-card-top {
+        left: 9.6% !important;
+        right: 9.6% !important;
+        top: 20.2% !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-divider {
+        left: 8.8% !important;
+        right: 8.8% !important;
+        top: 36.8% !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-divider::after {
+        width: 7px !important;
+        height: 7px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-logo {
+        font-size: 21px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-logo.is-long {
+        font-size: 18px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-logo.is-very-long {
+        font-size: 16px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-person {
+        min-width: 70px !important;
+        gap: 6px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-person::before {
+        left: -10px !important;
+        top: -1px !important;
+        height: 28px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-person span {
+        font-size: 10px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-person strong {
+        font-size: 13px !important;
+        letter-spacing: 0.12em !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-card-middle {
+        left: 9.6% !important;
+        right: 9.6% !important;
+        top: 49.3% !important;
+        gap: 5px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-card-middle strong {
+        font-size: 12px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-card-middle p {
+        font-size: 10px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-card-bottom {
+        left: 9.6% !important;
+        right: 9.6% !important;
+        bottom: 15.8% !important;
+        grid-template-columns: 1.08fr 0.98fr 1.26fr !important;
+        column-gap: 10px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-card-bottom::before,
+    #namecardTool .namecard-card.template-gold .namecard-card-bottom::after {
+        height: 20px !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-card-bottom::before {
+        left: 31.5% !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-card-bottom::after {
+        left: 60.5% !important;
+    }
+
+    #namecardTool .namecard-card.template-gold .namecard-info-col,
+    #namecardTool .namecard-card.template-gold .namecard-info-col--wide,
+    #namecardTool .namecard-card.template-gold .namecard-info-col span,
+    #namecardTool .namecard-card.template-gold .namecard-info-col strong {
+        font-size: 8.5px !important;
+        gap: 4px !important;
+    }
+}
+
+/* =========================================================
+   NAMECARD CAPTION 03 BACKGROUND CROP FIX
+   - 시안3 하단 배경 좌우 이미지 경계선 제거
+   - 텍스트/박스 위치는 건드리지 않고 배경만 확대
+========================================================= */
+
+#namecardTool .namecard-card.template-gold+.namecard-caption--apartment {
+    background:
+        linear-gradient(90deg,
+            rgba(5, 5, 5, 0.12) 0%,
+            rgba(5, 5, 5, 0.06) 55%,
+            rgba(5, 5, 5, 0.00) 100%),
+        url("./images/namecard-caption-03.jpg") !important;
+
+    background-size: 118% 118% !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+
+    border: none !important;
+    overflow: hidden !important;
+}
+
+/* =========================================================
+   NAMECARD MOBILE TRUE CLEAN PREVIEW FINAL
+   - 모바일 회색 미리보기 배경 제거
+   - 카드/캡션/시안선택/입력바 중앙 기준 보정
+   - 시안3 상단 이름 영역 위로 이동
+   - 시안3 하단 연락처 폭/막대기 최종 정리
+========================================================= */
+
+@media (max-width: 760px) {
+
+    /* 전체 미리보기 영역: 살짝 왼쪽으로 치우친 보정 제거 */
+    #namecardTool.is-namecard-direct-final .namecard-preview-area {
+        width: 100% !important;
+        max-width: 414px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        overflow: visible !important;
+        box-sizing: border-box !important;
+        transform: none !important;
+    }
+
+    /* 회색 미리보기 배경 완전 제거 */
+    #namecardTool.is-namecard-direct-final .namecard-preview-scene,
+    #namecardTool.is-namecard-direct-final .namecard-preview-scene--compact {
+        width: 100% !important;
+        max-width: 414px !important;
+        min-height: auto !important;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+
+        padding: 38px 0 12px !important;
+
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+
+        overflow: visible !important;
+        box-sizing: border-box !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 12px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-preview-scene::before,
+    #namecardTool.is-namecard-direct-final .namecard-preview-scene::after {
+        content: none !important;
+        display: none !important;
+        background: none !important;
+        box-shadow: none !important;
+    }
+
+    /* 시안 선택창 회색 박스 제거 */
+    #namecardTool.is-namecard-direct-final .namecard-preview-template-control--inside {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+
+        width: 100% !important;
+        max-width: 414px !important;
+        height: 34px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) 150px !important;
+        align-items: center !important;
+        gap: 8px !important;
+
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        border-radius: 0 !important;
+
+        box-sizing: border-box !important;
+        z-index: 20 !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-preview-template-control--inside span {
+        padding-left: 0 !important;
+        color: #6d7582 !important;
+        font-size: 12px !important;
+        line-height: 1 !important;
+        font-weight: 500 !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-preview-template-control--inside select {
+        width: 150px !important;
+        height: 32px !important;
+        border-radius: 999px !important;
+        background: #ffffff !important;
+        border: 1px solid rgba(18, 24, 38, 0.08) !important;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06) !important;
+    }
+
+    /* 카드/캡션/입력바 폭 통일 */
+    #namecardTool.is-namecard-direct-final .namecard-card,
+    #namecardTool.is-namecard-direct-final .namecard-caption,
+    #namecardTool.is-namecard-direct-final .namecard-caption--apartment,
+    #namecardTool.is-namecard-direct-final .namecard-edit-bar,
+    #namecardTool.is-namecard-direct-final .namecard-actions,
+    #namecardTool.is-namecard-direct-final .namecard-helper {
+        width: 100% !important;
+        max-width: 414px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card {
+        aspect-ratio: 1.82 / 1 !important;
+    }
+
+    /* 시안3 상단: 팀장/김지모/세로막대기 전체 위로 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-card-top {
+        top: 18.4% !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-person {
+        gap: 3px !important;
+        transform: translateY(-3px) !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-person::before {
+        top: 0 !important;
+        height: 25px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-person span,
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-person strong {
+        line-height: 1 !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-person strong {
+        transform: translateY(-1px) !important;
+    }
+
+    /* 시안3 중간 텍스트: 기존 폭 기준 유지 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-card-middle {
+        left: 9.6% !important;
+        right: 9.6% !important;
+        gap: 6px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-card-middle strong,
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-card-middle p {
+        line-height: 1.18 !important;
+    }
+
+    /* 시안3 하단 연락처: 중간 텍스트 폭과 비슷하게 축소 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-card-bottom {
+        left: 9.6% !important;
+        right: 9.6% !important;
+        bottom: 8px !important;
+
+        display: grid !important;
+        grid-template-columns: max-content max-content max-content !important;
+        justify-content: space-between !important;
+        column-gap: 0 !important;
+        align-items: center !important;
+
+        overflow: visible !important;
+        z-index: 3 !important;
+        transform: translateY(4px) !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-info-col,
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-info-col--wide {
+        grid-column: auto !important;
+        min-width: max-content !important;
+        width: max-content !important;
+        max-width: none !important;
+
+        display: inline-flex !important;
+        align-items: baseline !important;
+        gap: 3px !important;
+
+        font-size: 8.5px !important;
+        line-height: 1 !important;
+        letter-spacing: -0.045em !important;
+        white-space: nowrap !important;
+
+        overflow: visible !important;
+        text-overflow: clip !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-info-col span,
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-info-col strong,
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold #ncPreviewEmail {
+        flex: 0 0 auto !important;
+        min-width: max-content !important;
+        width: auto !important;
+        max-width: none !important;
+
+        font-size: 8.5px !important;
+        line-height: 1 !important;
+        letter-spacing: -0.045em !important;
+        white-space: nowrap !important;
+
+        overflow: visible !important;
+        text-overflow: clip !important;
+    }
+
+    /* 시안3 하단 세로 막대기 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-card-bottom::before,
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-card-bottom::after {
+        content: none !important;
+        display: none !important;
+    }
+
+    /* Tel / E-mail 앞에 실제 막대기 */
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-card-bottom .namecard-info-col:nth-child(2),
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-card-bottom .namecard-info-col:nth-child(3) {
+        position: relative !important;
+        padding-left: 12px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-card-bottom .namecard-info-col:nth-child(2)::before,
+    #namecardTool.is-namecard-direct-final .namecard-card.template-gold .namecard-card-bottom .namecard-info-col:nth-child(3)::before {
+        content: "" !important;
+        display: block !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 24% !important;
+        width: 1px !important;
+        height: 11px !important;
+        border-radius: 999px !important;
+        background: rgba(216, 193, 138, 0.86) !important;
+        transform: translateY(-50%) !important;
+        opacity: 0.9 !important;
+        pointer-events: none !important;
+    }
+}
+
+/* =========================================================
+   NAMECARD CAPTION IMAGE CACHE FINAL
+   - 시안 하단 설명 배경 이미지 미리 캐싱
+   - 화면에는 보이지 않음
+========================================================= */
+
+#namecardTool::after {
+    content: "" !important;
+    position: fixed !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    background-image:
+        url("./images/namecard-caption-sakura-bg.jpg"),
+        url("./images/namecard-caption-02.jpg"),
+        url("./images/namecard-caption-03.jpg"),
+        url("./images/namecard-bg-03.jpg") !important;
 }
