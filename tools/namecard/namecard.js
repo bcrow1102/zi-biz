@@ -951,22 +951,7 @@
         });
     }
 
-    function createWebsiteEditAction(toolbar) {
-        if (!toolbar) return;
-        if ($('namecardWebsiteEditBtn')) return;
 
-        var button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'namecard-top-text-action namecard-website-edit-btn';
-        button.id = 'namecardWebsiteEditBtn';
-        button.textContent = '연결 주소';
-
-        button.addEventListener('click', function () {
-            selectField('website');
-        });
-
-        toolbar.appendChild(button);
-    }
     function moveTemplateSelectToPreview(tool) {
         var template = $('ncTemplate');
         var website = $('ncWebsite');
@@ -1024,7 +1009,17 @@
                 }
             });
         }
-        createWebsiteEditAction(toolbar);
+        var websiteEditBtn = $('namecardWebsiteEditBtn');
+
+        if (websiteEditBtn) {
+            websiteEditBtn.remove();
+        }
+
+        var saveInputBtn = $('ncSaveVcardBtn');
+
+        if (saveInputBtn) {
+            saveInputBtn.remove();
+        }
 
         if (!$('namecardPreviewTemplateControl')) {
             var previewScene = tool.querySelector('.namecard-preview-scene');

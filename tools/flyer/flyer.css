@@ -2305,7 +2305,7 @@ body:has(#flyerTool) .flyer-edit-bar {
     /* 기본값: A4 미니맵은 따라다님 */
     body:has(#flyerTool) .flyer-layout .flyer-mini-map {
         position: fixed !important;
-        top: 128px !important;
+        top: 176px !important;
         right: max(24px, calc((100vw - var(--max)) / 2 + 36px)) !important;
         z-index: 30 !important;
     }
@@ -5624,7 +5624,8 @@ body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-sta
 
 body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-standard .flyer-contact-box a {
     right: 8.6% !important;
-    font-size: 5.2cqw !important;
+    top: 20.5% !important;
+    font-size: 5.3cqw !important;
     letter-spacing: -0.04em !important;
 }
 
@@ -5758,4 +5759,34 @@ body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-sta
     outline: 1.5px dashed rgba(49, 130, 246, 0.95) !important;
     outline-offset: 2px !important;
     background: rgba(49, 130, 246, 0.06) !important;
+}
+
+/* =========================================================
+   FLYER PC BACK BUTTON TOP RIGHT FIX
+   - PC에서만 돌아가기 버튼을 우측 상단으로 이동
+   - 모바일 영향 없음
+========================================================= */
+
+@media (min-width: 761px) {
+    body:has(#flyerTool) .flyer-tool-head {
+        position: relative !important;
+    }
+
+    body:has(#flyerTool) .flyer-back-btn {
+        position: absolute !important;
+        top: 62px !important;
+        right: 52px !important;
+        z-index: 30 !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+
+        width: auto !important;
+        min-width: 112px !important;
+        height: 44px !important;
+        padding: 0 18px !important;
+        margin: 0 !important;
+    }
 }
