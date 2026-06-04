@@ -44,7 +44,7 @@
             point3: getValue('flyerPoint3Input', '4천 전후 실투자금'),
             benefit: getValue('flyerBenefitInput', '잔여 호실 특별 조건 안내'),
             desc: getValue('flyerDescInput', '회사보유분 특별 조건은 잔여 호실과 상담 시점에 따라 달라질 수 있습니다.'),
-            manager: getValue('flyerManagerInput', '김지모 팀장'),
+            manager: getValue('flyerManagerInput', '팀장\n김지모'),
             phone: getValue('flyerPhoneInput', '010-0000-0000')
         };
     }

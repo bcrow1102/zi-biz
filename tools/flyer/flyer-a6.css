@@ -1,8 +1,9 @@
 /* =========================================================
    FLYER A6 SHEET
-   - A4 한 장 안에 A6 전단 4개 배치
-   - A6 전용 배경 / 시안 관리
-   - UI 표기는 시안1 / 시안2
+   - A6 전용 전체 통합 CSS
+   - 메인 편집 화면: A6 1장 크게 표시
+   - 오른쪽 전체보기 미니맵: 기존 4분할 유지
+   - A4 영향 없음
 ========================================================= */
 
 /* A6 전환 버튼 */
@@ -29,7 +30,12 @@
     display: none !important;
 }
 
-/* A4 종이 역할 */
+/* =========================================================
+   A6 BASE SHEET
+   - 기본은 4분할 시트 기준
+   - 미니맵도 이 구조 사용
+========================================================= */
+
 .flyer-a6-sheet {
     position: relative;
     overflow: hidden;
@@ -79,6 +85,7 @@
 .flyer-a6-card {
     position: relative;
     overflow: hidden;
+    container-type: inline-size;
     border-radius: 16px;
     background-color: #fff7d6;
     background-size: 100% 100%;
@@ -104,175 +111,326 @@
     background-image: url("./images/a6-off-02-bg.jpg") !important;
 }
 
-/* 카드 내부 */
+/* =========================================================
+   A6 TEXT BASE
+   - 배경 이미지 박스에 맞춰 절대좌표 배치
+   - 배경에 숫자/아이콘이 있으므로 JS 숫자 span 숨김
+========================================================= */
+
 .flyer-a6-card-inner {
     position: absolute;
     inset: 0;
-    padding: 8.2% 8% 7%;
-    display: flex;
-    flex-direction: column;
-}
-
-/* 상단 */
-.flyer-a6-label {
-    color: #2467c9;
-    font-size: clamp(7px, 1.08vw, 12px);
-    line-height: 1;
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    white-space: nowrap;
-}
-
-.flyer-a6-title {
-    margin-top: 5.4%;
-    color: #082f63;
-    font-size: clamp(18px, 3.15vw, 34px);
-    line-height: 0.98;
-    font-weight: 900;
-    letter-spacing: -0.085em;
-    word-break: keep-all;
-}
-
-.flyer-a6-copy {
-    margin-top: 4.5%;
-    color: #24364d;
-    font-size: clamp(8px, 1.32vw, 15px);
-    line-height: 1.25;
-    font-weight: 700;
-    letter-spacing: -0.045em;
-    word-break: keep-all;
-}
-
-.flyer-a6-location {
-    margin-top: 3.2%;
-    color: #334155;
-    font-size: clamp(7px, 1.05vw, 12px);
-    line-height: 1.2;
-    font-weight: 650;
-    letter-spacing: -0.04em;
-    word-break: keep-all;
-}
-
-/* 조건 */
-.flyer-a6-points {
-    display: grid;
-    gap: 5px;
-    margin-top: auto;
-    padding-bottom: 5.2%;
-}
-
-.flyer-a6-point {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    min-height: 23px;
-    padding: 5px 7px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.68);
-    color: #082f63;
-    font-size: clamp(8px, 1.24vw, 14px);
-    line-height: 1.1;
-    font-weight: 850;
-    letter-spacing: -0.05em;
-    word-break: keep-all;
-}
-
-.flyer-a6-point span {
-    flex: 0 0 auto;
-    color: #2467c9;
-    font-weight: 900;
-}
-
-/* 혜택 / 안내 */
-.flyer-a6-benefit {
-    margin-bottom: 5px;
-    padding: 6px 7px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.56);
-    color: #082f63;
-}
-
-.flyer-a6-benefit strong {
     display: block;
-    font-size: clamp(8px, 1.25vw, 14px);
-    line-height: 1.15;
+    padding: 0;
+}
+
+/* 상단 라벨 */
+.flyer-a6-label {
+    position: absolute;
+    left: 8.2%;
+    top: 7.2%;
+    width: 28%;
+    color: #2467c9;
+    font-size: clamp(8px, 1.55vw, 14px);
+    line-height: 1;
+    font-weight: 850;
+    letter-spacing: -0.04em;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 8;
+}
+
+/* 현장명 */
+.flyer-a6-title {
+    position: absolute;
+    left: 7.6%;
+    top: 14.2%;
+    width: 84%;
+    margin: 0;
+    color: #082f63;
+    font-size: clamp(27px, 5.4vw, 48px);
+    line-height: 0.96;
+    font-weight: 950;
+    letter-spacing: -0.09em;
+    text-align: center;
+    word-break: keep-all;
+    z-index: 8;
+}
+
+/* 한줄 카피 */
+.flyer-a6-copy {
+    position: absolute;
+    left: 9%;
+    top: 27.4%;
+    width: 82%;
+    margin: 0;
+    color: #24364d;
+    font-size: clamp(12px, 2.2vw, 20px);
+    line-height: 1.25;
+    font-weight: 750;
+    letter-spacing: -0.045em;
+    text-align: center;
+    word-break: keep-all;
+    z-index: 8;
+}
+
+/* 위치 */
+.flyer-a6-location {
+    display: none !important;
+}
+
+/* 조건 묶음 */
+.flyer-a6-points {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+/* 조건 공통 */
+.flyer-a6-point {
+    position: absolute;
+    left: 26.7%;
+    width: 58%;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #17315f;
+    font-size: clamp(12px, 4.7cqw, 18px);
+    line-height: 1;
     font-weight: 900;
     letter-spacing: -0.055em;
     word-break: keep-all;
+    white-space: nowrap;
+    z-index: 8;
+}
+
+.flyer-a6-point:nth-child(1) {
+    top: 38.6%;
+}
+
+.flyer-a6-point:nth-child(2) {
+    top: 46.95%;
+}
+
+.flyer-a6-point:nth-child(3) {
+    top: 55.5%;
+}
+
+.flyer-a6-point span {
+    display: none !important;
+}
+
+.flyer-a6-benefit {
+    position: absolute;
+    left: 8.2%;
+    top: 65.8%;
+    width: 84%;
+    height: 12.6%;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #17315f;
+    z-index: 8;
+}
+
+.flyer-a6-benefit strong {
+    position: absolute;
+    left: 50%;
+    top: 7%;
+    width: 68%;
+    transform: translateX(-50%);
+    display: block;
+    margin: 0;
+    color: #17315f;
+    font-size: clamp(12px, 4.9cqw, 18px);
+    line-height: 1.12;
+    font-weight: 950;
+    letter-spacing: -0.06em;
+    text-align: center;
+    word-break: keep-all;
+    white-space: nowrap;
 }
 
 .flyer-a6-benefit p {
-    display: -webkit-box;
-    margin-top: 3px;
+    position: absolute;
+    left: 11.5%;
+    top: 52%;
+    width: 76%;
+    display: block;
+    margin: 0;
     overflow: hidden;
     color: #334155;
-    font-size: clamp(6px, 0.9vw, 10px);
-    line-height: 1.35;
-    font-weight: 550;
-    letter-spacing: -0.035em;
+    font-size: clamp(7px, 2.35cqw, 10px);
+    line-height: 1.55;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    text-align: left;
     word-break: keep-all;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
 }
 
 /* 연락처 */
 .flyer-a6-contact {
-    display: grid;
-    grid-template-columns: 0.78fr 1.22fr;
-    align-items: center;
-    gap: 8px;
-    min-height: 34px;
-    padding: 7px 8px;
-    border-radius: 12px;
-    background: #082f63;
-    color: #ffffff;
+    position: absolute;
+    left: 7%;
+    top: 86.8%;
+    width: 86%;
+    height: 7.3%;
+    display: block;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #17315f;
+    z-index: 8;
 }
 
+/* 상담자 */
 .flyer-a6-manager {
-    font-size: clamp(8px, 1.16vw, 13px);
-    line-height: 1.1;
-    font-weight: 800;
-    letter-spacing: -0.04em;
+    position: absolute;
+    left: 6.2%;
+    top: 50%;
+    width: 18%;
+    height: auto;
+
+    display: block;
+    padding: 0;
+    margin: 0;
+
+    transform: translateY(-50%);
+
+    color: #8b7520;
+    font-size: clamp(10px, 4.05cqw, 16px);
+    line-height: 1.08;
+    font-weight: 950;
+    letter-spacing: -0.055em;
+
+    white-space: pre-line;
+    text-align: left;
     word-break: keep-all;
+
+    z-index: 20;
 }
 
+/* 전화번호 */
 .flyer-a6-phone {
+    position: absolute;
+    right: auto;
+    left: 39%;
+    top: 12%;
+    width: 50%;
+    height: 56%;
+    min-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 26px;
     border-radius: 999px;
-    background: #ffe74c;
-    color: #082f63;
-    font-size: clamp(10px, 1.55vw, 17px);
+    background: transparent;
+    color: #17315f;
+    font-size: clamp(17px, 8.2cqw, 31px);
     line-height: 1;
-    font-weight: 900;
-    letter-spacing: -0.02em;
+    font-weight: 950;
+    letter-spacing: -0.035em;
     white-space: nowrap;
 }
 
-/* 시안2는 포인트 색만 살짝 다르게 */
-.flyer-a6-theme-02 .flyer-a6-label,
-.flyer-a6-theme-02 .flyer-a6-point span {
+/* =========================================================
+   THEME 02 COLOR
+========================================================= */
+
+.flyer-a6-theme-02 .flyer-a6-label {
     color: #d63384;
 }
 
 .flyer-a6-theme-02 .flyer-a6-title,
 .flyer-a6-theme-02 .flyer-a6-copy,
-.flyer-a6-theme-02 .flyer-a6-benefit strong {
-    color: #7a174a;
-}
-
-.flyer-a6-theme-02 .flyer-a6-contact {
-    background: #7a174a;
-}
-
+.flyer-a6-theme-02 .flyer-a6-benefit strong,
+.flyer-a6-theme-02 .flyer-a6-point,
 .flyer-a6-theme-02 .flyer-a6-phone {
     color: #7a174a;
-    background: #ffe4f0;
 }
 
-/* 모바일 */
+/* =========================================================
+   FLYER A6 MAIN SINGLE CARD VIEW
+   - 메인 편집 화면은 A6 1장만 표시
+   - 미니맵은 flyer-mini-clone 제외 조건으로 4분할 유지
+========================================================= */
+
+/* A6 메인 원본 시트만 1장 카드 크기로 사용 */
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) {
+    display: block !important;
+    width: 385px !important;
+    max-width: 385px !important;
+    aspect-ratio: 941 / 1080 !important;
+    margin: 0 auto !important;
+    border-radius: 22px !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+}
+
+/* 메인에서는 2x2 그리드 해제 */
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-grid {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+}
+
+/* 메인에서는 재단선 숨김 */
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-cut-line {
+    display: none !important;
+}
+
+/* 메인에서는 첫 번째 카드만 보임 */
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-card {
+    display: none !important;
+}
+
+/* 첫 번째 카드가 메인 편집 카드 */
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-card:first-child {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 22px !important;
+}
+
+/* =========================================================
+   FLYER A6 PC OUTER SPACE FIX
+   - A6 메인 이미지는 그대로 두고
+   - 이미지를 감싸는 상위 영역만 넓고 높게 확보
+========================================================= */
+
+@media (min-width: 1101px) {
+    body:has(#flyerTool) .flyer-layout:has(.flyer-preview-wrap.is-a6-mode) {
+        min-height: 620px !important;
+        align-items: start !important;
+    }
+
+    body:has(#flyerTool) .flyer-preview-column:has(.flyer-preview-wrap.is-a6-mode) {
+        min-height: 620px !important;
+        padding-bottom: 40px !important;
+        overflow: visible !important;
+    }
+
+    body:has(#flyerTool) .flyer-preview-wrap.is-a6-mode {
+        max-width: 1040px !important;
+        min-height: 560px !important;
+        padding: 26px 34px 42px !important;
+        overflow: visible !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* =========================================================
+   MOBILE
+   - 모바일은 미니맵 없이 A6 1장만
+   - 텍스트 재조정하지 않고 PC 축소 흐름 사용
+========================================================= */
+
 @media (max-width: 760px) {
     .flyer-a6-sheet {
         width: 86vw;
@@ -289,28 +447,14 @@
         border-radius: 12px;
     }
 
-    .flyer-a6-card-inner {
-        padding: 7.4% 7% 6%;
+    .flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) {
+        width: 86vw !important;
+        max-width: 330px !important;
+        border-radius: 18px !important;
     }
 
-    .flyer-a6-points {
-        gap: 4px;
-    }
-
-    .flyer-a6-point {
-        min-height: 20px;
-        padding: 4px 6px;
-    }
-
-    .flyer-a6-benefit {
-        padding: 5px 6px;
-        margin-bottom: 4px;
-    }
-
-    .flyer-a6-contact {
-        min-height: 30px;
-        padding: 6px;
-        gap: 5px;
+    .flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-card:first-child {
+        border-radius: 18px !important;
     }
 }
 
@@ -322,4 +466,262 @@
 /* A6 모드에서 시안3 버튼 강제 숨김 */
 .flyer-theme-menu-list .flyer-color-btn.flyer-a6-theme-hidden {
     display: none !important;
+}
+
+/* =========================================================
+   A6 MINI MAP FINAL FIX
+   - 오른쪽 전체보기 미니맵 전용
+   - 메인 A6 1장 보기에는 영향 없음
+========================================================= */
+
+.flyer-a6-sheet.flyer-mini-clone {
+    display: block !important;
+    width: 380px !important;
+    max-width: 380px !important;
+    aspect-ratio: 941 / 1331 !important;
+    margin: 0 auto !important;
+    border-radius: 16px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+}
+
+/* 미니맵은 반드시 2x2 유지 */
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-grid {
+    position: absolute !important;
+    inset: 3.2% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-rows: 1fr 1fr !important;
+    gap: 2.4% !important;
+}
+
+/* 미니맵에서는 4장 모두 보이게 */
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-card {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 12px !important;
+}
+
+/* 미니맵 재단선 표시 */
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-cut-line {
+    display: block !important;
+}
+
+/* =========================================================
+   A6 MINI MAP TEXT SIZE FIX
+   - 미니맵에서 글자 겹침 방지
+========================================================= */
+
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-label {
+    font-size: clamp(4px, 2.2cqw, 8px) !important;
+}
+
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-title {
+    font-size: clamp(12px, 8.8cqw, 21px) !important;
+    line-height: 0.92 !important;
+}
+
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-copy {
+    font-size: clamp(6px, 3.8cqw, 10px) !important;
+    line-height: 1.12 !important;
+}
+
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-point {
+    font-size: clamp(6px, 3.8cqw, 10px) !important;
+    line-height: 1 !important;
+}
+
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-benefit strong {
+    font-size: clamp(6px, 3.8cqw, 10px) !important;
+    line-height: 1.05 !important;
+}
+
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-benefit p {
+    font-size: clamp(4px, 2cqw, 6px) !important;
+    line-height: 1.25 !important;
+}
+
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-manager {
+    font-size: clamp(4px, 2.7cqw, 8px) !important;
+    line-height: 1.05 !important;
+}
+
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-phone {
+    font-size: clamp(8px, 5.5cqw, 16px) !important;
+    line-height: 1 !important;
+}
+
+/* =========================================================
+   A6 THEME 02 - MIDDLE POINTS ONLY
+   - 시안2 조건 1/2/3 미세하게 아래로 조정
+========================================================= */
+
+.flyer-a6-theme-02 .flyer-a6-point:nth-child(1) {
+    top: 43.38% !important;
+}
+
+.flyer-a6-theme-02 .flyer-a6-point:nth-child(2) {
+    top: 51.78% !important;
+}
+
+.flyer-a6-theme-02 .flyer-a6-point:nth-child(3) {
+    top: 60.18% !important;
+}
+
+/* =========================================================
+   A6 THEME 02 - BENEFIT ONLY
+   - 시안2 혜택 박스 텍스트 한 번 더 아래로
+========================================================= */
+
+.flyer-a6-theme-02 .flyer-a6-benefit strong {
+    top: 36% !important;
+}
+
+.flyer-a6-theme-02 .flyer-a6-benefit p {
+    top: 91% !important;
+    line-height: 1.75 !important;
+}
+
+/* =========================================================
+   A6 MINI MAP - THEME 02 BENEFIT DESC ONE LINE FINAL
+   - 시안2 미니맵 서브텍스트만 한 줄 처리
+   - 메인 A6 영향 없음
+========================================================= */
+
+.flyer-a6-sheet.flyer-mini-clone.flyer-a6-theme-02 .flyer-a6-benefit p {
+    left: 7% !important;
+    top: 82% !important;
+    width: 86% !important;
+
+    font-size: clamp(3px, 1.45cqw, 5px) !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+
+    text-align: center !important;
+}
+
+/* =========================================================
+   A6 THEME 02 - CONTACT ONLY
+   - 시안2 하단 연락처 전체 아래로 조정
+========================================================= */
+
+.flyer-a6-theme-02 .flyer-a6-contact {
+    top: 88.1% !important;
+}
+
+.flyer-a6-theme-02 .flyer-a6-manager {
+    top: 56% !important;
+    transform: translateY(-50%) !important;
+}
+
+.flyer-a6-theme-02 .flyer-a6-phone {
+    top: 18% !important;
+}
+
+/* =========================================================
+   A6 PDF EXPORT FIX
+   - PDF 캡처 시 A6를 4분할 상태로 출력
+========================================================= */
+
+body.is-a6-pdf-exporting .flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) {
+    display: block !important;
+    width: 794px !important;
+    max-width: 794px !important;
+    aspect-ratio: 941 / 1331 !important;
+    margin: 0 auto !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+}
+
+body.is-a6-pdf-exporting .flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-grid {
+    position: absolute !important;
+    inset: 3.2% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-rows: 1fr 1fr !important;
+    gap: 2.4% !important;
+}
+
+body.is-a6-pdf-exporting .flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-card {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 16px !important;
+}
+
+body.is-a6-pdf-exporting .flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-cut-line {
+    display: block !important;
+}
+
+/* =========================================================
+   A6 PDF EXPORT - REMOVE MINI BLUR
+   - PDF 출력 시 하단 2칸 블러/투명도 제거
+========================================================= */
+
+body.is-a6-pdf-exporting #flyerA6Sheet .flyer-a6-card {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+}
+
+body.is-a6-pdf-exporting #flyerA6Sheet .flyer-a6-card::before,
+body.is-a6-pdf-exporting #flyerA6Sheet .flyer-a6-card::after {
+    display: none !important;
+    opacity: 0 !important;
+    filter: none !important;
+    background: transparent !important;
+}
+
+body.is-a6-pdf-exporting #flyerA6Sheet .flyer-a6-card:nth-child(3),
+body.is-a6-pdf-exporting #flyerA6Sheet .flyer-a6-card:nth-child(4) {
+    opacity: 1 !important;
+    filter: none !important;
+    pointer-events: auto !important;
+}
+
+body.is-a6-pdf-exporting #flyerA6Sheet .flyer-a6-card:nth-child(3) *,
+body.is-a6-pdf-exporting #flyerA6Sheet .flyer-a6-card:nth-child(4) * {
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* =========================================================
+   A6 PDF EXPORT - CONTACT TEXT ALIGN FIX
+   - PDF 4분할 출력에서 상담자 텍스트만 아래로 보정
+   - 화면 미리보기에는 영향 없음
+========================================================= */
+
+body.is-a6-pdf-exporting #flyerA6Sheet .flyer-a6-manager {
+    top: 64% !important;
+    transform: translateY(-50%) !important;
+}
+
+/* =========================================================
+   A6 PDF EXPORT - THEME 02 CONTACT MANAGER FIX
+   - 시안2 PDF에서 팀장/김지모만 아래로 보정
+   - 화면 미리보기 영향 없음
+========================================================= */
+
+body.is-a6-pdf-exporting #flyerA6Sheet.flyer-a6-theme-02 .flyer-a6-manager {
+    top: 70% !important;
+    transform: translateY(-50%) !important;
+}
+
+/* =========================================================
+   A6 PDF EXPORT - THEME 02 MANAGER FINAL FORCE
+   - 시안2 PDF 출력에서 팀장/김지모 위치 강제 보정
+   - 반드시 flyer-a6.css 맨 마지막에 둘 것
+========================================================= */
+
+html body.is-a6-pdf-exporting .flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet.flyer-a6-theme-02 .flyer-a6-card .flyer-a6-contact .flyer-a6-manager {
+    top: 78% !important;
+    transform: translateY(-50%) !important;
 }

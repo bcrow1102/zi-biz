@@ -362,9 +362,14 @@
     }
 
     async function downloadFlyerPdf() {
-        var preview = document.getElementById('flyerPreview');
+        var previewWrap = document.querySelector('.flyer-preview-wrap');
+        var isA6Mode = previewWrap && previewWrap.classList.contains('is-a6-mode');
 
-        if (!preview) {
+        var target = isA6Mode
+            ? document.getElementById('flyerA6Sheet')
+            : document.getElementById('flyerPreview');
+
+        if (!target) {
             showFlyerToast('전단 미리보기를 찾지 못했어.');
             return;
         }
@@ -384,6 +389,9 @@
             closeDownloadPopover();
 
             document.body.classList.add('is-flyer-pdf-capturing');
+            if (isA6Mode) {
+                document.body.classList.add('is-a6-pdf-exporting');
+            }
 
             if (document.fonts && document.fonts.ready) {
                 await document.fonts.ready;
@@ -393,7 +401,7 @@
                 requestAnimationFrame(resolve);
             });
 
-            var canvas = await window.html2canvas(preview, {
+            var canvas = await window.html2canvas(target, {
                 scale: 2,
                 backgroundColor: '#ffffff',
                 useCORS: true,
@@ -404,7 +412,8 @@
                     return element.classList && (
                         element.classList.contains('flyer-preview-overlay') ||
                         element.classList.contains('flyer-download-popover') ||
-                        element.classList.contains('flyer-theme-menu-list')
+                        element.classList.contains('flyer-theme-menu-list') ||
+                        element.classList.contains('flyer-edit-bar')
                     );
                 }
             });
@@ -421,7 +430,7 @@
 
             var pageWidth = 210;
             var pageHeight = 297;
-            var margin = 8;
+            var margin = isA6Mode ? 6 : 8;
 
             var maxWidth = pageWidth - margin * 2;
             var maxHeight = pageHeight - margin * 2;
@@ -440,7 +449,7 @@
             var y = (pageHeight - imageHeight) / 2;
 
             pdf.addImage(imageData, 'PNG', x, y, imageWidth, imageHeight);
-            pdf.save('zimo-biz-flyer.pdf');
+            pdf.save(isA6Mode ? 'zimo-biz-flyer-a6.pdf' : 'zimo-biz-flyer.pdf');
 
             showFlyerToast('PDF 다운로드 완료.');
         } catch (error) {
@@ -450,6 +459,7 @@
             showFlyerToast('PDF 오류: ' + message.slice(0, 60));
         } finally {
             document.body.classList.remove('is-flyer-pdf-capturing');
+            document.body.classList.remove('is-a6-pdf-exporting');
         }
     }
 
