@@ -5761,36 +5761,6 @@ body:has(#flyerTool) #flyerPreview.flyer-preview.flyer-bg-office.flyer-theme-sta
 }
 
 /* =========================================================
-   FLYER PC BACK BUTTON TOP RIGHT FIX
-   - PC에서만 돌아가기 버튼을 우측 상단으로 이동
-   - 모바일 영향 없음
-========================================================= */
-
-@media (min-width: 761px) {
-    body:has(#flyerTool) .flyer-tool-head {
-        position: relative !important;
-    }
-
-    body:has(#flyerTool) .flyer-back-btn {
-        position: absolute !important;
-        top: 62px !important;
-        right: 52px !important;
-        z-index: 30 !important;
-
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 6px !important;
-
-        width: auto !important;
-        min-width: 112px !important;
-        height: 44px !important;
-        padding: 0 18px !important;
-        margin: 0 !important;
-    }
-}
-
-/* =========================================================
    FLYER DOWNLOAD POPOVER LAYER FIX
    - 다운로드 팝업 열릴 때 시안 선택 / A6 배지가 뒤에서 보이는 문제 해결
 ========================================================= */
@@ -5859,4 +5829,622 @@ body:has(#flyerTool) .flyer-preview-column:has(.flyer-download-popover.is-open) 
         margin-left: auto !important;
         margin-right: auto !important;
     }
+}
+
+/* =========================================================
+   APARTMENT A4 FINAL TEXT SYSTEM
+   - 아파트 A4 시안1/2/3만 적용
+   - 오피스텔 / A6 영향 없음
+   - 큰 미리보기 + 미니맵 동시 적용
+========================================================= */
+
+/* =========================================================
+   0) 아파트 A4 공통 텍스트 기준
+========================================================= */
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-preview-hero-content,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-preview-hero-content {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 20 !important;
+    pointer-events: none !important;
+}
+
+/* 상단 라벨 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-preview-label,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-preview-label {
+    position: absolute !important;
+    left: 14.2% !important;
+    top: 4.2% !important;
+    width: 38% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 2.0cqw !important;
+    line-height: 1 !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.045em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+/* 현장명 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment h4,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment h4 {
+    position: absolute !important;
+    left: 8.8% !important;
+    top: 7.4% !important;
+    width: 72% !important;
+
+    margin: 0 !important;
+    font-size: 6.25cqw !important;
+    line-height: 0.92 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.095em !important;
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.78) !important;
+}
+
+/* 한줄 카피 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-preview-hero-content p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-preview-hero-content p {
+    position: absolute !important;
+    left: 12.6% !important;
+    top: 17.1% !important;
+    width: 68% !important;
+
+    margin: 0 !important;
+    font-size: 2.55cqw !important;
+    line-height: 1.08 !important;
+    font-weight: 750 !important;
+    letter-spacing: -0.055em !important;
+    white-space: nowrap !important;
+    text-align: left !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68) !important;
+}
+
+/* 위치 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-preview-hero-content em,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-preview-hero-content em {
+    position: absolute !important;
+    left: 14.6% !important;
+    top: 29.9% !important;
+    width: 32% !important;
+
+    margin: 0 !important;
+    font-size: 2.05cqw !important;
+    line-height: 1 !important;
+    font-style: normal !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.055em !important;
+    white-space: nowrap !important;
+}
+
+/* 조건 번호 숨김: 배경에 숫자/아이콘 느낌이 이미 있을 때 텍스트만 살림 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-point span,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-point span {
+    display: none !important;
+}
+
+/* 조건 텍스트 공통 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-point,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-point {
+    position: absolute !important;
+    left: 27.2% !important;
+    width: 55% !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    text-align: left !important;
+    z-index: 20 !important;
+}
+
+/* 조건 1 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-point:nth-child(1),
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-point:nth-child(1) {
+    top: 37.2% !important;
+}
+
+/* 조건 2 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-point:nth-child(2),
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-point:nth-child(2) {
+    top: 44.9% !important;
+}
+
+/* 조건 3 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-point:nth-child(3),
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-point:nth-child(3) {
+    top: 52.6% !important;
+}
+
+/* 조건 글자 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-point strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-point strong {
+    display: block !important;
+    font-size: 3.85cqw !important;
+    line-height: 1.02 !important;
+    font-weight: 920 !important;
+    letter-spacing: -0.075em !important;
+    white-space: nowrap !important;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.68) !important;
+}
+
+/* 혜택 박스 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-benefit-box,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-benefit-box {
+    position: absolute !important;
+    left: 8.1% !important;
+    top: 70.4% !important;
+    width: 83.8% !important;
+    height: 15.8% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    text-align: center !important;
+    z-index: 20 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-benefit-box span,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-benefit-box span {
+    position: absolute !important;
+    left: 50% !important;
+    top: 7.2% !important;
+    transform: translateX(-50%) !important;
+
+    font-size: 1.7cqw !important;
+    line-height: 1 !important;
+    font-weight: 850 !important;
+    letter-spacing: 0.1em !important;
+    white-space: nowrap !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-benefit-box strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-benefit-box strong {
+    position: absolute !important;
+    left: 8% !important;
+    right: 8% !important;
+    top: 31% !important;
+
+    margin: 0 !important;
+    font-size: 4.25cqw !important;
+    line-height: 1.12 !important;
+    font-weight: 930 !important;
+    letter-spacing: -0.08em !important;
+    white-space: nowrap !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-benefit-box p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-benefit-box p {
+    position: absolute !important;
+    left: 11% !important;
+    right: 11% !important;
+    top: 58% !important;
+
+    margin: 0 !important;
+    font-size: 2.05cqw !important;
+    line-height: 1.38 !important;
+    font-weight: 520 !important;
+    letter-spacing: -0.045em !important;
+    word-break: keep-all !important;
+}
+
+/* 하단 상담 영역 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-contact-box,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-contact-box {
+    position: absolute !important;
+    left: 3.5% !important;
+    top: 91.0% !important;
+    width: 93% !important;
+    height: 6.5% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    z-index: 20 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-contact-box>div,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-contact-box>div {
+    position: absolute !important;
+    left: 17.4% !important;
+    top: 18% !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-contact-box span,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-contact-box span {
+    display: block !important;
+    font-size: 1.55cqw !important;
+    line-height: 1 !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.03em !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-contact-box strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-contact-box strong {
+    display: block !important;
+    margin-top: 8% !important;
+    font-size: 3.1cqw !important;
+    line-height: 1 !important;
+    font-weight: 920 !important;
+    letter-spacing: -0.07em !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-contact-box a,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-contact-box a {
+    position: absolute !important;
+    right: 5.3% !important;
+    top: 20% !important;
+    width: 43% !important;
+    height: 58% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    font-size: 4.0cqw !important;
+    line-height: 1 !important;
+    font-weight: 950 !important;
+    letter-spacing: 0.01em !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+}
+
+/* =========================================================
+   1) 아파트 시안1: 기본 블루 + 골드 포인트
+========================================================= */
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-preview-label,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-preview-label {
+    color: #0b4ea2 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple h4,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple h4 {
+    color: #c7771f !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-preview-hero-content p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-preview-hero-content p {
+    color: #12375f !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point strong {
+    color: #082f63 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box span,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box span {
+    color: #ffffff !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box strong {
+    color: #064a9b !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box p {
+    color: #222b38 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-contact-box span,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-contact-box span {
+    color: #f8d94d !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-contact-box strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-contact-box strong {
+    color: #ffffff !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-contact-box a,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-contact-box a {
+    color: #082f63 !important;
+}
+
+/* =========================================================
+   2) 아파트 시안2: 핑크/마젠타 계열
+========================================================= */
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard .flyer-preview-label,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard .flyer-preview-label {
+    color: #b80058 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard h4,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard h4 {
+    color: #d6417d !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard .flyer-preview-hero-content p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard .flyer-preview-hero-content p {
+    color: #31243a !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard .flyer-point strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard .flyer-point strong {
+    color: #8f0047 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard .flyer-benefit-box strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard .flyer-benefit-box strong {
+    color: #c8005d !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard .flyer-contact-box a,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard .flyer-contact-box a {
+    color: #b80058 !important;
+}
+
+/* =========================================================
+   3) 아파트 시안3: 프리미엄 딥네이비 + 골드
+========================================================= */
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-premium .flyer-preview-label,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-premium .flyer-preview-label {
+    color: #a9772c !important;
+    text-shadow: none !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-premium h4,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-premium h4 {
+    color: #182033 !important;
+    text-shadow: none !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-premium .flyer-preview-hero-content p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-premium .flyer-preview-hero-content p {
+    color: #354052 !important;
+    text-shadow: none !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-premium .flyer-point strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-premium .flyer-point strong {
+    color: #ffffff !important;
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.18) !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-premium .flyer-benefit-box span,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-premium .flyer-benefit-box span {
+    color: #4b3420 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-premium .flyer-benefit-box strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-premium .flyer-benefit-box strong {
+    color: #8b6325 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-premium .flyer-benefit-box p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-premium .flyer-benefit-box p {
+    color: #4a3d31 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-premium .flyer-contact-box span,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-premium .flyer-contact-box span {
+    color: #f1d79b !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-premium .flyer-contact-box strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-premium .flyer-contact-box strong {
+    color: #ffffff !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-premium .flyer-contact-box a,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-premium .flyer-contact-box a {
+    color: #182033 !important;
+}
+
+/* =========================================================
+   APARTMENT A4 THEME 1 FIX 01
+   - 아파트 시안1만 조정
+   - 구조 압축 / 글자 확대 / 색상 계층 적용
+   - 큰 미리보기 + 미니맵 동시 적용
+========================================================= */
+
+/* 상단 라벨 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-preview-label,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-preview-label {
+    left: 14.2% !important;
+    top: 4.0% !important;
+    width: 38% !important;
+
+    color: #0b4ea2 !important;
+    font-size: 2.05cqw !important;
+    line-height: 1 !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.045em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+}
+
+/* 현장명 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple h4,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple h4 {
+    left: 8.4% !important;
+    top: 6.7% !important;
+    width: 76% !important;
+
+    color: #c7771f !important;
+    font-size: 6.8cqw !important;
+    line-height: 0.9 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.1em !important;
+    white-space: nowrap !important;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.82) !important;
+}
+
+/* 한줄 카피 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-preview-hero-content p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-preview-hero-content p {
+    left: 12.4% !important;
+    top: 15.6% !important;
+    width: 70% !important;
+
+    color: #12375f !important;
+    font-size: 2.75cqw !important;
+    line-height: 1.05 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.055em !important;
+    white-space: nowrap !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68) !important;
+}
+
+/* 위치 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-preview-hero-content em,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-preview-hero-content em {
+    left: 14.6% !important;
+    top: 28.8% !important;
+    width: 32% !important;
+
+    color: #ffffff !important;
+    font-size: 2.15cqw !important;
+    line-height: 1 !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.055em !important;
+    white-space: nowrap !important;
+}
+
+/* 조건 전체 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point {
+    left: 26.6% !important;
+    width: 58% !important;
+    text-align: left !important;
+}
+
+/* 조건 1 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(1),
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(1) {
+    top: 34.8% !important;
+}
+
+/* 조건 2 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(2),
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(2) {
+    top: 42.0% !important;
+}
+
+/* 조건 3 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(3),
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(3) {
+    top: 49.2% !important;
+}
+
+/* 조건 글자 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point strong {
+    color: #082f63 !important;
+    font-size: 4.35cqw !important;
+    line-height: 1 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.075em !important;
+    white-space: nowrap !important;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.68) !important;
+}
+
+/* 혜택 제목 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box strong {
+    color: #064a9b !important;
+    font-size: 4.35cqw !important;
+    font-weight: 930 !important;
+}
+
+/* 혜택 설명 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box p {
+    color: #222b38 !important;
+    font-size: 2.05cqw !important;
+    line-height: 1.38 !important;
+}
+
+/* 전화번호 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-contact-box a,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-contact-box a {
+    color: #082f63 !important;
+    font-size: 4.0cqw !important;
+    font-weight: 950 !important;
+}
+
+/* =========================================================
+   FLYER A4 MINI MAP SNAPSHOT MODE
+   - A4 미니맵은 #flyerPreview를 html2canvas로 캡처한 이미지 사용
+   - 기존 .flyer-mini-clone 직접 보정 방식은 A4에서 숨김
+   - A6는 is-snapshot-mode 제거 후 기존 구조 유지
+========================================================= */
+
+.flyer-mini-map-body .flyer-mini-map-img {
+    display: none !important;
+}
+
+.flyer-mini-map-body.is-snapshot-mode {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+}
+
+.flyer-mini-map-body.is-snapshot-mode> :not(.flyer-mini-map-img) {
+    display: none !important;
+}
+
+.flyer-mini-map-body.is-snapshot-mode .flyer-mini-map-img {
+    display: block !important;
+    width: 100% !important;
+    max-width: 350px !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    border-radius: 18px !important;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.13) !important;
+    pointer-events: none !important;
+    user-select: none !important;
+}
+
+/* =========================================================
+   FLYER A4 MINI MAP BACKGROUND SNAPSHOT FIX
+   - img 태그 방식 중단
+   - miniBody 자체 background-image로 스냅샷 유지
+========================================================= */
+
+.flyer-mini-map-body[data-mini-snapshot="true"] {
+    display: block !important;
+    width: 100% !important;
+    max-width: 350px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.13) !important;
+}
+
+/* 스냅샷 모드에서는 기존 clone 내용은 안 보이게만 한다.
+   배경 이미지는 miniBody에 남아 있으므로 사라지지 않는다. */
+.flyer-mini-map-body[data-mini-snapshot="true"]>* {
+    visibility: hidden !important;
+    pointer-events: none !important;
 }

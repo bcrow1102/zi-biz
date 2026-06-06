@@ -3,6 +3,10 @@
 
     var FLYER_DRAFT_KEY = 'zimo_biz_flyer_draft_v2';
     var flyerCustomBgObjectUrl = '';
+    var flyerMiniMapSnapshotTimer = null;
+    var flyerMiniMapSnapshotToken = 0;
+    var flyerMiniMapOriginalHtml = null;
+    var flyerMiniMapObserver = null;
 
     function safeText(value, fallback) {
         var text = String(value || '').trim();
@@ -65,6 +69,8 @@
             bgUploadLabel: document.getElementById('flyerBgUploadLabel'),
             previewWrap: document.querySelector('.flyer-preview-wrap'),
             a6Sheet: document.getElementById('flyerA6Sheet'),
+            sizeToggleBtn: document.getElementById('flyerSizeToggleBtn'),
+            sizeBadge: document.getElementById('flyerSizeBadge'),
             generalHeroImage: document.getElementById('flyerGeneralHeroImage')
         };
     }
@@ -100,6 +106,85 @@
             overlay: getActiveValue('data-flyer-overlay', 'soft')
         };
     }
+    function getFlyerDefaults(background) {
+        var bg = background || getActiveValue('data-flyer-bg', 'apartment');
+
+        if (bg === 'office') {
+            return {
+                label: '프리미엄 오피스텔',
+                title: '휴먼블루드빌',
+                copy: '울산 시청 옆 수익형 오피스텔',
+                location: '울산 시청 바로 옆',
+                point1: '회사보유분 특별분양',
+                point2: '30% 할인 조건',
+                point3: '4천 전후 실투자금',
+                benefit: '잔여 호실 특별 조건 안내',
+                desc1: '회사보유분 특별 조건은 잔여 호실 상담 시점에 따라 달라질 수 있습니다.',
+                desc2: '정확한 내용은 상담을 통해 안내드립니다.',
+                manager: '김지모 팀장',
+                phone: '010-0000-0000'
+            };
+        }
+
+        return {
+            label: '울산 신규 아파트',
+            title: '문수로 써밋 블루밍',
+            copy: '울산 중심 생활권 프리미엄 아파트',
+            location: '울산 남구 생활권',
+            point1: '선착순 동호 지정',
+            point2: '계약금 정액제',
+            point3: '중도금 무이자',
+            benefit: '잔여세대 특별 조건 안내',
+            desc1: '일부 세대 한정 조건은 상담 시점에 따라 달라질 수 있습니다.',
+            desc2: '방문 예약 시 자세한 혜택을 안내드립니다.',
+            manager: '김지모 팀장',
+            phone: '010-0000-0000'
+        };
+    }
+
+    function isKnownFlyerDefault(value, key) {
+        var text = String(value || '').trim();
+        var apartmentDefaults = getFlyerDefaults('apartment');
+        var officeDefaults = getFlyerDefaults('office');
+
+        return text === '' ||
+            text === apartmentDefaults[key] ||
+            text === officeDefaults[key];
+    }
+
+    function syncInputsToBackgroundDefaults(els, background) {
+        var defaults = getFlyerDefaults(background);
+
+        var pairs = [
+            ['labelInput', 'label'],
+            ['titleInput', 'title'],
+            ['copyInput', 'copy'],
+            ['locationInput', 'location'],
+            ['point1Input', 'point1'],
+            ['point2Input', 'point2'],
+            ['point3Input', 'point3'],
+            ['benefitInput', 'benefit'],
+            ['desc1Input', 'desc1'],
+            ['desc2Input', 'desc2'],
+            ['managerInput', 'manager'],
+            ['phoneInput', 'phone']
+        ];
+
+        pairs.forEach(function (pair) {
+            var input = els[pair[0]];
+            var key = pair[1];
+
+            if (!input) return;
+
+            /*
+                사용자가 직접 고친 문구는 건드리지 않고,
+                빈 값이거나 기존 아파트/오피스텔 기본 문구일 때만 교체한다.
+            */
+            if (isKnownFlyerDefault(input.value, key)) {
+                input.value = defaults[key];
+            }
+        });
+    }
 
     function setText(el, value, fallback) {
         if (!el) return;
@@ -111,36 +196,41 @@
 
         if (!els.preview) return;
 
-        setText(els.previewLabel, els.labelInput && els.labelInput.value, '프리미엄 오피스텔');
-        setText(els.previewTitle, els.titleInput && els.titleInput.value, '휴먼블루드빌');
-        setText(els.previewCopy, els.copyInput && els.copyInput.value, '울산 시청 옆 수익형 오피스텔');
-        setText(els.previewLocation, els.locationInput && els.locationInput.value, '울산 시청 바로 옆');
+        var defaults = getFlyerDefaults(getActiveValue('data-flyer-bg', 'apartment'));
 
-        setText(els.previewPoint1, els.point1Input && els.point1Input.value, '회사보유분 특별분양');
-        setText(els.previewPoint2, els.point2Input && els.point2Input.value, '30% 할인 조건');
-        setText(els.previewPoint3, els.point3Input && els.point3Input.value, '4천 전후 실투자금');
+        setText(els.previewLabel, els.labelInput && els.labelInput.value, defaults.label);
+        setText(els.previewTitle, els.titleInput && els.titleInput.value, defaults.title);
+        setText(els.previewCopy, els.copyInput && els.copyInput.value, defaults.copy);
+        setText(els.previewLocation, els.locationInput && els.locationInput.value, defaults.location);
 
-        setText(els.previewBenefit, els.benefitInput && els.benefitInput.value, '잔여 호실 특별 조건 안내');
+        setText(els.previewPoint1, els.point1Input && els.point1Input.value, defaults.point1);
+        setText(els.previewPoint2, els.point2Input && els.point2Input.value, defaults.point2);
+        setText(els.previewPoint3, els.point3Input && els.point3Input.value, defaults.point3);
+
+        setText(els.previewBenefit, els.benefitInput && els.benefitInput.value, defaults.benefit);
+
         setText(
             els.previewDesc1,
             els.desc1Input && els.desc1Input.value,
-            '회사보유분 특별 조건은 잔여 호실 상담 시점에 따라 달라질 수 있습니다.'
+            defaults.desc1
         );
 
         setText(
             els.previewDesc2,
             els.desc2Input && els.desc2Input.value,
-            '정확한 내용은 상담을 통해 안내드립니다.'
+            defaults.desc2
         );
 
-        setText(els.previewManager, els.managerInput && els.managerInput.value, '김지모 팀장');
+        setText(els.previewManager, els.managerInput && els.managerInput.value, defaults.manager);
 
-        var phoneText = safeText(els.phoneInput && els.phoneInput.value, '010-0000-0000');
+        var phoneText = safeText(els.phoneInput && els.phoneInput.value, defaults.phone);
 
         if (els.previewPhone) {
             els.previewPhone.textContent = phoneText;
             els.previewPhone.href = 'tel:' + onlyPhone(phoneText);
         }
+
+        scheduleFlyerMiniMapSnapshot();
     }
     function setBackground(background) {
         var els = getEls();
@@ -165,6 +255,10 @@
         if (bg === 'general' && !flyerCustomBgObjectUrl) {
             showFlyerToast('일반 배경은 이미지를 업로드해서 사용할 수 있어.');
         }
+
+        syncInputsToBackgroundDefaults(els, bg);
+        updatePreview();
+        scheduleFlyerMiniMapSnapshot();
     }
     function applyCustomFlyerBackground(file) {
         var els = getEls();
@@ -229,6 +323,7 @@
         document.querySelectorAll('[data-flyer-theme]').forEach(function (button) {
             button.classList.toggle('is-active', button.getAttribute('data-flyer-theme') === theme);
         });
+        scheduleFlyerMiniMapSnapshot();
     }
 
     function setOverlay(overlay) {
@@ -245,6 +340,303 @@
         document.querySelectorAll('[data-flyer-overlay]').forEach(function (button) {
             button.classList.toggle('is-active', button.getAttribute('data-flyer-overlay') === overlay);
         });
+    }
+
+    function isFlyerA4Mode() {
+        var previewWrap = document.querySelector('.flyer-preview-wrap');
+
+        return !(previewWrap && previewWrap.classList.contains('is-a6-mode'));
+    }
+
+    function scheduleFlyerMiniMapSnapshot() {
+        window.clearTimeout(flyerMiniMapSnapshotTimer);
+
+        flyerMiniMapSnapshotTimer = window.setTimeout(function () {
+            renderFlyerMiniMapSnapshot();
+        }, 120);
+    }
+
+    async function renderFlyerMiniMapSnapshot() {
+        var miniBody = document.querySelector('.flyer-mini-map-body');
+        var preview = document.getElementById('flyerPreview');
+
+        if (!miniBody || !preview) return;
+
+        /*
+            최초 1회만 기존 미니맵 HTML 저장.
+            A6로 돌아갈 때 이 HTML을 복구한다.
+        */
+        if (flyerMiniMapOriginalHtml === null) {
+            flyerMiniMapOriginalHtml = miniBody.innerHTML;
+        }
+
+        /*
+            A6는 건드리지 않는다.
+            A6 모드에서는 기존 HTML과 스타일을 복구한다.
+        */
+        if (!isFlyerA4Mode()) {
+            miniBody.classList.remove('is-snapshot-mode');
+            miniBody.removeAttribute('data-mini-snapshot');
+
+            miniBody.style.removeProperty('background-image');
+            miniBody.style.removeProperty('background-size');
+            miniBody.style.removeProperty('background-position');
+            miniBody.style.removeProperty('background-repeat');
+            miniBody.style.removeProperty('min-height');
+
+            if (flyerMiniMapOriginalHtml !== null) {
+                miniBody.innerHTML = flyerMiniMapOriginalHtml;
+            }
+
+            return;
+        }
+
+        if (!window.html2canvas) {
+            return;
+        }
+
+        var token = ++flyerMiniMapSnapshotToken;
+
+        try {
+            if (document.fonts && document.fonts.ready) {
+                await document.fonts.ready;
+            }
+
+            await new Promise(function (resolve) {
+                window.requestAnimationFrame(resolve);
+            });
+
+            if (token !== flyerMiniMapSnapshotToken || !isFlyerA4Mode()) return;
+
+            var canvas = await window.html2canvas(preview, {
+                scale: 1.2,
+                backgroundColor: '#ffffff',
+                useCORS: true,
+                allowTaint: true,
+                imageTimeout: 15000,
+                logging: false,
+                ignoreElements: function (element) {
+                    return element.classList && (
+                        element.classList.contains('flyer-preview-overlay') ||
+                        element.classList.contains('flyer-download-popover') ||
+                        element.classList.contains('flyer-theme-menu-list') ||
+                        element.classList.contains('flyer-edit-bar')
+                    );
+                }
+            });
+
+            if (token !== flyerMiniMapSnapshotToken || !isFlyerA4Mode()) return;
+
+            var imageData = canvas.toDataURL('image/png');
+
+            /*
+                핵심:
+                img 태그를 넣지 않는다.
+                miniBody 자체 배경으로 넣어서 DOM 변경/숨김 CSS 영향을 피한다.
+            */
+            var miniWidth = miniBody.getBoundingClientRect().width || 350;
+            var safeWidth = Math.min(350, Math.max(280, miniWidth));
+            var miniHeight = Math.round(safeWidth * (canvas.height / canvas.width));
+
+            miniBody.classList.add('is-snapshot-mode');
+            miniBody.setAttribute('data-mini-snapshot', 'true');
+
+            miniBody.style.setProperty('background-image', 'url("' + imageData + '")', 'important');
+            miniBody.style.setProperty('background-size', 'contain', 'important');
+            miniBody.style.setProperty('background-position', 'top center', 'important');
+            miniBody.style.setProperty('background-repeat', 'no-repeat', 'important');
+            miniBody.style.setProperty('min-height', miniHeight + 'px', 'important');
+        } catch (error) {
+            console.error('Flyer mini map snapshot error:', error);
+        }
+    }
+    function watchFlyerMiniMapSnapshot() {
+        var miniBody = document.querySelector('.flyer-mini-map-body');
+
+        if (!miniBody || flyerMiniMapObserver) return;
+
+        flyerMiniMapObserver = new MutationObserver(function () {
+            if (!isFlyerA4Mode()) return;
+
+            var hasSnapshotBackground =
+                miniBody.getAttribute('data-mini-snapshot') === 'true' &&
+                String(miniBody.style.backgroundImage || '').indexOf('data:image') !== -1;
+
+            /*
+                A4인데 누군가 미니맵 DOM을 다시 건드려도
+                배경 스냅샷이 없을 때만 다시 캡처한다.
+            */
+            if (!hasSnapshotBackground) {
+                scheduleFlyerMiniMapSnapshot();
+            }
+        });
+
+        flyerMiniMapObserver.observe(miniBody, {
+            childList: true,
+            subtree: false
+        });
+    }
+
+    function renderFlyerA6Cards() {
+        var els = getEls();
+
+        if (!els.a6Sheet) return;
+
+        var cards = els.a6Sheet.querySelectorAll('.flyer-a6-card');
+        if (!cards.length) return;
+
+        var data = getCurrentData(els);
+
+        /*
+            A6는 공통 시안.
+            일반 배경 상태에서 A6를 누르면 일반 배경을 따라가면 안 되므로
+            general은 apartment 기본 A6 시안1로 강제한다.
+        */
+        var bg = data.background === 'office' ? 'office' : 'apartment';
+
+        /*
+            현재 A6 CSS에는 theme-01 / theme-02 배경만 있음.
+            simple = 01, standard = 02, premium은 일단 01로 안전 처리.
+        */
+        var theme = '01';
+
+        if (data.background !== 'general' && data.theme === 'standard') {
+            theme = '02';
+        }
+
+        els.a6Sheet.classList.remove(
+            'flyer-a6-bg-apartment',
+            'flyer-a6-bg-office',
+            'flyer-a6-theme-01',
+            'flyer-a6-theme-02',
+            'flyer-a6-theme-03'
+        );
+
+        els.a6Sheet.classList.add('flyer-a6-bg-' + bg);
+        els.a6Sheet.classList.add('flyer-a6-theme-' + theme);
+
+        var label = safeText(data.label, '프리미엄 오피스텔');
+        var title = safeText(data.title, '휴먼블루드빌');
+        var copy = safeText(data.copy, '울산 시청 옆 수익형 오피스텔');
+        var location = safeText(data.location, '울산 시청 바로 옆');
+
+        var point1 = safeText(data.point1, '회사보유분 특별분양');
+        var point2 = safeText(data.point2, '30% 할인 조건');
+        var point3 = safeText(data.point3, '4천 전후 실투자금');
+
+        var benefit = safeText(data.benefit, '잔여 호실 특별 조건 안내');
+        var desc1 = safeText(data.desc1, '회사보유분 특별 조건은 잔여 호실 상담 시점에 따라 달라질 수 있습니다.');
+        var desc2 = safeText(data.desc2, '정확한 내용은 상담을 통해 안내드립니다.');
+
+        var manager = safeText(data.manager, '김지모 팀장');
+        var phone = safeText(data.phone, '010-0000-0000');
+
+        cards.forEach(function (card) {
+            card.innerHTML = '';
+
+            var inner = document.createElement('div');
+            inner.className = 'flyer-a6-card-inner';
+
+            inner.innerHTML =
+                '<span class="flyer-a6-label"></span>' +
+                '<h4 class="flyer-a6-title"></h4>' +
+                '<p class="flyer-a6-copy"></p>' +
+                '<em class="flyer-a6-location"></em>' +
+                '<div class="flyer-a6-points">' +
+                '<div class="flyer-a6-point"><span>01</span><strong></strong></div>' +
+                '<div class="flyer-a6-point"><span>02</span><strong></strong></div>' +
+                '<div class="flyer-a6-point"><span>03</span><strong></strong></div>' +
+                '</div>' +
+                '<div class="flyer-a6-benefit">' +
+                '<strong></strong>' +
+                '<p><span></span><span></span></p>' +
+                '</div>' +
+                '<div class="flyer-a6-contact">' +
+                '<strong class="flyer-a6-manager"></strong>' +
+                '<a class="flyer-a6-phone"></a>' +
+                '</div>';
+
+            inner.querySelector('.flyer-a6-label').textContent = label;
+            inner.querySelector('.flyer-a6-title').textContent = title;
+            inner.querySelector('.flyer-a6-copy').textContent = copy;
+            inner.querySelector('.flyer-a6-location').textContent = location;
+
+            inner.querySelectorAll('.flyer-a6-point strong')[0].textContent = point1;
+            inner.querySelectorAll('.flyer-a6-point strong')[1].textContent = point2;
+            inner.querySelectorAll('.flyer-a6-point strong')[2].textContent = point3;
+
+            inner.querySelector('.flyer-a6-benefit strong').textContent = benefit;
+            inner.querySelectorAll('.flyer-a6-benefit p span')[0].textContent = desc1;
+            inner.querySelectorAll('.flyer-a6-benefit p span')[1].textContent = desc2;
+
+            inner.querySelector('.flyer-a6-manager').textContent = manager;
+            inner.querySelector('.flyer-a6-phone').textContent = phone;
+            inner.querySelector('.flyer-a6-phone').setAttribute('href', 'tel:' + onlyPhone(phone));
+
+            card.appendChild(inner);
+        });
+    }
+
+    function setFlyerSizeMode(mode) {
+        var els = getEls();
+        var isA6 = mode === 'a6';
+
+        if (isA6) {
+            renderFlyerA6Cards();
+        }
+
+        if (els.previewWrap) {
+            els.previewWrap.classList.toggle('is-a6-mode', isA6);
+        }
+
+        /*
+            핵심:
+            class만 바꾸면 기존 CSS 우선순위 때문에 A4 preview가 계속 보일 수 있다.
+            그래서 display를 직접 고정한다.
+        */
+        if (els.preview) {
+            els.preview.classList.toggle('is-hidden', isA6);
+            els.preview.setAttribute('aria-hidden', isA6 ? 'true' : 'false');
+            if (isA6) {
+                els.preview.style.setProperty('display', 'none', 'important');
+            } else {
+                els.preview.style.removeProperty('display');
+            }
+        }
+
+        if (els.a6Sheet) {
+            els.a6Sheet.classList.toggle('is-hidden', !isA6);
+            els.a6Sheet.setAttribute('aria-hidden', isA6 ? 'false' : 'true');
+            if (isA6) {
+                els.a6Sheet.style.setProperty('display', 'block', 'important');
+            } else {
+                els.a6Sheet.style.setProperty('display', 'none', 'important');
+            }
+        }
+
+        if (els.sizeBadge) {
+            els.sizeBadge.textContent = isA6 ? 'A6' : 'A4';
+        }
+
+        if (els.sizeToggleBtn) {
+            els.sizeToggleBtn.textContent = isA6 ? 'A4 전단 보기' : 'A6 전단 보기';
+        }
+
+        closeDownloadPopover();
+
+        var miniBody = document.querySelector('.flyer-mini-map-body');
+
+        if (isA6) {
+            if (miniBody) {
+                miniBody.classList.remove('is-snapshot-mode');
+
+                if (flyerMiniMapOriginalHtml !== null) {
+                    miniBody.innerHTML = flyerMiniMapOriginalHtml;
+                }
+            }
+        } else {
+            scheduleFlyerMiniMapSnapshot();
+        }
     }
 
 
@@ -723,74 +1115,83 @@
         descBox.addEventListener('click', pickDescLine, true);
         descBox.addEventListener('touchstart', pickDescLine, true);
     }
-
-    /* 웹전단 모바일 돌아가기 버튼을 제목줄 안으로 안정 이동 */
-    function mountFlyerBackButtonToTitle() {
+    /* 웹전단 돌아가기 버튼을 웹전단 작업영역 오른쪽 상단으로 강제 고정 */
+    function forceFlyerBackButtonPosition() {
         var flyerTool = document.getElementById('flyerTool');
-        if (!flyerTool) return false;
 
-        var titleRow = flyerTool.querySelector('.flyer-title-row');
-        if (!titleRow) return false;
-
-        /*
-            #flyerBackBtn은 flyer.html 안에 없고,
-            공통 화면 쪽에서 만들어질 가능성이 높다.
-            그래서 id 우선, class 보조로 찾는다.
-        */
         var backBtn =
             document.getElementById('flyerBackBtn') ||
-            document.querySelector('.flyer-back-btn');
+            document.querySelector('.flyer-back-btn') ||
+            Array.prototype.slice.call(document.querySelectorAll('button, a')).find(function (el) {
+                return String(el.textContent || '').trim().indexOf('돌아가기') !== -1;
+            });
 
-        if (!backBtn) return false;
+        if (!flyerTool || !backBtn) return false;
 
-        var descText = titleRow.querySelector('p');
+        flyerTool.style.setProperty('position', 'relative', 'important');
+
+        if (backBtn.parentElement !== flyerTool) {
+            flyerTool.appendChild(backBtn);
+        }
 
         backBtn.classList.add('flyer-back-btn');
 
-        /*
-            이전 CSS/JS 테스트에서 inline position이 남아 있으면
-            title-row 안으로 옮겨도 계속 틀어질 수 있으니 제거한다.
-        */
-        backBtn.removeAttribute('style');
-
-        /*
-            핵심:
-            appendChild로 맨 뒤에 붙이지 말고,
-            h3 다음 / 설명문 p 앞에 꽂는다.
-            DOM 순서: h3 → 돌아가기 → 설명문
-        */
-        if (backBtn.parentElement !== titleRow || backBtn.nextElementSibling !== descText) {
-            titleRow.insertBefore(backBtn, descText || null);
-        }
+        backBtn.style.setProperty('position', 'absolute', 'important');
+        backBtn.style.setProperty('top', '92px', 'important');
+        backBtn.style.setProperty('right', '44px', 'important');
+        backBtn.style.setProperty('left', 'auto', 'important');
+        backBtn.style.setProperty('bottom', 'auto', 'important');
+        backBtn.style.setProperty('transform', 'none', 'important');
+        backBtn.style.setProperty('z-index', '9999', 'important');
+        backBtn.style.setProperty('display', 'inline-flex', 'important');
+        backBtn.style.setProperty('align-items', 'center', 'important');
+        backBtn.style.setProperty('justify-content', 'center', 'important');
+        backBtn.style.setProperty('white-space', 'nowrap', 'important');
 
         return true;
     }
 
-    function watchFlyerBackButtonToTitle() {
-        if (mountFlyerBackButtonToTitle()) return;
+    function watchFlyerBackButtonPosition() {
+        if (forceFlyerBackButtonPosition()) return;
 
         var retryCount = 0;
         var timer = window.setInterval(function () {
             retryCount += 1;
 
-            if (mountFlyerBackButtonToTitle() || retryCount >= 20) {
+            if (forceFlyerBackButtonPosition() || retryCount >= 30) {
                 window.clearInterval(timer);
             }
         }, 100);
     }
 
+
     window.bootFlyerTool = function () {
-        watchFlyerBackButtonToTitle();
+        /*
+            웹전단 진입 기본값은 항상 A4.
+            이전 A6 상태가 DOM에 남아 있어도 일반 화면에서는 A4 미리보기가 먼저 떠야 한다.
+        */
+        setFlyerSizeMode('a4');
 
         bindInputs();
         loadDraft();
+
+        /*
+            loadDraft 이후에도 배경/시안 적용 과정에서 화면 상태가 흔들릴 수 있으니
+            한 번 더 A4로 고정한다.
+        */
+        setFlyerSizeMode('a4');
+
         updatePreview();
 
         bindFlyerDescLineEdit();
+        watchFlyerBackButtonPosition();
+        watchFlyerMiniMapSnapshot();
 
         window.requestAnimationFrame(function () {
-            mountFlyerBackButtonToTitle();
+            setFlyerSizeMode('a4');
             bindFlyerDescLineEdit();
+            watchFlyerBackButtonPosition();
+            watchFlyerMiniMapSnapshot();
         });
     };
 })();

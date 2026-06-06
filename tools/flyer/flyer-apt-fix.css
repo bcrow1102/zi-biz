@@ -1,0 +1,309 @@
+/* =========================================================
+   APARTMENT A4 TEXT POSITION FIX
+   - flyer-apt-fix.css 전용
+   - A4 아파트 배경 전용
+   - A6 / 오피스텔 / 일반 배경 영향 없음
+========================================================= */
+
+/* 아파트 A4 기본 텍스트 컬러 */
+#flyerPreview.flyer-bg-apartment {
+    --apt-main: #082f63;
+    --apt-sub: #1f3554;
+    --apt-accent: #0b4ea2;
+}
+
+/* 상단 묶음 기준 */
+#flyerPreview.flyer-bg-apartment .flyer-preview-hero-content {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 20 !important;
+}
+
+/* 상단 라벨: 프리미엄 오피스텔 */
+#flyerPreview.flyer-bg-apartment .flyer-preview-label {
+    position: absolute !important;
+    left: 16.2% !important;
+    top: 6.8% !important;
+    width: 34% !important;
+
+    color: var(--apt-main) !important;
+    font-size: 1.55cqw !important;
+    line-height: 1 !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.045em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    text-shadow: none !important;
+}
+
+/* 현장명: 휴먼블루드빌 */
+#flyerPreview.flyer-bg-apartment h4 {
+    position: absolute !important;
+    left: 9.4% !important;
+    top: 12.4% !important;
+    width: 48% !important;
+
+    color: var(--apt-main) !important;
+    font-size: 4.65cqw !important;
+    line-height: 0.95 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.09em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    text-shadow: none !important;
+}
+
+/* 한줄 카피 */
+#flyerPreview.flyer-bg-apartment .flyer-preview-hero-content p {
+    position: absolute !important;
+    left: 9.4% !important;
+    top: 23.8% !important;
+    width: 48% !important;
+
+    color: var(--apt-sub) !important;
+    font-size: 2.05cqw !important;
+    line-height: 1.15 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.055em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    text-shadow: none !important;
+}
+
+/* 위치 문구는 아파트 시안에서는 일단 숨김 */
+#flyerPreview.flyer-bg-apartment .flyer-preview-hero-content em {
+    display: none !important;
+}
+
+/* 조건 1,2,3 공통 */
+#flyerPreview.flyer-bg-apartment .flyer-point {
+    position: absolute !important;
+    left: 27.5% !important;
+    width: 46% !important;
+    z-index: 20 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    text-align: center !important;
+}
+
+/* 조건 위치 */
+#flyerPreview.flyer-bg-apartment .flyer-point:nth-child(1) {
+    top: 45.2% !important;
+}
+
+#flyerPreview.flyer-bg-apartment .flyer-point:nth-child(2) {
+    top: 54.4% !important;
+}
+
+#flyerPreview.flyer-bg-apartment .flyer-point:nth-child(3) {
+    top: 63.6% !important;
+}
+
+/* 조건 번호 숨김 */
+#flyerPreview.flyer-bg-apartment .flyer-point span {
+    display: none !important;
+}
+
+/* 조건 텍스트 */
+#flyerPreview.flyer-bg-apartment .flyer-point strong {
+    display: block !important;
+    color: var(--apt-main) !important;
+    font-size: 3.05cqw !important;
+    line-height: 1.05 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.065em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    text-shadow: none !important;
+}
+
+/* 혜택 박스 전체 */
+#flyerPreview.flyer-bg-apartment .flyer-benefit-box {
+    position: absolute !important;
+    left: 14% !important;
+    top: 73.2% !important;
+    width: 72% !important;
+    height: 10.5% !important;
+    z-index: 20 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    text-align: center !important;
+}
+
+/* BENEFIT 라벨 숨김 */
+#flyerPreview.flyer-bg-apartment .flyer-benefit-box span {
+    display: none !important;
+}
+
+/* 강조 문구 */
+#flyerPreview.flyer-bg-apartment .flyer-benefit-box strong {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+
+    color: var(--apt-main) !important;
+    font-size: 3.2cqw !important;
+    line-height: 1.08 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.075em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+/* 상세 안내 */
+#flyerPreview.flyer-bg-apartment .flyer-benefit-box p {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 48% !important;
+
+    color: #1f2937 !important;
+    font-size: 1.45cqw !important;
+    line-height: 1.45 !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.045em !important;
+    text-align: center !important;
+}
+
+/* 연락처 박스 */
+#flyerPreview.flyer-bg-apartment .flyer-contact-box {
+    position: absolute !important;
+    left: 11% !important;
+    top: 90.8% !important;
+    width: 78% !important;
+    height: 6.6% !important;
+    z-index: 20 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+/* 상담자 */
+#flyerPreview.flyer-bg-apartment .flyer-contact-box>div {
+    position: absolute !important;
+    left: 11% !important;
+    top: 5% !important;
+    width: 25% !important;
+    text-align: left !important;
+}
+
+#flyerPreview.flyer-bg-apartment .flyer-contact-box span {
+    display: block !important;
+    color: #f3c437 !important;
+    font-size: 1.25cqw !important;
+    line-height: 1 !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.03em !important;
+}
+
+#flyerPreview.flyer-bg-apartment .flyer-contact-box strong {
+    display: block !important;
+    margin-top: 7% !important;
+    color: #ffffff !important;
+    font-size: 2.45cqw !important;
+    line-height: 1 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.065em !important;
+    white-space: nowrap !important;
+}
+
+/* 전화번호 */
+#flyerPreview.flyer-bg-apartment .flyer-contact-box a {
+    position: absolute !important;
+    right: 7.5% !important;
+    top: 16% !important;
+    width: 43% !important;
+    height: 62% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    color: var(--apt-main) !important;
+    font-size: 3.05cqw !important;
+    line-height: 1 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.025em !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+}
+
+/* 모바일에서도 아파트 좌표 유지 */
+@media (max-width: 760px) {
+    #flyerPreview.flyer-bg-apartment .flyer-point strong {
+        font-size: 3.15cqw !important;
+    }
+
+    #flyerPreview.flyer-bg-apartment .flyer-benefit-box strong {
+        font-size: 3.25cqw !important;
+    }
+
+    #flyerPreview.flyer-bg-apartment .flyer-contact-box a {
+        font-size: 3.05cqw !important;
+    }
+}
+
+/* =========================================================
+   APARTMENT A4 FONT SIZE FORCE UP +2
+   - 현재 먹는 기준에서 2폰트 정도 더 확대
+========================================================= */
+
+/* 상단 라벨 */
+#flyerPreview.flyer-bg-apartment .flyer-preview-label {
+    font-size: clamp(18px, 2.7cqw, 31px) !important;
+}
+
+/* 현장명 */
+#flyerPreview.flyer-bg-apartment h4 {
+    font-size: clamp(48px, 7.7cqw, 84px) !important;
+}
+
+/* 한줄 카피 */
+#flyerPreview.flyer-bg-apartment .flyer-preview-hero-content p {
+    font-size: clamp(24px, 3.5cqw, 39px) !important;
+}
+
+/* 조건 1,2,3 */
+#flyerPreview.flyer-bg-apartment .flyer-point strong {
+    font-size: clamp(38px, 5.7cqw, 64px) !important;
+}
+
+/* 강조 문구 */
+#flyerPreview.flyer-bg-apartment .flyer-benefit-box strong {
+    font-size: clamp(38px, 5.8cqw, 66px) !important;
+}
+
+/* 상세 안내 */
+#flyerPreview.flyer-bg-apartment .flyer-benefit-box p {
+    font-size: clamp(19px, 2.7cqw, 31px) !important;
+}
+
+/* 상담문의 */
+#flyerPreview.flyer-bg-apartment .flyer-contact-box span {
+    font-size: clamp(17px, 2.4cqw, 27px) !important;
+}
+
+/* 상담자 */
+#flyerPreview.flyer-bg-apartment .flyer-contact-box strong {
+    font-size: clamp(31px, 4.7cqw, 52px) !important;
+}
+
+/* 전화번호 */
+#flyerPreview.flyer-bg-apartment .flyer-contact-box a {
+    font-size: clamp(38px, 5.6cqw, 64px) !important;
+}
