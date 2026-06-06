@@ -3,7 +3,7 @@
 
     var A6_STATE = {
         isA6: false,
-        bg: 'apartment',
+        bg: 'a6',
         theme: '01'
     };
 
@@ -82,7 +82,7 @@
     }
 
     function normalizeBg(value) {
-        return value === 'office' ? 'office' : 'apartment';
+        return 'a6';
     }
 
     function getCurrentBgFromA4() {
@@ -121,14 +121,36 @@
         sheet.classList.remove(
             'flyer-a6-bg-apartment',
             'flyer-a6-bg-office',
+            'flyer-a6-bg-a6',
             'flyer-a6-theme-01',
-            'flyer-a6-theme-02'
+            'flyer-a6-theme-02',
+            'flyer-a6-theme-03'
         );
 
         sheet.classList.add(
-            A6_STATE.bg === 'office' ? 'flyer-a6-bg-office' : 'flyer-a6-bg-apartment',
+            'flyer-a6-bg-a6',
             A6_STATE.theme === '02' ? 'flyer-a6-theme-02' : 'flyer-a6-theme-01'
         );
+
+        sheet.dataset.bg = 'a6';
+        sheet.dataset.theme = A6_STATE.theme === '02' ? 'flyer-a6-theme-02' : 'flyer-a6-theme-01';
+    }
+
+    function forceA6BackgroundImage() {
+        var sheet = getA6Sheet();
+
+        if (!sheet) return;
+
+        var bgUrl = A6_STATE.theme === '02'
+            ? '/tools/flyer/images/a6-off-02-bg.jpg'
+            : '/tools/flyer/images/a6-off-01-bg.jpg';
+
+        sheet.querySelectorAll('.flyer-a6-card').forEach(function (card) {
+            card.style.setProperty('background-image', 'url("' + bgUrl + '")', 'important');
+            card.style.setProperty('background-size', '100% 100%', 'important');
+            card.style.setProperty('background-position', 'center', 'important');
+            card.style.setProperty('background-repeat', 'no-repeat', 'important');
+        });
     }
 
     function renderA6Cards() {
@@ -145,6 +167,7 @@
         });
 
         applyA6SheetClass();
+        forceA6BackgroundImage();
         markA6EditTargets();
         restoreActiveEditSelection();
     }
@@ -212,26 +235,70 @@
 
         A6_STATE.isA6 = !!isA6;
 
+        /*
+            핵심:
+            A6는 A4 배경/시안과 연결하지 않는다.
+            A4가 일반 배경이든 아파트든 오피스텔이든,
+            A6 버튼을 누르면 A6 전용 기본폼만 출력한다.
+        */
         if (A6_STATE.isA6) {
-            A6_STATE.bg = getCurrentBgFromA4();
+            A6_STATE.bg = 'a6';
+            A6_STATE.theme = '01';
         }
 
         previewWrap.classList.toggle('is-a6-mode', A6_STATE.isA6);
-        a4Preview.classList.toggle('is-hidden', A6_STATE.isA6);
-        a6Sheet.classList.toggle('is-hidden', !A6_STATE.isA6);
-        a6Sheet.setAttribute('aria-hidden', A6_STATE.isA6 ? 'false' : 'true');
-
-        toggleBtn.textContent = A6_STATE.isA6 ? 'A4 전단 보기' : 'A6 전단 보기';
-
-        updateSizeBadge(A6_STATE.isA6);
 
         if (A6_STATE.isA6) {
+            a4Preview.classList.add('is-hidden');
+            a4Preview.setAttribute('aria-hidden', 'true');
+            a4Preview.style.setProperty('display', 'none', 'important');
+
+            a6Sheet.classList.remove('is-hidden');
+            a6Sheet.setAttribute('aria-hidden', 'false');
+            a6Sheet.style.setProperty('display', 'block', 'important');
+
+            a6Sheet.classList.remove(
+                'flyer-a6-bg-apartment',
+                'flyer-a6-bg-office',
+                'flyer-a6-bg-a6',
+                'flyer-a6-theme-01',
+                'flyer-a6-theme-02',
+                'flyer-a6-theme-03'
+            );
+
+            a6Sheet.classList.add('flyer-a6-bg-a6');
+            a6Sheet.classList.add('flyer-a6-theme-01');
+            a6Sheet.dataset.bg = 'a6';
+            a6Sheet.dataset.theme = 'flyer-a6-theme-01';
+
             setThemeButtonLabelsForA6();
             syncBgButtons();
+
             renderA6Cards();
+
+            window.requestAnimationFrame(function () {
+                renderA6Cards();
+                refreshEditTargets();
+            });
+
+            window.setTimeout(function () {
+                renderA6Cards();
+                refreshEditTargets();
+            }, 120);
         } else {
+            a4Preview.classList.remove('is-hidden');
+            a4Preview.setAttribute('aria-hidden', 'false');
+            a4Preview.style.removeProperty('display');
+
+            a6Sheet.classList.add('is-hidden');
+            a6Sheet.setAttribute('aria-hidden', 'true');
+            a6Sheet.style.setProperty('display', 'none', 'important');
+
             setThemeButtonLabelsForA4();
         }
+
+        toggleBtn.textContent = A6_STATE.isA6 ? 'A4 전단 보기' : 'A6 전단 보기';
+        updateSizeBadge(A6_STATE.isA6);
         restoreActiveEditSelection();
     }
 
@@ -278,7 +345,11 @@
             button.addEventListener('click', function () {
                 if (!A6_STATE.isA6) return;
 
-                A6_STATE.bg = normalizeBg(button.getAttribute('data-flyer-bg'));
+                /*
+                    A6는 A4의 일반/아파트/오피스텔 배경 선택과 연결하지 않는다.
+                    A6는 시안1/시안2만으로 a6-off-01/a6-off-02 배경을 사용한다.
+                */
+                A6_STATE.bg = 'a6';
 
                 syncBgButtons();
                 renderA6Cards();
@@ -601,7 +672,7 @@
 
     window.bootFlyerA6Tool = function () {
         A6_STATE.isA6 = false;
-        A6_STATE.bg = getCurrentBgFromA4();
+        A6_STATE.bg = 'a6';
         A6_STATE.theme = '01';
 
         bindA6Toggle();
@@ -610,10 +681,22 @@
         bindA6ThemeButtons();
 
         normalizeInitialLabels();
+
         renderA6Cards();
         refreshEditTargets();
         bindFlyerEditSelect();
         bindFlyerEditBar();
+
         setA6Mode(false);
+
+        window.requestAnimationFrame(function () {
+            renderA6Cards();
+            refreshEditTargets();
+        });
+
+        window.setTimeout(function () {
+            renderA6Cards();
+            refreshEditTargets();
+        }, 120);
     };
 })();

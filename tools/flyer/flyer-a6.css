@@ -94,22 +94,7 @@
     border: 1px solid rgba(18, 24, 38, 0.08);
 }
 
-/* A6 전용 배경 이미지 */
-.flyer-a6-bg-apartment.flyer-a6-theme-01 .flyer-a6-card {
-    background-image: url("./images/a6-apt-01-bg.jpg") !important;
-}
 
-.flyer-a6-bg-apartment.flyer-a6-theme-02 .flyer-a6-card {
-    background-image: url("./images/a6-apt-02-bg.jpg") !important;
-}
-
-.flyer-a6-bg-office.flyer-a6-theme-01 .flyer-a6-card {
-    background-image: url("./images/a6-off-01-bg.jpg") !important;
-}
-
-.flyer-a6-bg-office.flyer-a6-theme-02 .flyer-a6-card {
-    background-image: url("./images/a6-off-02-bg.jpg") !important;
-}
 
 /* =========================================================
    A6 TEXT BASE
@@ -724,4 +709,150 @@ body.is-a6-pdf-exporting #flyerA6Sheet.flyer-a6-theme-02 .flyer-a6-manager {
 html body.is-a6-pdf-exporting .flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet.flyer-a6-theme-02 .flyer-a6-card .flyer-a6-contact .flyer-a6-manager {
     top: 78% !important;
     transform: translateY(-50%) !important;
+}
+
+/* A6 mode visibility hard guard */
+.flyer-preview-wrap.is-a6-mode #flyerPreview {
+    display: none !important;
+}
+
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet {
+    display: block !important;
+}
+
+.flyer-preview-wrap:not(.is-a6-mode) #flyerPreview {
+    display: block !important;
+}
+
+.flyer-preview-wrap:not(.is-a6-mode) #flyerA6Sheet {
+    display: none !important;
+}
+
+/* =========================================================
+   A6 MAIN CARD - KILL OLD A4 CLONE
+   - A6 카드 안에 예전 방식의 A4 .flyer-preview 복제본이 들어오면 숨김
+   - A6 전용 .flyer-a6-card-inner 구조만 보이게 함
+========================================================= */
+
+#flyerA6Sheet .flyer-a6-card>.flyer-preview {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#flyerA6Sheet .flyer-a6-card>.flyer-a6-card-inner {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* =========================================================
+   A6 MAIN / MINI MAP DISPLAY FINAL FIX
+   - 메인 A6: 첫 번째 카드만 크게 표시
+   - 미니맵: 4분할 전체 표시
+========================================================= */
+
+/* A6 모드에서는 A4 미리보기 숨김 */
+.flyer-preview-wrap.is-a6-mode #flyerPreview {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* A6 원본 시트 표시 */
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* 메인 A6는 1장 보기 */
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-card {
+    display: none !important;
+}
+
+/* 메인 A6 첫 번째 카드만 표시 */
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-card:first-child {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* A6 내부 텍스트 표시 */
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-card:first-child .flyer-a6-card-inner,
+.flyer-preview-wrap.is-a6-mode #flyerA6Sheet.flyer-a6-sheet:not(.flyer-mini-clone) .flyer-a6-card:first-child .flyer-a6-card-inner * {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* 미니맵은 4장 전체 표시 */
+.flyer-a6-sheet.flyer-mini-clone .flyer-a6-card {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* =========================================================
+   A6 BACKGROUND IMAGE FINAL
+   - 실제 존재하는 A6 이미지 파일만 사용
+   - A6는 A4 배경과 완전히 분리
+   - 시안1: a6-off-01-bg.jpg
+   - 시안2: a6-off-02-bg.jpg
+========================================================= */
+
+/* 시안1 */
+html body #flyerTool #flyerA6Sheet.flyer-a6-sheet.flyer-a6-theme-01 .flyer-a6-grid>.flyer-a6-card,
+html body #flyerTool .flyer-a6-sheet.flyer-mini-clone.flyer-a6-theme-01 .flyer-a6-grid>.flyer-a6-card {
+    background-image: url("./images/a6-off-01-bg.jpg") !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+/* 시안2 */
+html body #flyerTool #flyerA6Sheet.flyer-a6-sheet.flyer-a6-theme-02 .flyer-a6-grid>.flyer-a6-card,
+html body #flyerTool .flyer-a6-sheet.flyer-mini-clone.flyer-a6-theme-02 .flyer-a6-grid>.flyer-a6-card {
+    background-image: url("./images/a6-off-02-bg.jpg") !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+/* A6 카드 기본 보호 */
+html body #flyerTool #flyerA6Sheet .flyer-a6-card,
+html body #flyerTool .flyer-a6-sheet.flyer-mini-clone .flyer-a6-card {
+    background-color: #fff7d6 !important;
+    border: 1px solid rgba(18, 24, 38, 0.08) !important;
+    overflow: hidden !important;
+}
+
+/* =========================================================
+   A6 BACKGROUND REAL STATE FORCE FIX
+   - 현재 실제 상태:
+     class = flyer-a6-sheet flyer-a6-bg-apartment
+     data-theme = flyer-a6-theme-01 / flyer-a6-theme-02
+   - class가 아니라 data-theme 기준으로 A6 배경 강제 적용
+========================================================= */
+
+/* A6 시안1 */
+html body #flyerTool #flyerA6Sheet.flyer-a6-sheet[data-theme="flyer-a6-theme-01"] .flyer-a6-grid>.flyer-a6-card,
+html body #flyerTool .flyer-a6-sheet.flyer-mini-clone[data-theme="flyer-a6-theme-01"] .flyer-a6-grid>.flyer-a6-card {
+    background-image: url("./images/a6-off-01-bg.jpg") !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+/* A6 시안2 */
+html body #flyerTool #flyerA6Sheet.flyer-a6-sheet[data-theme="flyer-a6-theme-02"] .flyer-a6-grid>.flyer-a6-card,
+html body #flyerTool .flyer-a6-sheet.flyer-mini-clone[data-theme="flyer-a6-theme-02"] .flyer-a6-grid>.flyer-a6-card {
+    background-image: url("./images/a6-off-02-bg.jpg") !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
 }
