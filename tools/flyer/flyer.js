@@ -82,6 +82,25 @@
 
         return active.getAttribute(attributeName) || fallback;
     }
+    function getCurrentFlyerBackground() {
+        var preview = document.getElementById('flyerPreview');
+
+        if (preview) {
+            if (preview.classList.contains('flyer-bg-office')) {
+                return 'office';
+            }
+
+            if (preview.classList.contains('flyer-bg-general')) {
+                return 'general';
+            }
+
+            if (preview.classList.contains('flyer-bg-apartment')) {
+                return 'apartment';
+            }
+        }
+
+        return getActiveValue('data-flyer-bg', 'apartment');
+    }
 
     function getCurrentData(els) {
         return {
@@ -101,7 +120,7 @@
             manager: els.managerInput ? els.managerInput.value : '',
             phone: els.phoneInput ? els.phoneInput.value : '',
 
-            background: getActiveValue('data-flyer-bg', 'apartment'),
+            background: getCurrentFlyerBackground(),
             theme: getActiveValue('data-flyer-theme', 'simple'),
             overlay: getActiveValue('data-flyer-overlay', 'soft')
         };
@@ -140,6 +159,25 @@
             manager: '김지모 팀장',
             phone: '010-0000-0000'
         };
+    }
+    function applyFlyerDefaultsToInputs(els, background) {
+        var defaults = getFlyerDefaults(background);
+
+        if (els.labelInput) els.labelInput.value = defaults.label;
+        if (els.titleInput) els.titleInput.value = defaults.title;
+        if (els.copyInput) els.copyInput.value = defaults.copy;
+        if (els.locationInput) els.locationInput.value = defaults.location;
+
+        if (els.point1Input) els.point1Input.value = defaults.point1;
+        if (els.point2Input) els.point2Input.value = defaults.point2;
+        if (els.point3Input) els.point3Input.value = defaults.point3;
+
+        if (els.benefitInput) els.benefitInput.value = defaults.benefit;
+        if (els.desc1Input) els.desc1Input.value = defaults.desc1;
+        if (els.desc2Input) els.desc2Input.value = defaults.desc2;
+
+        if (els.managerInput) els.managerInput.value = defaults.manager;
+        if (els.phoneInput) els.phoneInput.value = defaults.phone;
     }
 
     function isKnownFlyerDefault(value, key) {
@@ -196,7 +234,7 @@
 
         if (!els.preview) return;
 
-        var defaults = getFlyerDefaults(getActiveValue('data-flyer-bg', 'apartment'));
+        var defaults = getFlyerDefaults(getCurrentFlyerBackground());
 
         setText(els.previewLabel, els.labelInput && els.labelInput.value, defaults.label);
         setText(els.previewTitle, els.titleInput && els.titleInput.value, defaults.title);
@@ -230,7 +268,12 @@
             els.previewPhone.href = 'tel:' + onlyPhone(phoneText);
         }
 
-        scheduleFlyerMiniMapSnapshot();
+        if (isFlyerA4Mode()) {
+            scheduleFlyerMiniMapSnapshot();
+        } else {
+            renderFlyerA6Cards();
+            renderFlyerA6MiniMap();
+        }
     }
     function setBackground(background) {
         var els = getEls();
@@ -258,7 +301,10 @@
 
         syncInputsToBackgroundDefaults(els, bg);
         updatePreview();
-        scheduleFlyerMiniMapSnapshot();
+
+        if (isFlyerA4Mode()) {
+            scheduleFlyerMiniMapSnapshot();
+        }
     }
     function applyCustomFlyerBackground(file) {
         var els = getEls();
@@ -323,7 +369,12 @@
         document.querySelectorAll('[data-flyer-theme]').forEach(function (button) {
             button.classList.toggle('is-active', button.getAttribute('data-flyer-theme') === theme);
         });
-        scheduleFlyerMiniMapSnapshot();
+        if (isFlyerA4Mode()) {
+            scheduleFlyerMiniMapSnapshot();
+        } else {
+            renderFlyerA6Cards();
+            renderFlyerA6MiniMap();
+        }
     }
 
     function setOverlay(overlay) {
@@ -351,51 +402,40 @@
     function scheduleFlyerMiniMapSnapshot() {
         window.clearTimeout(flyerMiniMapSnapshotTimer);
 
+        flyerMiniMapSnapshotToken += 1;
+        var snapshotToken = flyerMiniMapSnapshotToken;
+
         flyerMiniMapSnapshotTimer = window.setTimeout(function () {
-            renderFlyerMiniMapSnapshot();
-        }, 120);
+            window.requestAnimationFrame(function () {
+                window.requestAnimationFrame(function () {
+                    renderFlyerMiniMapSnapshot(snapshotToken);
+                });
+            });
+        }, 420);
     }
 
-    async function renderFlyerMiniMapSnapshot() {
+    async function renderFlyerMiniMapSnapshot(snapshotToken) {
         var miniBody = document.querySelector('.flyer-mini-map-body');
         var preview = document.getElementById('flyerPreview');
 
         if (!miniBody || !preview) return;
 
-        /*
-            최초 1회만 기존 미니맵 HTML 저장.
-            A6로 돌아갈 때 이 HTML을 복구한다.
-        */
+        if (typeof snapshotToken === 'undefined') {
+            snapshotToken = flyerMiniMapSnapshotToken;
+        }
+
         if (flyerMiniMapOriginalHtml === null) {
             flyerMiniMapOriginalHtml = miniBody.innerHTML;
         }
 
-        /*
-            A6는 건드리지 않는다.
-            A6 모드에서는 기존 HTML과 스타일을 복구한다.
-        */
         if (!isFlyerA4Mode()) {
-            miniBody.classList.remove('is-snapshot-mode');
-            miniBody.removeAttribute('data-mini-snapshot');
-
-            miniBody.style.removeProperty('background-image');
-            miniBody.style.removeProperty('background-size');
-            miniBody.style.removeProperty('background-position');
-            miniBody.style.removeProperty('background-repeat');
-            miniBody.style.removeProperty('min-height');
-
-            if (flyerMiniMapOriginalHtml !== null) {
-                miniBody.innerHTML = flyerMiniMapOriginalHtml;
-            }
-
+            renderFlyerA6MiniMap();
             return;
         }
 
         if (!window.html2canvas) {
             return;
         }
-
-        var token = ++flyerMiniMapSnapshotToken;
 
         try {
             if (document.fonts && document.fonts.ready) {
@@ -406,10 +446,8 @@
                 window.requestAnimationFrame(resolve);
             });
 
-            if (token !== flyerMiniMapSnapshotToken || !isFlyerA4Mode()) return;
-
             var canvas = await window.html2canvas(preview, {
-                scale: 1.2,
+                scale: 1.4,
                 backgroundColor: '#ffffff',
                 useCORS: true,
                 allowTaint: true,
@@ -425,56 +463,90 @@
                 }
             });
 
-            if (token !== flyerMiniMapSnapshotToken || !isFlyerA4Mode()) return;
+            /*
+                A4 캡처가 끝나는 사이에 A6로 전환됐거나,
+                더 최신 미니맵 갱신 요청이 생겼으면
+                늦게 끝난 A4 스냅샷을 미니맵에 덮지 않는다.
+            */
+            if (!isFlyerA4Mode() || snapshotToken !== flyerMiniMapSnapshotToken) {
+                renderFlyerA6MiniMap();
+                return;
+            }
 
             var imageData = canvas.toDataURL('image/png');
 
-            /*
-                핵심:
-                img 태그를 넣지 않는다.
-                miniBody 자체 배경으로 넣어서 DOM 변경/숨김 CSS 영향을 피한다.
-            */
-            var miniWidth = miniBody.getBoundingClientRect().width || 350;
-            var safeWidth = Math.min(350, Math.max(280, miniWidth));
-            var miniHeight = Math.round(safeWidth * (canvas.height / canvas.width));
+            var miniWidth = miniBody.getBoundingClientRect().width || 260;
+            var safeWidth = Math.min(240, Math.max(220, miniWidth));
 
+            /*
+                A4 미니맵 전용 카드 높이.
+                캡처된 이미지 비율에 맞춰 자동 계산한다.
+                고정값으로 잡으면 아래 흰 여백이나 하단 잘림이 생긴다.
+            */
+            var miniHeight = Math.round(safeWidth * canvas.height / canvas.width);
+
+            miniBody.innerHTML = '';
             miniBody.classList.add('is-snapshot-mode');
+            miniBody.classList.remove('is-live-clone-mode');
             miniBody.setAttribute('data-mini-snapshot', 'true');
 
             miniBody.style.setProperty('background-image', 'url("' + imageData + '")', 'important');
-            miniBody.style.setProperty('background-size', 'contain', 'important');
+            miniBody.style.setProperty('background-size', '100% auto', 'important');
             miniBody.style.setProperty('background-position', 'top center', 'important');
             miniBody.style.setProperty('background-repeat', 'no-repeat', 'important');
-            miniBody.style.setProperty('min-height', miniHeight + 'px', 'important');
+
+            miniBody.style.setProperty('width', safeWidth + 'px', 'important');
+            miniBody.style.setProperty('max-width', safeWidth + 'px', 'important');
+            miniBody.style.setProperty('height', miniHeight + 'px', 'important');
+            miniBody.style.removeProperty('min-height');
+            miniBody.style.setProperty('overflow', 'hidden', 'important');
         } catch (error) {
             console.error('Flyer mini map snapshot error:', error);
         }
     }
-    function watchFlyerMiniMapSnapshot() {
+    function resetMiniMapInlineStyles(miniBody) {
+        if (!miniBody) return;
+
+        miniBody.classList.remove('is-snapshot-mode');
+        miniBody.classList.remove('is-live-clone-mode');
+        miniBody.removeAttribute('data-mini-snapshot');
+
+        miniBody.style.removeProperty('background-image');
+        miniBody.style.removeProperty('background-size');
+        miniBody.style.removeProperty('background-position');
+        miniBody.style.removeProperty('background-repeat');
+
+        miniBody.style.removeProperty('width');
+        miniBody.style.removeProperty('max-width');
+        miniBody.style.removeProperty('height');
+        miniBody.style.removeProperty('min-height');
+        miniBody.style.removeProperty('overflow');
+    }
+    function renderFlyerA6MiniMap() {
         var miniBody = document.querySelector('.flyer-mini-map-body');
+        var a6Sheet = document.getElementById('flyerA6Sheet');
 
-        if (!miniBody || flyerMiniMapObserver) return;
+        if (!miniBody || !a6Sheet) return;
 
-        flyerMiniMapObserver = new MutationObserver(function () {
-            if (!isFlyerA4Mode()) return;
+        resetMiniMapInlineStyles(miniBody);
 
-            var hasSnapshotBackground =
-                miniBody.getAttribute('data-mini-snapshot') === 'true' &&
-                String(miniBody.style.backgroundImage || '').indexOf('data:image') !== -1;
+        var clone = a6Sheet.cloneNode(true);
 
-            /*
-                A4인데 누군가 미니맵 DOM을 다시 건드려도
-                배경 스냅샷이 없을 때만 다시 캡처한다.
-            */
-            if (!hasSnapshotBackground) {
-                scheduleFlyerMiniMapSnapshot();
-            }
-        });
+        clone.removeAttribute('id');
+        clone.classList.add('flyer-mini-clone');
 
-        flyerMiniMapObserver.observe(miniBody, {
-            childList: true,
-            subtree: false
-        });
+        clone.style.removeProperty('display');
+        clone.style.setProperty('display', 'grid', 'important');
+        clone.style.setProperty('width', '280px', 'important');
+        clone.style.setProperty('max-width', '280px', 'important');
+        clone.style.setProperty('height', 'auto', 'important');
+        clone.style.setProperty('margin', '0 auto', 'important');
+
+        miniBody.innerHTML = '';
+        miniBody.appendChild(clone);
+    }
+    function watchFlyerMiniMapSnapshot() {
+        return;
     }
 
     function renderFlyerA6Cards() {
@@ -487,17 +559,8 @@
 
         var data = getCurrentData(els);
 
-        /*
-            A6는 공통 시안.
-            일반 배경 상태에서 A6를 누르면 일반 배경을 따라가면 안 되므로
-            general은 apartment 기본 A6 시안1로 강제한다.
-        */
         var bg = data.background === 'office' ? 'office' : 'apartment';
 
-        /*
-            현재 A6 CSS에는 theme-01 / theme-02 배경만 있음.
-            simple = 01, standard = 02, premium은 일단 01로 안전 처리.
-        */
         var theme = '01';
 
         if (data.background !== 'general' && data.theme === 'standard') {
@@ -573,13 +636,38 @@
             inner.querySelector('.flyer-a6-phone').textContent = phone;
             inner.querySelector('.flyer-a6-phone').setAttribute('href', 'tel:' + onlyPhone(phone));
 
+            [
+                '.flyer-a6-label',
+                '.flyer-a6-title',
+                '.flyer-a6-copy',
+                '.flyer-a6-location',
+                '.flyer-a6-benefit strong',
+                '.flyer-a6-manager',
+                '.flyer-a6-phone'
+            ].forEach(function (selector) {
+                var target = inner.querySelector(selector);
+                if (target) {
+                    target.classList.add('flyer-edit-target');
+                }
+            });
+
+            inner.querySelectorAll('.flyer-a6-point strong').forEach(function (target) {
+                target.classList.add('flyer-edit-target');
+            });
+
+            inner.querySelectorAll('.flyer-a6-benefit p span').forEach(function (target) {
+                target.classList.add('flyer-edit-target');
+            });
+
             card.appendChild(inner);
         });
     }
-
     function setFlyerSizeMode(mode) {
         var els = getEls();
         var isA6 = mode === 'a6';
+
+        window.clearTimeout(flyerMiniMapSnapshotTimer);
+        flyerMiniMapSnapshotToken += 1;
 
         if (isA6) {
             renderFlyerA6Cards();
@@ -589,14 +677,10 @@
             els.previewWrap.classList.toggle('is-a6-mode', isA6);
         }
 
-        /*
-            핵심:
-            class만 바꾸면 기존 CSS 우선순위 때문에 A4 preview가 계속 보일 수 있다.
-            그래서 display를 직접 고정한다.
-        */
         if (els.preview) {
             els.preview.classList.toggle('is-hidden', isA6);
             els.preview.setAttribute('aria-hidden', isA6 ? 'true' : 'false');
+
             if (isA6) {
                 els.preview.style.setProperty('display', 'none', 'important');
             } else {
@@ -607,6 +691,7 @@
         if (els.a6Sheet) {
             els.a6Sheet.classList.toggle('is-hidden', !isA6);
             els.a6Sheet.setAttribute('aria-hidden', isA6 ? 'false' : 'true');
+
             if (isA6) {
                 els.a6Sheet.style.setProperty('display', 'block', 'important');
             } else {
@@ -624,18 +709,16 @@
 
         closeDownloadPopover();
 
-        var miniBody = document.querySelector('.flyer-mini-map-body');
-
         if (isA6) {
-            if (miniBody) {
-                miniBody.classList.remove('is-snapshot-mode');
-
-                if (flyerMiniMapOriginalHtml !== null) {
-                    miniBody.innerHTML = flyerMiniMapOriginalHtml;
-                }
-            }
+            renderFlyerA6MiniMap();
         } else {
-            scheduleFlyerMiniMapSnapshot();
+            /*
+                A6에서 수정한 값은 input에는 반영되지만
+                숨겨져 있던 A4 미리보기 DOM은 갱신되지 않았을 수 있다.
+                그래서 A4로 돌아올 때는 먼저 A4 미리보기를 다시 그리고,
+                그 다음 미니맵을 캡처한다.
+            */
+            updatePreview();
         }
     }
 
@@ -707,9 +790,24 @@
     function resetFlyer() {
         var els = getEls();
 
-        var currentBackground = getActiveValue('data-flyer-bg', 'apartment');
+        /*
+            초기화 기준은 "현재 화면 상태"다.
+            - 현재 배경: 아파트 / 오피스텔 / 일반
+            - 현재 시안
+            - 현재 A4/A6 모드
+        */
+        var currentBackground = getCurrentFlyerBackground();
         var currentTheme = getActiveValue('data-flyer-theme', 'simple');
         var currentOverlay = getActiveValue('data-flyer-overlay', 'soft');
+        var isA6 = !isFlyerA4Mode();
+
+        /*
+            이전 미니맵 예약/스냅샷은 먼저 무효화한다.
+            그래야 예전 A4 캡처가 초기화 후 다시 보이지 않는다.
+        */
+        window.clearTimeout(flyerMiniMapSnapshotTimer);
+        flyerMiniMapSnapshotToken += 1;
+        resetMiniMapInlineStyles(document.querySelector('.flyer-mini-map-body'));
 
         if (els.form) {
             els.form.reset();
@@ -723,14 +821,33 @@
 
         clearCustomFlyerBackground();
 
+        /*
+            현재 배경/시안은 유지한다.
+            단, 입력값은 무조건 현재 배경의 기본값으로 다시 넣는다.
+        */
         setBackground(currentBackground);
         setTheme(currentTheme);
         setOverlay(currentOverlay);
 
-        closeDownloadPopover();
-        updatePreview();
+        applyFlyerDefaultsToInputs(els, currentBackground);
 
-        showFlyerToast('현재 시안은 유지하고 입력값만 초기화했어.');
+        closeDownloadPopover();
+
+        /*
+            현재 모드 기준으로 미리보기와 미니맵을 확정 갱신한다.
+            A4면 A4 미리보기 + A4 미니맵
+            A6면 A6 카드 + A6 미니맵
+        */
+        if (isA6) {
+            renderFlyerA6Cards();
+            renderFlyerA6MiniMap();
+        } else {
+            updatePreview();
+        }
+
+        saveDraft(false);
+
+        showFlyerToast('현재 화면 기준으로 초기화했어.');
     }
 
     function closeDownloadPopover() {
@@ -1058,7 +1175,36 @@
                 }
 
                 saveDraft(false);
+
+                /*
+                    미리보기 직접 수정 시 미니맵 갱신
+                    - A4: 현재 전단을 다시 캡처
+                    - A6: 카드 다시 그리고 미니맵 다시 그림
+                */
+                if (isFlyerA4Mode()) {
+                    scheduleFlyerMiniMapSnapshot();
+                } else {
+                    renderFlyerA6Cards();
+                    renderFlyerA6MiniMap();
+                }
             };
+        }
+        function bindFlyerEditInputMiniMapRefresh() {
+            var editInput = document.getElementById('flyerEditInput');
+
+            if (!editInput) return;
+            if (editInput.dataset.miniMapRefreshBound === 'true') return;
+
+            editInput.dataset.miniMapRefreshBound = 'true';
+
+            editInput.addEventListener('input', function () {
+                if (isFlyerA4Mode()) {
+                    scheduleFlyerMiniMapSnapshot();
+                } else {
+                    renderFlyerA6Cards();
+                    renderFlyerA6MiniMap();
+                }
+            });
         }
 
         function pickDescLine(event) {
@@ -1112,8 +1258,129 @@
             }
         }
 
+        bindFlyerEditInputMiniMapRefresh();
+
         descBox.addEventListener('click', pickDescLine, true);
         descBox.addEventListener('touchstart', pickDescLine, true);
+    }
+    function bindFlyerA6CardEdit() {
+        var sheet = document.getElementById('flyerA6Sheet');
+        var editInput = document.getElementById('flyerEditInput');
+        var editLabel = document.getElementById('flyerEditFieldLabel');
+        var editCount = document.getElementById('flyerEditCount');
+
+        if (!sheet || !editInput) return;
+        if (sheet.dataset.a6EditBound === 'true') return;
+
+        sheet.dataset.a6EditBound = 'true';
+
+        function getA6EditConfig(target, firstCard) {
+            var points = Array.prototype.slice.call(firstCard.querySelectorAll('.flyer-a6-point strong'));
+            var descLines = Array.prototype.slice.call(firstCard.querySelectorAll('.flyer-a6-benefit p span'));
+
+            if (target.closest('.flyer-a6-label')) {
+                return { inputId: 'flyerLabelInput', label: '상단 라벨', max: 18 };
+            }
+
+            if (target.closest('.flyer-a6-title')) {
+                return { inputId: 'flyerTitleInput', label: '현장명', max: 18 };
+            }
+
+            if (target.closest('.flyer-a6-copy')) {
+                return { inputId: 'flyerCopyInput', label: '한줄 카피', max: 26 };
+            }
+
+            if (target.closest('.flyer-a6-location')) {
+                return { inputId: 'flyerLocationInput', label: '위치', max: 20 };
+            }
+
+            if (points.indexOf(target) === 0) {
+                return { inputId: 'flyerPoint1Input', label: '조건 1', max: 18 };
+            }
+
+            if (points.indexOf(target) === 1) {
+                return { inputId: 'flyerPoint2Input', label: '조건 2', max: 18 };
+            }
+
+            if (points.indexOf(target) === 2) {
+                return { inputId: 'flyerPoint3Input', label: '조건 3', max: 18 };
+            }
+
+            if (target.closest('.flyer-a6-benefit strong')) {
+                return { inputId: 'flyerBenefitInput', label: '혜택 강조 문구', max: 24 };
+            }
+
+            if (descLines.indexOf(target) === 0) {
+                return { inputId: 'flyerDesc1Input', label: '상세 안내 1줄', max: 42 };
+            }
+
+            if (descLines.indexOf(target) === 1) {
+                return { inputId: 'flyerDesc2Input', label: '상세 안내 2줄', max: 42 };
+            }
+
+            if (target.closest('.flyer-a6-manager')) {
+                return { inputId: 'flyerManagerInput', label: '상담자', max: 12 };
+            }
+
+            if (target.closest('.flyer-a6-phone')) {
+                return { inputId: 'flyerPhoneInput', label: '전화번호', max: 16 };
+            }
+
+            return null;
+        }
+
+        sheet.addEventListener('click', function (event) {
+            if (isFlyerA4Mode()) return;
+
+            var firstCard = sheet.querySelector('.flyer-a6-card:first-child');
+            if (!firstCard || !firstCard.contains(event.target)) return;
+
+            var target = event.target.closest('.flyer-edit-target');
+            if (!target || !firstCard.contains(target)) return;
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            var config = getA6EditConfig(target, firstCard);
+            if (!config) return;
+
+            var sourceInput = document.getElementById(config.inputId);
+            if (!sourceInput) return;
+
+            document.querySelectorAll('.is-flyer-editing, .flyer-edit-target.is-editing').forEach(function (el) {
+                el.classList.remove('is-flyer-editing');
+                el.classList.remove('is-editing');
+            });
+
+            target.classList.add('is-editing');
+
+            editInput.disabled = false;
+            editInput.value = sourceInput.value || target.textContent.trim();
+            editInput.maxLength = config.max;
+
+            if (editLabel) {
+                editLabel.textContent = config.label;
+            }
+
+            if (editCount) {
+                editCount.textContent = String(editInput.value.length) + ' / ' + config.max;
+            }
+
+            editInput.focus();
+            editInput.select();
+
+            editInput.oninput = function () {
+                sourceInput.value = editInput.value;
+
+                if (editCount) {
+                    editCount.textContent = String(editInput.value.length) + ' / ' + config.max;
+                }
+
+                saveDraft(false);
+                renderFlyerA6Cards();
+                renderFlyerA6MiniMap();
+            };
+        });
     }
     /* 웹전단 돌아가기 버튼을 웹전단 작업영역 오른쪽 상단으로 강제 고정 */
     function forceFlyerBackButtonPosition() {
@@ -1184,12 +1451,14 @@
         updatePreview();
 
         bindFlyerDescLineEdit();
+        bindFlyerA6CardEdit();
         watchFlyerBackButtonPosition();
         watchFlyerMiniMapSnapshot();
 
         window.requestAnimationFrame(function () {
             setFlyerSizeMode('a4');
             bindFlyerDescLineEdit();
+            bindFlyerA6CardEdit();
             watchFlyerBackButtonPosition();
             watchFlyerMiniMapSnapshot();
         });

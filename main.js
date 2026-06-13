@@ -946,23 +946,40 @@
         });
     }
     function ensureFlyerCss() {
-        if (!document.getElementById('flyerToolCss')) {
-            var flyerCss = document.createElement('link');
-            flyerCss.id = 'flyerToolCss';
-            flyerCss.rel = 'stylesheet';
-            flyerCss.href = './tools/flyer/flyer.css';
+        /*
+            웹전단 진입 시 CSS 순서를 다시 정리한다.
+    
+            최종 순서:
+            1. flyer.css
+            2. flyer-a6.css
+            3. flyer-apt-fix.css
+        */
 
-            document.head.appendChild(flyerCss);
-        }
+        var oldFlyerCss = document.getElementById('flyerToolCss');
+        var oldA6Css = document.getElementById('flyerA6ToolCss');
+        var oldAptFixCss = document.getElementById('flyerAptFixCss');
 
-        if (!document.getElementById('flyerA6ToolCss')) {
-            var flyerA6Css = document.createElement('link');
-            flyerA6Css.id = 'flyerA6ToolCss';
-            flyerA6Css.rel = 'stylesheet';
-            flyerA6Css.href = './tools/flyer/flyer-a6.css';
+        if (oldFlyerCss) oldFlyerCss.remove();
+        if (oldA6Css) oldA6Css.remove();
+        if (oldAptFixCss) oldAptFixCss.remove();
 
-            document.head.appendChild(flyerA6Css);
-        }
+        var flyerCss = document.createElement('link');
+        flyerCss.id = 'flyerToolCss';
+        flyerCss.rel = 'stylesheet';
+        flyerCss.href = './tools/flyer/flyer.css?v=1';
+        document.head.appendChild(flyerCss);
+
+        var flyerA6Css = document.createElement('link');
+        flyerA6Css.id = 'flyerA6ToolCss';
+        flyerA6Css.rel = 'stylesheet';
+        flyerA6Css.href = './tools/flyer/flyer-a6.css?v=1';
+        document.head.appendChild(flyerA6Css);
+
+        var flyerAptFixCss = document.createElement('link');
+        flyerAptFixCss.id = 'flyerAptFixCss';
+        flyerAptFixCss.rel = 'stylesheet';
+        flyerAptFixCss.href = './tools/flyer/flyer-apt-fix.css?v=20';
+        document.head.appendChild(flyerAptFixCss);
     }
 
     function loadFlyerScript() {

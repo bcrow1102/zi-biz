@@ -6448,3 +6448,221 @@ body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .fl
     visibility: hidden !important;
     pointer-events: none !important;
 }
+
+/* A6 전화번호 링크 밑줄 제거 */
+body:has(#flyerTool) #flyerA6Sheet .flyer-a6-phone,
+body:has(#flyerTool) .flyer-mini-map-body .flyer-a6-phone {
+    text-decoration: none !important;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+}
+
+/* A6 제목 2줄 방지 */
+body:has(#flyerTool) #flyerA6Sheet .flyer-a6-title,
+body:has(#flyerTool) .flyer-mini-map-body .flyer-a6-title {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow: visible !important;
+}
+
+/* =========================================================
+   APARTMENT A4 TEXT TUNE 01
+   - zimo biz UI 색상과 무관
+   - 아파트 A4 시안1/시안2 전단 텍스트만 조정
+   - 오피스텔 / A6 영향 없음
+========================================================= */
+
+
+/* =========================
+   아파트 A4 공통: 하단 잘림 방지
+========================= */
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-contact-box,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-contact-box {
+    top: 88.7% !important;
+    height: 7.4% !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-contact-box>div,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-contact-box>div {
+    left: 20.4% !important;
+    top: 13% !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-contact-box span,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-contact-box span {
+    font-size: 1.55cqw !important;
+    line-height: 1 !important;
+    font-weight: 850 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-contact-box strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-contact-box strong {
+    margin-top: 6% !important;
+    font-size: 3.05cqw !important;
+    line-height: 1 !important;
+    font-weight: 900 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment .flyer-contact-box a,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment .flyer-contact-box a {
+    top: 17% !important;
+    height: 58% !important;
+    font-size: 3.05cqw !important;
+    line-height: 1 !important;
+    font-weight: 950 !important;
+}
+
+
+/* =========================
+   아파트 시안1: 고급 금색 + 남색
+========================= */
+
+/* 라벨 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-preview-label,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-preview-label {
+    color: #0b376d !important;
+    top: 4.35% !important;
+    font-size: 1.95cqw !important;
+}
+
+/* 현장명 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple h4,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple h4 {
+    left: 8.2% !important;
+    top: 7.15% !important;
+    width: 77% !important;
+
+    color: #8b5b22 !important;
+    font-size: 6.95cqw !important;
+    line-height: 0.92 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.1em !important;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.82) !important;
+}
+
+/* 한줄 카피 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-preview-hero-content p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-preview-hero-content p {
+    top: 16.2% !important;
+    color: #082f63 !important;
+    font-size: 2.55cqw !important;
+    font-weight: 850 !important;
+}
+
+/* 위치 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-preview-hero-content em,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-preview-hero-content em {
+    color: #ffffff !important;
+    font-size: 1.7cqw !important;
+    font-weight: 850 !important;
+}
+
+/* 조건 1,2,3 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point {
+    left: 33.5% !important;
+    width: 45% !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(1),
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(1) {
+    top: 41.2% !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(2),
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(2) {
+    top: 50.2% !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(3),
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point:nth-child(3) {
+    top: 59.2% !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point span,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point span {
+    color: #0b376d !important;
+    font-size: 3.7cqw !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-point strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-point strong {
+    color: #082f63 !important;
+    font-size: 3.95cqw !important;
+    line-height: 1.08 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.07em !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.78) !important;
+}
+
+/* 혜택 */
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box {
+    top: 68.8% !important;
+    height: 15.5% !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box span,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box span {
+    color: #ffffff !important;
+    top: -3.5% !important;
+    font-size: 1.55cqw !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box strong {
+    color: #063f88 !important;
+    top: 23% !important;
+    font-size: 4.35cqw !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-simple .flyer-benefit-box p {
+    color: #1f2937 !important;
+    top: 56% !important;
+    font-size: 1.9cqw !important;
+    font-weight: 600 !important;
+}
+
+
+/* =========================
+   아파트 시안2: 마젠타 계열
+========================= */
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard .flyer-preview-label,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard .flyer-preview-label {
+    color: #9d004c !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard h4,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard h4 {
+    color: #c8005d !important;
+    font-size: 6.75cqw !important;
+    font-weight: 950 !important;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.82) !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard .flyer-preview-hero-content p,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard .flyer-preview-hero-content p {
+    color: #2b3140 !important;
+    font-weight: 850 !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard .flyer-point strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard .flyer-point strong {
+    color: #111827 !important;
+    font-weight: 950 !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72) !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard .flyer-benefit-box strong,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard .flyer-benefit-box strong {
+    color: #c8005d !important;
+}
+
+body:has(#flyerTool) #flyerPreview.flyer-bg-apartment.flyer-theme-standard .flyer-contact-box a,
+body:has(#flyerTool) .flyer-mini-clone.flyer-bg-apartment.flyer-theme-standard .flyer-contact-box a {
+    color: #c8005d !important;
+}
