@@ -310,55 +310,29 @@
     }
 
     async function createNamecardOgImage(userId, slug) {
-        var sourceCard = document.getElementById('ncCard');
+        var card = document.getElementById('ncCard');
 
-        if (!sourceCard || !window.html2canvas) {
+        if (!card || !window.html2canvas) {
             return '';
         }
 
         /*
-            OG 이미지는 명함 카드만 캡처한다.
-            단, 명함 CSS가 .namecard-preview-scene 부모 구조에 의존하므로
-            캡처용 wrapper에도 preview-scene 클래스를 유지한다.
+            OG 이미지는 실제 화면의 #ncCard만 그대로 캡처한다.
+            복제 DOM을 만들면 시안별 명함 비율/배경/높이가 깨질 수 있다.
+            #ncCard 안에는 하단 설명부나 시안 선택 UI가 없으므로 안전하다.
         */
-        var captureWrap = document.createElement('article');
-        captureWrap.className = 'namecard-preview-scene namecard-preview-scene--compact namecard-og-card-only-wrap';
+        var selectedEls = Array.prototype.slice.call(
+            document.querySelectorAll('#namecardTool .is-namecard-selected')
+        );
 
-        var cardClone = sourceCard.cloneNode(true);
-
-        cardClone.removeAttribute('id');
-        cardClone.removeAttribute('target');
-        cardClone.removeAttribute('rel');
-
-        cleanupOgClone(cardClone);
-
-        captureWrap.appendChild(cardClone);
-
-        captureWrap.style.position = 'fixed';
-        captureWrap.style.left = '-99999px';
-        captureWrap.style.top = '0';
-        captureWrap.style.zIndex = '-1';
-        captureWrap.style.pointerEvents = 'none';
-
-        /*
-            실제 미리보기의 부모 구조만 빌리고,
-            하단 설명부/시안 선택 UI는 넣지 않는다.
-        */
-        captureWrap.style.background = 'transparent';
-        captureWrap.style.padding = '0';
-        captureWrap.style.margin = '0';
-        captureWrap.style.display = 'block';
-        captureWrap.style.overflow = 'hidden';
-
-        cardClone.style.margin = '0';
-        cardClone.style.display = 'block';
-
-        document.body.appendChild(captureWrap);
+        selectedEls.forEach(function (el) {
+            el.classList.remove('is-namecard-selected');
+        });
 
         try {
             await waitForOgCaptureReady();
 
-            var canvas = await window.html2canvas(captureWrap, {
+            var canvas = await window.html2canvas(card, {
                 backgroundColor: null,
                 scale: 2,
                 useCORS: true,
@@ -388,9 +362,9 @@
                 ? publicResult.data.publicUrl
                 : '';
         } finally {
-            if (captureWrap && captureWrap.parentNode) {
-                captureWrap.parentNode.removeChild(captureWrap);
-            }
+            selectedEls.forEach(function (el) {
+                el.classList.add('is-namecard-selected');
+            });
         }
     }
 
