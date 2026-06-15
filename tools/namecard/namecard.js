@@ -317,15 +317,12 @@
         }
 
         /*
-            카톡 OG 이미지는 명함 카드만 원본 비율 그대로 캡처한다.
-            1200x630으로 강제 확대하면 명함 레이아웃이 깨지므로
-            원래 보이는 #ncCard 크기를 유지하고, 바깥 여백만 추가한다.
+            OG 이미지는 명함 카드만 캡처한다.
+            단, 명함 CSS가 .namecard-preview-scene 부모 구조에 의존하므로
+            캡처용 wrapper에도 preview-scene 클래스를 유지한다.
         */
-        var rect = sourceCard.getBoundingClientRect();
-        var cardWidth = Math.round(rect.width || sourceCard.offsetWidth || 700);
-
-        var captureWrap = document.createElement('div');
-        captureWrap.className = 'namecard-og-card-only-wrap';
+        var captureWrap = document.createElement('article');
+        captureWrap.className = 'namecard-preview-scene namecard-preview-scene--compact namecard-og-card-only-wrap';
 
         var cardClone = sourceCard.cloneNode(true);
 
@@ -340,20 +337,21 @@
         captureWrap.style.position = 'fixed';
         captureWrap.style.left = '-99999px';
         captureWrap.style.top = '0';
-        captureWrap.style.boxSizing = 'border-box';
-        captureWrap.style.padding = '14px';
-        captureWrap.style.display = 'inline-block';
-        captureWrap.style.background = '#d7e0ea';
         captureWrap.style.zIndex = '-1';
         captureWrap.style.pointerEvents = 'none';
 
-        cardClone.style.width = cardWidth + 'px';
-        cardClone.style.maxWidth = 'none';
-        cardClone.style.boxSizing = 'border-box';
+        /*
+            실제 미리보기의 부모 구조만 빌리고,
+            하단 설명부/시안 선택 UI는 넣지 않는다.
+        */
+        captureWrap.style.background = 'transparent';
+        captureWrap.style.padding = '0';
+        captureWrap.style.margin = '0';
+        captureWrap.style.display = 'block';
+        captureWrap.style.overflow = 'hidden';
+
+        cardClone.style.margin = '0';
         cardClone.style.display = 'block';
-        cardClone.style.borderRadius = '18px';
-        cardClone.style.overflow = 'hidden';
-        cardClone.style.boxShadow = '0 8px 20px rgba(15, 23, 42, 0.18)';
 
         document.body.appendChild(captureWrap);
 
@@ -361,7 +359,7 @@
             await waitForOgCaptureReady();
 
             var canvas = await window.html2canvas(captureWrap, {
-                backgroundColor: '#d7e0ea',
+                backgroundColor: null,
                 scale: 2,
                 useCORS: true,
                 logging: false
