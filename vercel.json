@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+        {
+            "source": "/n/:slug",
+            "destination": "/api/namecard-og?slug=:slug"
+        }
+    ]
+}

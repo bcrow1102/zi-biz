@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>zimo biz 디지털 명함</title>
+    <meta name="description" content="zimo biz 디지털 명함입니다." />
+    <meta name="theme-color" content="#f4f6fa" />
+
+    <link rel="stylesheet" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: #f4f6fa;
+            color: #111827;
+        }
+
+        .share-page {
+            width: min(100%, 520px);
+            min-height: 100vh;
+            margin: 0 auto;
+            padding: 28px 18px 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .share-card-wrap {
+            width: 100%;
+        }
+
+        .share-loading,
+        .share-error {
+            padding: 28px 20px;
+            border-radius: 24px;
+            background: #ffffff;
+            text-align: center;
+            box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
+        }
+
+        .share-loading strong,
+        .share-error strong {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .share-loading p,
+        .share-error p {
+            margin: 0;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .namecard {
+            display: block;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 30px;
+            background: #ffffff;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 22px 60px rgba(15, 23, 42, 0.16);
+        }
+
+        .namecard-main {
+            padding: 30px 26px 26px;
+            background: #151827;
+            color: #ffffff;
+        }
+
+        .namecard.template-blue .namecard-main {
+            background: #174cff;
+        }
+
+        .namecard.template-red .namecard-main {
+            background: #e94343;
+        }
+
+        .namecard.template-gold .namecard-main {
+            background: #8b6a2f;
+        }
+
+        .namecard-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            align-items: flex-start;
+            margin-bottom: 34px;
+        }
+
+        .namecard-company {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .namecard-person {
+            text-align: right;
+        }
+
+        .namecard-role {
+            display: block;
+            font-size: 15px;
+            opacity: 0.86;
+            margin-bottom: 4px;
+        }
+
+        .namecard-name {
+            display: block;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+        }
+
+        .namecard-summary {
+            font-size: 21px;
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 10px;
+            word-break: keep-all;
+        }
+
+        .namecard-address {
+            font-size: 15px;
+            opacity: 0.86;
+            margin-bottom: 24px;
+        }
+
+        .namecard-contact {
+            display: grid;
+            gap: 9px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.34);
+        }
+
+        .namecard-contact-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            font-size: 14px;
+        }
+
+        .namecard-contact-row span {
+            opacity: 0.72;
+        }
+
+        .namecard-contact-row strong {
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .namecard-desc {
+            padding: 24px 24px 26px;
+            background: #ffffff;
+        }
+
+        .namecard-desc strong {
+            display: block;
+            font-size: 18px;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+        }
+
+        .namecard-desc p {
+            margin: 0;
+            color: #4b5563;
+            line-height: 1.55;
+            font-size: 15px;
+        }
+
+        .namecard-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .namecard-tags span {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 0 12px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #1d4ed8;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .share-footer {
+            margin-top: 18px;
+            text-align: center;
+            color: #8a94a6;
+            font-size: 13px;
+        }
+
+        .share-footer strong {
+            color: #1d4ed8;
+        }
+
+        @media (max-width: 420px) {
+            .share-page {
+                padding: 18px 12px 28px;
+            }
+
+            .namecard-main {
+                padding: 26px 22px 24px;
+            }
+
+            .namecard-name {
+                font-size: 29px;
+            }
+
+            .namecard-summary {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="share-page">
+        <section class="share-card-wrap" id="shareNamecardRoot">
+            <div class="share-loading">
+                <strong>명함을 불러오는 중입니다</strong>
+                <p>잠시만 기다려 주세요.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase.js"></script>
+    <script src="./namecard.js"></script>
+</body>
+
+</html>

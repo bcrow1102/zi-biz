@@ -2,7 +2,6 @@
     'use strict';
 
     var STORAGE_KEY = 'zimo_biz_temp_user';
-    var USERS_KEY = 'zimo_biz_temp_users';
     var NOTICE_READ_KEY = 'zimo_biz_notice_read_ids';
     var FEEDBACK_KEY = 'zimo_biz_beta_feedback_items';
     var FEEDBACK_LIKES_KEY = 'zimo_biz_beta_feedback_likes';
@@ -18,9 +17,10 @@
         currentView: 'home',
         gold: 10000,
         user: null,
-        pendingProvider: '',
-        nicknameChecked: false,
-        checkedNickname: '',
+        signupProvider: '',
+        signupNicknameChecked: false,
+        checkedSignupNickname: '',
+        pendingKakaoUser: null,
         feedbackSort: 'latest',
         feedbackCategory: 'feature',
         feedbackVisibleCount: 5
@@ -54,18 +54,26 @@
         loginDesc: document.getElementById('loginDesc'),
 
         loginStepAuth: document.getElementById('loginStepAuth'),
-        loginStepNickname: document.getElementById('loginStepNickname'),
 
-        loginIdInput: document.getElementById('loginIdInput'),
+        loginNicknameInput: document.getElementById('loginNicknameInput'),
+        loginPasswordInput: document.getElementById('loginPasswordInput'),
         loginIdBtn: document.getElementById('loginIdBtn'),
         loginIdHelp: document.getElementById('loginIdHelp'),
 
-        nicknameInput: document.getElementById('nicknameInput'),
-        checkNicknameBtn: document.getElementById('checkNicknameBtn'),
-        loginHelp: document.getElementById('loginHelp'),
 
-        completeLoginBtn: document.getElementById('completeLoginBtn'),
-        backToAuthBtn: document.getElementById('backToAuthBtn')
+        loginTitle: document.getElementById('loginTitle'),
+        loginStepSignup: document.getElementById('loginStepSignup'),
+
+        signupNicknameInput: document.getElementById('signupNicknameInput'),
+        signupEmailInput: document.getElementById('signupEmailInput'),
+        signupPhoneInput: document.getElementById('signupPhoneInput'),
+        signupPasswordField: document.getElementById('signupPasswordField'),
+        signupPasswordInput: document.getElementById('signupPasswordInput'),
+        signupHelp: document.getElementById('signupHelp'),
+        completeSignupBtn: document.getElementById('completeSignupBtn'),
+        checkSignupNicknameBtn: document.getElementById('checkSignupNicknameBtn')
+
+
     };
 
     var protectedViews = {
@@ -84,18 +92,9 @@
         els.goldAmount.textContent = formatGold(state.gold);
     }
 
-    function getSavedUser() {
-        try {
-            var saved = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
-            return saved ? JSON.parse(saved) : null;
-        } catch (error) {
-            return null;
-        }
-    }
 
     function saveUser(user) {
         try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
             sessionStorage.setItem(STORAGE_KEY, JSON.stringify(user));
         } catch (error) {
             // 임시 로그인 저장 실패 시에도 현재 화면 상태는 유지한다.
@@ -110,42 +109,7 @@
             // 삭제 실패 시에도 화면은 로그아웃 처리한다.
         }
     }
-    function getSavedUsers() {
-        try {
-            var saved = localStorage.getItem(USERS_KEY);
-            return saved ? JSON.parse(saved) : [];
-        } catch (error) {
-            return [];
-        }
-    }
 
-    function saveJoinedUser(user) {
-        var users = getSavedUsers();
-        var userId = normalizeNickname(user.nickname);
-
-        var exists = users.some(function (savedUser) {
-            return normalizeNickname(savedUser.nickname).toLowerCase() === userId.toLowerCase();
-        });
-
-        if (!exists) {
-            users.push(user);
-        }
-
-        try {
-            localStorage.setItem(USERS_KEY, JSON.stringify(users));
-        } catch (error) {
-            // 임시 회원 목록 저장 실패 시에도 현재 로그인은 유지한다.
-        }
-    }
-
-    function findJoinedUserById(userId) {
-        var target = normalizeNickname(userId).toLowerCase();
-        var users = getSavedUsers();
-
-        return users.find(function (user) {
-            return normalizeNickname(user.nickname).toLowerCase() === target;
-        }) || null;
-    }
 
     function setLoginIdHelp(message, isError) {
         if (!els.loginIdHelp) return;
@@ -154,36 +118,100 @@
         els.loginIdHelp.classList.toggle('is-error', !!isError);
     }
 
-    function loginWithId() {
-        var userId = normalizeNickname(els.loginIdInput ? els.loginIdInput.value : '');
-        var errorMessage = validateNickname(userId);
+    async function loginWithId() {
+        var nickname = normalizeNickname(els.loginNicknameInput ? els.loginNicknameInput.value : '');
+        var password = els.loginPasswordInput ? String(els.loginPasswordInput.value || '') : '';
 
-        if (errorMessage) {
-            setLoginIdHelp(errorMessage, true);
-            if (els.loginIdInput) els.loginIdInput.focus();
+        var nicknameError = validateNickname(nickname);
+
+        if (nicknameError) {
+            setLoginIdHelp(nicknameError, true);
+            if (els.loginNicknameInput) els.loginNicknameInput.focus();
             return false;
         }
 
-        var joinedUser = findJoinedUserById(userId);
+        if (password.length < 6) {
+            setLoginIdHelp('비밀번호는 6자 이상 입력해 주세요.', true);
+            if (els.loginPasswordInput) els.loginPasswordInput.focus();
+            return false;
+        }
 
-        if (!joinedUser) {
-            setLoginIdHelp('가입된 아이디를 찾지 못했어. 처음이라면 아래에서 가입해줘.', true);
-            if (els.loginIdInput) els.loginIdInput.focus();
+        if (!window.ZIMO_SUPABASE_READY || !window.zimoSupabase) {
+            setLoginIdHelp('Supabase 연결이 아직 준비되지 않았습니다.', true);
+            return false;
+        }
+
+        setLoginIdHelp('로그인 정보를 확인하고 있습니다...', false);
+
+
+        var emailLookup = await window.zimoSupabase
+            .rpc('get_profile_email_by_nickname', {
+                check_nickname: nickname
+            });
+
+        if (emailLookup.error || !emailLookup.data) {
+            setLoginIdHelp('닉네임 또는 비밀번호가 올바르지 않습니다.', true);
+            if (els.loginNicknameInput) els.loginNicknameInput.focus();
+            return false;
+        }
+
+        var email = normalizeEmail(emailLookup.data);
+
+        setLoginIdHelp('로그인 중입니다...', false);
+
+        var loginResult = await window.zimoSupabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (loginResult.error) {
+            setLoginIdHelp('닉네임 또는 비밀번호가 올바르지 않습니다.', true);
+            return false;
+        }
+
+        var authUser = loginResult.data && loginResult.data.user;
+
+        if (!authUser || !authUser.id) {
+            setLoginIdHelp('로그인 정보는 확인했지만 사용자 ID를 찾지 못했습니다.', true);
+            return false;
+        }
+
+        var profileResult = await window.zimoSupabase
+            .from('profiles')
+            .select('nickname, email, phone, provider, gold')
+            .eq('id', authUser.id)
+            .single();
+
+        if (profileResult.error || !profileResult.data) {
+            setLoginIdHelp('회원 프로필을 찾지 못했습니다. 다시 회원가입해 주세요.', true);
             return false;
         }
 
         state.user = {
-            nickname: joinedUser.nickname,
-            provider: joinedUser.provider || 'id',
+            id: authUser.id,
+            nickname: profileResult.data.nickname,
+            email: profileResult.data.email,
+            phone: profileResult.data.phone,
+            provider: profileResult.data.provider || 'email',
+            gold: Number(profileResult.data.gold || 10000),
             loggedInAt: new Date().toISOString()
         };
 
+        state.gold = Number(state.user.gold || 10000);
+
         saveUser(state.user);
+        updateGold();
         updateLoginButton();
         updateNoticeCount();
-        closeLoginSheet();
+        closeLoginSheetAfterSignup();
 
         return true;
+    }
+
+    function loginWithKakao() {
+        setLoginIdHelp('카카오 로그인은 준비중입니다. 현재는 이메일로 가입해 주세요.', false);
+        showToolReadyMessage('kakaoReady');
+        return false;
     }
 
     function isLoggedIn() {
@@ -213,11 +241,15 @@
     }
 
 
-    function logout() {
+    async function logout() {
+        if (window.ZIMO_SUPABASE_READY && window.zimoSupabase) {
+            await window.zimoSupabase.auth.signOut();
+        }
+
         state.user = null;
-        state.pendingProvider = '';
 
         removeSavedUser();
+        updateGold();
         updateLoginButton();
         updateNoticeCount();
         closeLoginSheet();
@@ -227,65 +259,306 @@
         }
     }
 
-    function setLoginHelp(message, isError) {
-        if (!els.loginHelp) return;
+    function setSignupHelp(message, isError) {
+        if (!els.signupHelp) return;
 
-        els.loginHelp.textContent = message || '한글, 영문, 숫자 기준 2~8자로 입력해 주세요.';
-        els.loginHelp.classList.toggle('is-error', !!isError);
+        els.signupHelp.textContent = message || '회원가입 정보를 입력해 주세요.';
+        els.signupHelp.classList.toggle('is-error', !!isError);
     }
 
-    function showAuthStep() {
-        state.pendingProvider = '';
-
-        if (els.loginStepAuth) {
-            els.loginStepAuth.classList.add('is-active');
-        }
-
-        if (els.loginStepNickname) {
-            els.loginStepNickname.classList.remove('is-active');
-        }
-
-        if (els.loginDesc) {
-            els.loginDesc.textContent = '';
-        }
-
-        if (els.nicknameInput) {
-            els.nicknameInput.value = '';
-        }
-
-        if (els.loginIdInput) {
-            els.loginIdInput.value = '';
-        }
-
-        setLoginHelp('');
-        setLoginIdHelp('');
+    function normalizeEmail(value) {
+        return String(value || '').trim().toLowerCase();
     }
 
-    function showNicknameStep(provider) {
-        state.pendingProvider = provider || 'temp';
+    function normalizePhone(value) {
+        return String(value || '').replace(/[^0-9]/g, '');
+    }
+
+    function validateEmail(email) {
+        if (!email) {
+            return '이메일을 입력해 주세요.';
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return '이메일 형식이 올바르지 않아요.';
+        }
+
+        return '';
+    }
+
+    function validatePhone(phone) {
+        if (!phone) {
+            return '전화번호를 입력해 주세요.';
+        }
+
+        if (phone.length < 9 || phone.length > 11) {
+            return '전화번호는 숫자만 9~11자리로 입력해 주세요.';
+        }
+
+        return '';
+    }
+
+
+    function showSignupStep(provider) {
+        state.signupProvider = provider || 'email';
 
         if (els.loginStepAuth) {
             els.loginStepAuth.classList.remove('is-active');
         }
 
-        if (els.loginStepNickname) {
-            els.loginStepNickname.classList.add('is-active');
+
+        if (els.loginStepSignup) {
+            els.loginStepSignup.classList.add('is-active');
+        }
+
+        if (els.loginTitle) {
+            els.loginTitle.textContent = state.signupProvider === 'kakao'
+                ? '카카오 회원가입'
+                : '이메일 회원가입';
+        }
+
+        if (els.loginDesc) {
+            els.loginDesc.textContent = state.signupProvider === 'kakao'
+                ? '카카오 인증이 완료되었습니다. 닉네임과 전화번호를 입력해 가입을 마무리해 주세요.'
+                : '이메일, 닉네임, 전화번호 기준으로 중복 가입을 확인합니다.';
+
+            els.loginDesc.classList.remove('is-hidden');
+        }
+
+        if (els.signupPasswordField) {
+            els.signupPasswordField.classList.toggle('is-hidden', state.signupProvider === 'kakao');
+        }
+
+        if (els.signupNicknameInput) els.signupNicknameInput.value = '';
+
+        if (els.signupEmailInput) {
+            els.signupEmailInput.value = state.signupProvider === 'kakao' && state.pendingKakaoUser
+                ? normalizeEmail(state.pendingKakaoUser.email)
+                : '';
+
+            els.signupEmailInput.readOnly = state.signupProvider === 'kakao';
+            els.signupEmailInput.classList.toggle('is-readonly', state.signupProvider === 'kakao');
+        }
+
+        if (els.signupPhoneInput) els.signupPhoneInput.value = '';
+        if (els.signupPasswordInput) els.signupPasswordInput.value = '';
+
+        setSignupHelp(
+            state.signupProvider === 'kakao'
+                ? '닉네임 중복확인 후 전화번호를 입력해 주세요.'
+                : '닉네임 중복확인 후 이메일, 전화번호, 비밀번호를 입력해 주세요.',
+            false
+        );
+
+        if (els.signupNicknameInput) {
+            window.setTimeout(function () {
+                els.signupNicknameInput.focus();
+            }, 80);
+        }
+    }
+
+    async function completeSignup() {
+        var provider = state.signupProvider || 'email';
+        var nickname = normalizeNickname(els.signupNicknameInput ? els.signupNicknameInput.value : '');
+        var email = normalizeEmail(els.signupEmailInput ? els.signupEmailInput.value : '');
+        var phone = normalizePhone(els.signupPhoneInput ? els.signupPhoneInput.value : '');
+        var password = els.signupPasswordInput ? String(els.signupPasswordInput.value || '') : '';
+
+        var nicknameError = validateNickname(nickname);
+        var emailError = validateEmail(email);
+        var phoneError = validatePhone(phone);
+
+        if (nicknameError) {
+            setSignupHelp(nicknameError, true);
+            if (els.signupNicknameInput) els.signupNicknameInput.focus();
+            return false;
+        }
+
+        if (provider === 'email' && emailError) {
+            setSignupHelp(emailError, true);
+            if (els.signupEmailInput) els.signupEmailInput.focus();
+            return false;
+        }
+
+        if (phoneError) {
+            setSignupHelp(phoneError, true);
+            if (els.signupPhoneInput) els.signupPhoneInput.focus();
+            return false;
+        }
+
+        if (provider === 'email' && password.length < 6) {
+            setSignupHelp('비밀번호는 6자 이상 입력해 주세요.', true);
+            if (els.signupPasswordInput) els.signupPasswordInput.focus();
+            return false;
+        }
+
+        if (!state.signupNicknameChecked || state.checkedSignupNickname !== nickname) {
+            setSignupHelp('닉네임 중복확인을 먼저 해주세요.', true);
+            if (els.signupNicknameInput) els.signupNicknameInput.focus();
+            return false;
+        }
+
+        if (!window.ZIMO_SUPABASE_READY || !window.zimoSupabase) {
+            setSignupHelp('Supabase 연결이 아직 준비되지 않았습니다.', true);
+            return false;
+        }
+
+        var supabaseUserId = '';
+
+        if (provider === 'email') {
+            setSignupHelp('회원가입을 처리하고 있습니다...', false);
+
+            var signupResult = await window.zimoSupabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        nickname: nickname,
+                        phone: phone,
+                        provider: provider
+                    }
+                }
+            });
+
+            if (signupResult.error) {
+                setSignupHelp(signupResult.error.message || '회원가입 중 오류가 발생했습니다.', true);
+                return false;
+            }
+
+            var authUser = signupResult.data && signupResult.data.user;
+
+            if (!authUser || !authUser.id) {
+                setSignupHelp('회원 정보 생성은 되었지만 사용자 ID를 확인하지 못했습니다.', true);
+                return false;
+            }
+
+            supabaseUserId = authUser.id;
+
+            setSignupHelp('인증 메일 발송 완료. 링크 확인 후 로그인해 주세요.', false);
+            return true;
+        }
+
+        if (provider === 'kakao') {
+            if (!state.pendingKakaoUser || !state.pendingKakaoUser.id) {
+                setSignupHelp('카카오 인증 정보를 찾지 못했습니다. 다시 카카오로 시작해 주세요.', true);
+                return false;
+            }
+
+            supabaseUserId = state.pendingKakaoUser.id;
+            email = normalizeEmail(state.pendingKakaoUser.email || '');
+
+            if (!email) {
+                email = supabaseUserId + '@kakao.local';
+            }
+
+            setSignupHelp('카카오 회원정보를 저장하고 있습니다...', false);
+        }
+
+        var profileResult = await window.zimoSupabase
+            .from('profiles')
+            .insert({
+                id: supabaseUserId,
+                nickname: nickname,
+                email: email,
+                phone: phone,
+                provider: provider,
+                gold: 10000
+            });
+
+        if (profileResult.error) {
+            var profileErrorMessage = profileResult.error.message || '';
+            var profileErrorCode = profileResult.error.code || '';
+            var profileErrorDetail = profileResult.error.details || '';
+            var profileErrorText = [
+                profileErrorMessage,
+                profileErrorCode,
+                profileErrorDetail
+            ].join(' ');
+
+            if (profileErrorText.indexOf('profiles_phone_key') !== -1) {
+                setSignupHelp('이미 가입된 전화번호입니다. 기존 계정으로 로그인해 주세요.', true);
+                if (els.signupPhoneInput) els.signupPhoneInput.focus();
+                return false;
+            }
+
+            if (profileErrorText.indexOf('profiles_email_key') !== -1) {
+                setSignupHelp('이미 가입된 이메일입니다. 기존 계정으로 로그인해 주세요.', true);
+                if (els.signupEmailInput) els.signupEmailInput.focus();
+                return false;
+            }
+
+            if (profileErrorText.indexOf('profiles_nickname_key') !== -1) {
+                setSignupHelp('이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해 주세요.', true);
+                if (els.signupNicknameInput) els.signupNicknameInput.focus();
+                return false;
+            }
+
+            setSignupHelp('프로필 저장 중 오류가 발생했습니다: ' + profileErrorMessage, true);
+            return false;
+        }
+
+        var now = new Date().toISOString();
+
+        state.user = {
+            id: supabaseUserId,
+            nickname: nickname,
+            email: email,
+            phone: phone,
+            provider: provider,
+            gold: 10000,
+            createdAt: now,
+            loggedInAt: now
+        };
+
+        state.gold = 10000;
+        state.pendingKakaoUser = null;
+
+        saveUser(state.user);
+        updateGold();
+        updateLoginButton();
+        updateNoticeCount();
+        closeLoginSheetAfterSignup();
+
+        return true;
+    }
+
+    function showAuthStep() {
+
+        if (els.loginStepAuth) {
+            els.loginStepAuth.classList.add('is-active');
+        }
+
+        if (els.loginStepSignup) {
+            els.loginStepSignup.classList.remove('is-active');
+        }
+
+        state.signupProvider = '';
+
+        if (els.loginTitle) {
+            els.loginTitle.textContent = '간편 로그인';
         }
 
         if (els.loginDesc) {
             els.loginDesc.textContent = '';
+            els.loginDesc.classList.add('is-hidden');
         }
 
-        if (els.nicknameInput) {
-            els.nicknameInput.value = isLoggedIn() ? state.user.nickname : '';
-
-            window.setTimeout(function () {
-                els.nicknameInput.focus();
-            }, 80);
+        if (els.loginNicknameInput) {
+            els.loginNicknameInput.value = '';
         }
 
-        setLoginHelp('');
+        if (els.loginPasswordInput) {
+            els.loginPasswordInput.value = '';
+        }
+
+        if (els.signupEmailInput) {
+            els.signupEmailInput.readOnly = false;
+            els.signupEmailInput.classList.remove('is-readonly');
+        }
+
+        setLoginIdHelp('');
     }
+
 
     function openLoginSheet() {
         if (!els.loginSheet) return;
@@ -298,7 +571,34 @@
         showAuthStep();
     }
 
-    function closeLoginSheet() {
+    async function cancelPendingKakaoSignup() {
+        if (state.signupProvider !== 'kakao' || !state.pendingKakaoUser) {
+            return false;
+        }
+
+        state.pendingKakaoUser = null;
+
+        if (window.ZIMO_SUPABASE_READY && window.zimoSupabase) {
+            await window.zimoSupabase.auth.signOut();
+        }
+
+        removeSavedUser();
+
+        return true;
+    }
+
+    async function closeLoginSheet() {
+        if (!els.loginSheet) return;
+
+        await cancelPendingKakaoSignup();
+
+        els.loginSheet.classList.remove('is-open');
+        els.loginSheet.setAttribute('aria-hidden', 'true');
+
+        showAuthStep();
+    }
+
+    function closeLoginSheetAfterSignup() {
         if (!els.loginSheet) return;
 
         els.loginSheet.classList.remove('is-open');
@@ -306,6 +606,7 @@
 
         showAuthStep();
     }
+
     function getNoticeReadKey() {
         if (isLoggedIn()) {
             return NOTICE_READ_KEY + '_' + normalizeNickname(state.user.nickname).toLowerCase();
@@ -403,88 +704,76 @@
 
     function validateNickname(nickname) {
         if (nickname.length < 2 || nickname.length > 8) {
-            return '별명은 2~8자로 입력해줘.';
+            return '별명은 2~8자로 입력해 주세요.';
         }
 
         if (!/^[가-힣a-zA-Z0-9]+$/.test(nickname)) {
-            return '별명은 한글, 영문, 숫자만 사용할 수 있어.';
+            return '별명은 한글, 영문, 숫자만 사용할 수 있어요.';
         }
 
         return '';
     }
-    function resetNicknameCheck() {
-        state.nicknameChecked = false;
-        state.checkedNickname = '';
+
+    function resetSignupNicknameCheck() {
+        state.signupNicknameChecked = false;
+        state.checkedSignupNickname = '';
+
+        if (els.checkSignupNicknameBtn) {
+            els.checkSignupNicknameBtn.textContent = '중복확인';
+            els.checkSignupNicknameBtn.disabled = false;
+        }
     }
-
-    function isMockNicknameTaken(nickname) {
-        var takenNicknames = [
-            '관리자',
-            'admin',
-            'zimo',
-            '지모',
-            'test',
-            '테스트'
-        ];
-
-        return takenNicknames.indexOf(nickname.toLowerCase()) !== -1;
-    }
-
-    function checkNicknameAvailability() {
-        var nickname = normalizeNickname(els.nicknameInput ? els.nicknameInput.value : '');
+    async function checkSignupNicknameAvailability() {
+        var nickname = normalizeNickname(els.signupNicknameInput ? els.signupNicknameInput.value : '');
         var errorMessage = validateNickname(nickname);
 
         if (errorMessage) {
-            resetNicknameCheck();
-            setLoginHelp(errorMessage, true);
-            if (els.nicknameInput) els.nicknameInput.focus();
+            resetSignupNicknameCheck();
+            setSignupHelp(errorMessage, true);
+            if (els.signupNicknameInput) els.signupNicknameInput.focus();
             return false;
         }
 
-        if (isMockNicknameTaken(nickname)) {
-            resetNicknameCheck();
-            setLoginHelp('이미 사용 중인 별명이야. 다른 별명을 입력해줘.', true);
-            if (els.nicknameInput) els.nicknameInput.focus();
+        if (!window.ZIMO_SUPABASE_READY || !window.zimoSupabase) {
+            setSignupHelp('Supabase 연결이 아직 준비되지 않았습니다.', true);
             return false;
         }
 
-        state.nicknameChecked = true;
-        state.checkedNickname = nickname;
+        setSignupHelp('닉네임 중복을 확인하고 있습니다...', false);
 
-        setLoginHelp('사용 가능한 별명입니다.', false);
+        var result = await window.zimoSupabase.rpc('check_profile_duplicate', {
+            check_nickname: nickname,
+            check_email: null,
+            check_phone: null
+        });
+
+        if (result.error) {
+            setSignupHelp('닉네임 확인 중 오류가 발생했습니다: ' + result.error.message, true);
+            return false;
+        }
+
+        var row = result.data && result.data[0];
+
+        if (row && row.nickname_exists) {
+            resetSignupNicknameCheck();
+            setSignupHelp('이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해 주세요.', true);
+            if (els.signupNicknameInput) els.signupNicknameInput.focus();
+            return false;
+        }
+
+        state.signupNicknameChecked = true;
+        state.checkedSignupNickname = nickname;
+
+        setSignupHelp('사용 가능한 닉네임입니다.', false);
+
+        if (els.checkSignupNicknameBtn) {
+            els.checkSignupNicknameBtn.textContent = '확인완료';
+            els.checkSignupNicknameBtn.disabled = true;
+        }
+
         return true;
     }
 
-    function completeTempLogin() {
-        var nickname = normalizeNickname(els.nicknameInput ? els.nicknameInput.value : '');
-        var errorMessage = validateNickname(nickname);
-
-        if (errorMessage) {
-            setLoginHelp(errorMessage, true);
-            if (els.nicknameInput) els.nicknameInput.focus();
-            return false;
-        }
-
-        if (!state.nicknameChecked || state.checkedNickname !== nickname) {
-            setLoginHelp('먼저 별명 사용 가능 확인을 해줘.', true);
-            return false;
-        }
-
-        state.user = {
-            nickname: nickname,
-            provider: state.pendingProvider || 'temp',
-            loggedInAt: new Date().toISOString()
-        };
-
-        saveJoinedUser(state.user);
-        saveUser(state.user);
-        updateLoginButton();
-        updateNoticeCount();
-        closeLoginSheet();
-
-
-        return true;
-    }
     function getFeedbackItems() {
         try {
             var saved = localStorage.getItem(FEEDBACK_KEY);
@@ -948,7 +1237,7 @@
     function ensureFlyerCss() {
         /*
             웹전단 진입 시 CSS 순서를 다시 정리한다.
-    
+     
             최종 순서:
             1. flyer.css
             2. flyer-a6.css
@@ -1049,7 +1338,7 @@
         els.toolPanel.innerHTML =
             '<div class="tool-empty">' +
             '<h3>디지털 명함 생성기 불러오는 중</h3>' +
-            '<p>명함 제작 화면을 준비하고 있어.</p>' +
+            '<p>명함 제작 화면을 준비하고 있습니다.</p>' +
             '</div>';
 
         ensureNamecardCss();
@@ -1084,8 +1373,8 @@
                 els.toolPanel.classList.remove('has-flyer-tool');
                 els.toolPanel.innerHTML =
                     '<div class="tool-empty">' +
-                    '<h3>명함 생성기를 불러오지 못했어</h3>' +
-                    '<p>tools/namecard/namecard.html, namecard.css, namecard.js 경로를 확인해줘.</p>' +
+                    '<h3>명함 생성기를 불러오지 못했습니다</h3>' +
+                    '<p>tools/namecard/namecard.html, namecard.css, namecard.js 경로를 확인해 주세요.</p>' +
                     '<button type="button" class="primary-btn" disabled>로드 실패</button>' +
                     '</div>';
             });
@@ -1101,7 +1390,7 @@
         els.toolPanel.innerHTML =
             '<div class="tool-empty">' +
             '<h3>웹전단 제작기 불러오는 중</h3>' +
-            '<p>웹전단 제작 화면을 준비하고 있어.</p>' +
+            '<p>웹전단 제작 화면을 준비하고 있습니다.</p>' +
             '</div>';
 
         ensureFlyerCss();
@@ -1142,8 +1431,8 @@
                 els.toolPanel.classList.remove('has-flyer-tool');
                 els.toolPanel.innerHTML =
                     '<div class="tool-empty">' +
-                    '<h3>웹전단 제작기를 불러오지 못했어</h3>' +
-                    '<p>tools/flyer/flyer.html, flyer.css, flyer.js 경로를 확인해줘.</p>' +
+                    '<h3>웹전단 제작기를 불러오지 못했습니다</h3>' +
+                    '<p>tools/flyer/flyer.html, flyer.css, flyer.js 경로를 확인해 주세요.</p>' +
                     '<button type="button" class="primary-btn" disabled>로드 실패</button>' +
                     '</div>';
             });
@@ -1161,7 +1450,7 @@
         els.toolPanel.classList.remove('has-flyer-tool');
         els.toolPanel.innerHTML =
             '<div class="tool-empty">' +
-            '<h3>제작도구를 선택해줘</h3>' +
+            '<h3>제작도구를 선택해 주세요</h3>' +
             '<p>필요한 제작 기능을 선택하면 해당 생성기만 열립니다.</p>' +
             '</div>';
     }
@@ -1181,18 +1470,18 @@
         var toolMap = {
             image: {
                 title: '이미지 보정',
-                desc: '사진 업로드, 밝기 보정, 선명도 개선, 홍보 문구 정리 기능이 들어갈 자리야.',
-                button: '준비중'
+                desc: '이미지 보정 기능은 베타 이후 오픈 예정입니다.',
+                button: '준비중입니다'
             },
             flyer: {
                 title: '웹전단 제작',
-                desc: '현장명, 조건, 혜택을 입력하면 공유용 웹전단을 만드는 영역이야.',
-                button: '준비중'
+                desc: '현장명, 조건, 혜택을 입력하면 공유용 웹전단을 만드는 영역입니다.',
+                button: '준비중입니다'
             },
             video: {
                 title: '홍보 영상 제작',
-                desc: '사진 3~5장으로 짧은 홍보 영상을 만드는 기능이 들어갈 자리야.',
-                button: '준비중'
+                desc: '홍보 영상 제작 기능은 베타 이후 오픈 예정입니다.',
+                button: '준비중입니다'
             }
         };
 
@@ -1291,17 +1580,18 @@
 
     function showToolReadyMessage(toolName) {
         var messageMap = {
-            namecard: '디지털 명함 생성기는 다음 단계에서 연결할 거야.',
-            image: '이미지 보정 기능은 준비중이야.',
-            flyer: '웹전단 제작 기능은 준비중이야.',
-            video: '홍보 영상 제작 기능은 준비중이야.',
-            feedbackTitle: '제목을 3자 이상 입력해줘.',
-            feedbackBody: '내용을 5자 이상 입력해줘.',
-            feedbackSaved: '의견이 등록됐어.',
-            feedbackAlreadyLiked: '이미 좋아요를 누른 의견이야.'
+            kakaoReady: '카카오 로그인은 준비중입니다. 현재는 이메일로 가입해 주세요.',
+            namecard: '디지털 명함 생성기는 현재 이용 가능합니다.',
+            image: '이미지 보정 기능은 베타 이후 오픈 예정입니다.',
+            flyer: '웹전단 제작 기능은 현재 이용 가능합니다.',
+            video: '홍보 영상 제작 기능은 베타 이후 오픈 예정입니다.',
+            feedbackTitle: '제목을 3자 이상 입력해 주세요.',
+            feedbackBody: '내용을 5자 이상 입력해 주세요.',
+            feedbackSaved: '의견이 등록되었습니다.',
+            feedbackAlreadyLiked: '이미 좋아요를 누른 의견입니다.'
         };
 
-        var message = messageMap[toolName] || '제작도구를 준비중이야.';
+        var message = messageMap[toolName] || '제작도구를 준비중입니다.';
         var oldToast = document.querySelector('.tool-action-toast');
 
         if (oldToast) {
@@ -1326,26 +1616,33 @@
             }, 220);
         }, 1800);
     }
+
     function bindLoginButtons() {
-        if (els.checkNicknameBtn) {
-            els.checkNicknameBtn.addEventListener('click', checkNicknameAvailability);
+
+        if (els.checkSignupNicknameBtn) {
+            els.checkSignupNicknameBtn.addEventListener('click', checkSignupNicknameAvailability);
         }
 
         if (els.loginIdBtn) {
             els.loginIdBtn.addEventListener('click', loginWithId);
         }
 
-        if (els.loginIdInput) {
-            els.loginIdInput.addEventListener('input', function () {
+        [
+            els.loginNicknameInput,
+            els.loginPasswordInput
+        ].forEach(function (input) {
+            if (!input) return;
+
+            input.addEventListener('input', function () {
                 setLoginIdHelp('');
             });
 
-            els.loginIdInput.addEventListener('keydown', function (event) {
+            input.addEventListener('keydown', function (event) {
                 if (event.key === 'Enter') {
                     loginWithId();
                 }
             });
-        }
+        });
 
         if (els.loginBtn) {
             els.loginBtn.addEventListener('click', function () {
@@ -1391,41 +1688,57 @@
             });
         }
 
-        document.querySelectorAll('[data-auth-provider]').forEach(function (button) {
+        document.querySelectorAll('[data-signup-provider]').forEach(function (button) {
             button.addEventListener('click', function () {
-                var provider = button.getAttribute('data-auth-provider');
+                var provider = button.getAttribute('data-signup-provider') || 'email';
 
-                // 실제 연동 전이므로 지금은 인증 완료처럼 다음 단계로 넘긴다.
-                showNicknameStep(provider);
+                if (provider === 'kakao') {
+                    loginWithKakao();
+                    return;
+                }
+
+                showSignupStep(provider);
             });
         });
 
-        if (els.completeLoginBtn) {
-            els.completeLoginBtn.addEventListener('click', completeTempLogin);
+        if (els.completeSignupBtn) {
+            els.completeSignupBtn.addEventListener('click', completeSignup);
         }
 
-        if (els.backToAuthBtn) {
-            els.backToAuthBtn.addEventListener('click', showAuthStep);
-        }
 
-        if (els.nicknameInput) {
-            els.nicknameInput.addEventListener('input', function () {
-                var nickname = normalizeNickname(els.nicknameInput.value);
 
-                if (nickname.length > 8) {
-                    els.nicknameInput.value = nickname.slice(0, 8);
+        [
+            els.signupNicknameInput,
+            els.signupEmailInput,
+            els.signupPhoneInput,
+            els.signupPasswordInput
+        ].forEach(function (input) {
+            if (!input) return;
+
+            input.addEventListener('input', function () {
+                if (input === els.signupNicknameInput) {
+                    var nickname = normalizeNickname(input.value);
+
+                    if (nickname.length > 8) {
+                        input.value = nickname.slice(0, 8);
+                    }
+
+                    resetSignupNicknameCheck();
                 }
 
-                resetNicknameCheck();
-                setLoginHelp('');
+                if (input === els.signupPhoneInput) {
+                    input.value = normalizePhone(input.value);
+                }
+
+                setSignupHelp('');
             });
 
-            els.nicknameInput.addEventListener('keydown', function (event) {
+            input.addEventListener('keydown', function (event) {
                 if (event.key === 'Enter') {
-                    completeTempLogin();
+                    completeSignup();
                 }
             });
-        }
+        });
 
         document.querySelectorAll('[data-login-close]').forEach(function (button) {
             button.addEventListener('click', closeLoginSheet);
@@ -1442,10 +1755,65 @@
             }
         });
     }
+    async function restoreSupabaseSession() {
+        if (!window.ZIMO_SUPABASE_READY || !window.zimoSupabase) {
+            return false;
+        }
 
-    function boot() {
-        state.user = getSavedUser();
+        var sessionResult = await window.zimoSupabase.auth.getSession();
+        var session = sessionResult.data && sessionResult.data.session;
+        var authUser = session && session.user;
 
+        if (!authUser || !authUser.id) {
+            return false;
+        }
+
+        var profileResult = await window.zimoSupabase
+            .from('profiles')
+            .select('nickname, email, phone, provider, gold')
+            .eq('id', authUser.id)
+            .maybeSingle();
+
+        if (profileResult.error) {
+            return false;
+        }
+
+        if (!profileResult.data) {
+            state.pendingKakaoUser = {
+                id: authUser.id,
+                email: normalizeEmail(authUser.email || ''),
+                provider: 'kakao'
+            };
+
+            openLoginSheet();
+            showSignupStep('kakao');
+
+            return false;
+        }
+
+        state.pendingKakaoUser = null;
+
+        state.user = {
+            id: authUser.id,
+            nickname: profileResult.data.nickname,
+            email: profileResult.data.email,
+            phone: profileResult.data.phone,
+            provider: profileResult.data.provider || 'email',
+            gold: Number(profileResult.data.gold || 10000),
+            loggedInAt: new Date().toISOString()
+        };
+
+        state.gold = Number(state.user.gold || 10000);
+
+        saveUser(state.user);
+        updateGold();
+        updateLoginButton();
+        updateNoticeCount();
+
+        return true;
+    }
+
+    async function boot() {
         updateGold();
         updateLoginButton();
         updateNoticeCount();
@@ -1461,6 +1829,8 @@
         renderFeedbackList();
 
         renderToolHome();
+
+        await restoreSupabaseSession();
     }
 
     if (document.readyState === 'loading') {

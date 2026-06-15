@@ -2,6 +2,7 @@
     'use strict';
 
     var DRAFT_KEY = 'zimo_biz_namecard_draft';
+    var SAVED_NAMECARD_KEY = 'zimo_biz_saved_namecard_ref';
 
     var defaults = {
         template: 'template-red',
@@ -184,15 +185,177 @@
         4. OG 이미지 생성/연결
         5. 공유 URL 반환
     */
-    function createShareUrl(data) {
-        // 현재 임시 버전: Supabase 연결 전이라 입력된 연결 주소를 공유 URL처럼 사용
-        var url = normalizeUrl(data.website);
+    function makeNamecardSlug() {
+        return 'nc-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+    }
 
-        if (!url) {
-            url = window.location.origin || 'https://지모비즈.com';
+    function getSavedNamecardRef() {
+        try {
+            var saved = localStorage.getItem(SAVED_NAMECARD_KEY);
+            return saved ? JSON.parse(saved) : null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function saveNamecardRef(ref) {
+        try {
+            localStorage.setItem(SAVED_NAMECARD_KEY, JSON.stringify(ref));
+        } catch (error) {
+            // 저장 실패 시에도 공유 URL 생성은 유지한다.
+        }
+    }
+
+    function buildNamecardShareUrl(slug) {
+        var base = window.location.origin || 'https://지모비즈.com';
+
+        return base + '/n/' + encodeURIComponent(slug);
+    }
+
+    async function getCurrentSupabaseUser() {
+        if (!window.ZIMO_SUPABASE_READY || !window.zimoSupabase) {
+            throw new Error('Supabase 연결이 아직 준비되지 않았습니다.');
         }
 
-        return Promise.resolve(url);
+        var result = await window.zimoSupabase.auth.getUser();
+        var user = result.data && result.data.user;
+
+        if (!user || !user.id) {
+            throw new Error('로그인 후 공유 URL을 만들 수 있습니다.');
+        }
+
+        return user;
+    }
+
+    function makeNamecardRow(data, userId, slug) {
+        return {
+            user_id: userId,
+            slug: slug,
+
+            template: data.template || 'template-red',
+            theme: data.template || 'template-red',
+
+            company: data.company || '',
+            name: data.name || '',
+            position: data.role || '',
+            site_name: data.company || '',
+            summary: data.summary || '',
+
+            phone: data.phone || '',
+            tel: data.landline || '',
+            email: data.email || '',
+            address: data.address || '',
+            website: normalizeUrl(data.website || ''),
+
+            description: [data.desc1 || '', data.desc2 || ''].filter(Boolean).join('\n'),
+            desc1: data.desc1 || '',
+            desc2: data.desc2 || '',
+            tags: data.tags || '',
+
+            is_public: true,
+            updated_at: new Date().toISOString()
+        };
+    }
+
+    function dataUrlToBlob(dataUrl) {
+        var parts = dataUrl.split(',');
+        var mimeMatch = parts[0].match(/:(.*?);/);
+        var mime = mimeMatch ? mimeMatch[1] : 'image/png';
+        var binary = atob(parts[1]);
+        var length = binary.length;
+        var array = new Uint8Array(length);
+
+        for (var i = 0; i < length; i += 1) {
+            array[i] = binary.charCodeAt(i);
+        }
+
+        return new Blob([array], {
+            type: mime
+        });
+    }
+
+    async function createNamecardOgImage(userId, slug) {
+        var card = document.getElementById('ncCard');
+
+        if (!card || !window.html2canvas) {
+            return '';
+        }
+
+        var canvas = await window.html2canvas(card, {
+            backgroundColor: null,
+            scale: 2,
+            useCORS: true
+        });
+
+        var dataUrl = canvas.toDataURL('image/png');
+        var blob = dataUrlToBlob(dataUrl);
+        var filePath = userId + '/' + slug + '.png';
+
+        var uploadResult = await window.zimoSupabase.storage
+            .from('namecard-og')
+            .upload(filePath, blob, {
+                contentType: 'image/png',
+                upsert: true
+            });
+
+        if (uploadResult.error) {
+            throw uploadResult.error;
+        }
+
+        var publicResult = window.zimoSupabase.storage
+            .from('namecard-og')
+            .getPublicUrl(filePath);
+
+        return publicResult.data && publicResult.data.publicUrl
+            ? publicResult.data.publicUrl
+            : '';
+    }
+
+    async function createShareUrl(data) {
+        var user = await getCurrentSupabaseUser();
+        var savedRef = getSavedNamecardRef();
+        var slug = savedRef && savedRef.slug ? savedRef.slug : makeNamecardSlug();
+        var row = makeNamecardRow(data, user.id, slug);
+        var ogImageUrl = await createNamecardOgImage(user.id, slug);
+
+        if (ogImageUrl) {
+            row.og_image_url = ogImageUrl;
+        }
+
+        if (savedRef && savedRef.id) {
+            var updateResult = await window.zimoSupabase
+                .from('namecards')
+                .update(row)
+                .eq('id', savedRef.id)
+                .select('id, slug')
+                .maybeSingle();
+
+            if (!updateResult.error && updateResult.data) {
+                saveNamecardRef({
+                    id: updateResult.data.id,
+                    slug: updateResult.data.slug
+                });
+
+                return buildNamecardShareUrl(updateResult.data.slug);
+            }
+        }
+
+        var insertResult = await window.zimoSupabase
+            .from('namecards')
+            .insert(row)
+            .select('id, slug')
+            .single();
+
+        if (insertResult.error) {
+            throw insertResult.error;
+        }
+
+        saveNamecardRef({
+            id: insertResult.data.id,
+            slug: insertResult.data.slug
+        });
+
+        return buildNamecardShareUrl(insertResult.data.slug);
     }
 
     function handleShareUrlCopy() {
@@ -210,14 +373,35 @@
             // 임시저장 실패해도 공유 생성 흐름은 계속 진행
         }
 
+        if (els.copyTextBtn) {
+            els.copyTextBtn.disabled = true;
+            els.copyTextBtn.textContent = '생성 중...';
+        }
+
         setHelper('공유 URL을 생성하고 있습니다.');
 
         createShareUrl(data)
             .then(function (shareUrl) {
                 copyTextToClipboard(shareUrl, '공유 URL을 복사했습니다. 카톡에 붙여넣어 보내세요.');
+
+                if (els.copyTextBtn) {
+                    els.copyTextBtn.textContent = '복사 완료';
+                }
+
+                window.setTimeout(function () {
+                    if (els.copyTextBtn) {
+                        els.copyTextBtn.disabled = false;
+                        els.copyTextBtn.textContent = '공유 URL 복사';
+                    }
+                }, 1800);
             })
-            .catch(function () {
-                setHelper('공유 URL 생성에 실패했습니다.');
+            .catch(function (error) {
+                setHelper(error.message || '공유 URL 생성에 실패했습니다.');
+
+                if (els.copyTextBtn) {
+                    els.copyTextBtn.disabled = false;
+                    els.copyTextBtn.textContent = '공유 URL 복사';
+                }
             });
     }
 

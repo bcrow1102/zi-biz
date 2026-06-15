@@ -4908,3 +4908,79 @@ body:has(#flyerTool) .flyer-footer-menu.is-open {
 .menu-kakao-cta {
     margin-left: 10px !important;
 }
+
+.signup-check-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.signup-check-row input {
+    flex: 1;
+    min-width: 0;
+}
+
+.signup-check-btn {
+    flex: 0 0 auto;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 10px;
+    background: #111827;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.signup-check-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.login-email-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.login-email-fields input {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+    border: 1px solid #d8dee8;
+    border-radius: 14px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 15px;
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+.login-email-fields input::placeholder {
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+.login-email-fields+#loginIdBtn {
+    width: 100%;
+    height: 48px;
+    margin-top: 12px;
+    border: 0;
+    border-radius: 14px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.login-id-box>strong {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.login-email-fields input {
+    font-weight: 500;
+}
