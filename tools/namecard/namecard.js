@@ -318,15 +318,12 @@
         }
 
         /*
-            OG 이미지는 편집 화면을 직접 캡처하지 않는다.
-            #ncCard + .namecard-caption만 복제해서 임시 캡처 전용 DOM으로 만든다.
-    
-            이유:
-            - .namecard-preview-scene 안에는 JS가 시안 선택 UI를 append한다.
-            - 편집용 선택선 / toolbar / 회색 배경이 같이 찍힐 수 있다.
+            카톡 OG 이미지는 브라우저 화면을 축소 캡처하지 않는다.
+            1200x630 캔버스 안에 실제 명함처럼 보이도록
+            OG 전용 DOM을 새로 만든 뒤 캡처한다.
         */
         var captureWrap = document.createElement('article');
-        captureWrap.className = 'namecard-preview-scene namecard-preview-scene--compact namecard-og-capture-scene';
+        captureWrap.className = 'namecard-og-capture-scene';
 
         var cardClone = sourceCard.cloneNode(true);
         var captionClone = sourceCaption.cloneNode(true);
@@ -344,9 +341,33 @@
         captureWrap.style.position = 'fixed';
         captureWrap.style.left = '-99999px';
         captureWrap.style.top = '0';
+        captureWrap.style.width = '1200px';
+        captureWrap.style.height = '630px';
+        captureWrap.style.boxSizing = 'border-box';
+        captureWrap.style.padding = '18px';
+        captureWrap.style.display = 'flex';
+        captureWrap.style.flexDirection = 'column';
+        captureWrap.style.gap = '18px';
+        captureWrap.style.overflow = 'hidden';
+        captureWrap.style.background = '#b8c3d0';
         captureWrap.style.zIndex = '-1';
         captureWrap.style.pointerEvents = 'none';
-        captureWrap.style.background = 'transparent';
+
+        cardClone.style.width = '1164px';
+        cardClone.style.height = '418px';
+        cardClone.style.maxWidth = 'none';
+        cardClone.style.minHeight = '0';
+        cardClone.style.flex = '0 0 418px';
+        cardClone.style.boxSizing = 'border-box';
+        cardClone.style.display = 'block';
+
+        captionClone.style.width = '1164px';
+        captionClone.style.height = '158px';
+        captionClone.style.maxWidth = 'none';
+        captionClone.style.minHeight = '0';
+        captionClone.style.flex = '0 0 158px';
+        captionClone.style.boxSizing = 'border-box';
+        captionClone.style.overflow = 'hidden';
 
         document.body.appendChild(captureWrap);
 
@@ -354,41 +375,17 @@
             await waitForOgCaptureReady();
 
             var canvas = await window.html2canvas(captureWrap, {
-                backgroundColor: null,
-                scale: 2,
+                backgroundColor: '#b8c3d0',
+                width: 1200,
+                height: 630,
+                windowWidth: 1200,
+                windowHeight: 630,
+                scale: 1,
                 useCORS: true,
                 logging: false
             });
 
-            var ogCanvas = document.createElement('canvas');
-            var ogWidth = 1200;
-            var ogHeight = 630;
-            var padding = 36;
-
-            ogCanvas.width = ogWidth;
-            ogCanvas.height = ogHeight;
-
-            var ctx = ogCanvas.getContext('2d');
-
-            ctx.fillStyle = '#eef3f8';
-            ctx.fillRect(0, 0, ogWidth, ogHeight);
-
-            var maxWidth = ogWidth - padding * 2;
-            var maxHeight = ogHeight - padding * 2;
-
-            var scale = Math.min(
-                maxWidth / canvas.width,
-                maxHeight / canvas.height
-            );
-
-            var drawWidth = canvas.width * scale;
-            var drawHeight = canvas.height * scale;
-            var drawX = (ogWidth - drawWidth) / 2;
-            var drawY = (ogHeight - drawHeight) / 2;
-
-            ctx.drawImage(canvas, drawX, drawY, drawWidth, drawHeight);
-
-            var dataUrl = ogCanvas.toDataURL('image/png');
+            var dataUrl = canvas.toDataURL('image/png');
             var blob = dataUrlToBlob(dataUrl);
             var filePath = userId + '/' + slug + '.png';
 
