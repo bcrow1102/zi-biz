@@ -311,32 +311,28 @@
 
     async function createNamecardOgImage(userId, slug) {
         var sourceCard = document.getElementById('ncCard');
-        var sourceCaption = document.querySelector('.namecard-preview-scene .namecard-caption');
 
-        if (!sourceCard || !sourceCaption || !window.html2canvas) {
+        if (!sourceCard || !window.html2canvas) {
             return '';
         }
 
         /*
-            카톡 OG 이미지는 브라우저 화면을 축소 캡처하지 않는다.
-            1200x630 캔버스 안에 실제 명함처럼 보이도록
-            OG 전용 DOM을 새로 만든 뒤 캡처한다.
+            카톡 OG 이미지는 명함 카드만 캡처한다.
+            하단 설명부는 카톡의 제목/설명 영역과 중복되므로 넣지 않는다.
+            대신 1200x630 배경 안에 명함을 카드처럼 여백 있게 배치한다.
         */
-        var captureWrap = document.createElement('article');
-        captureWrap.className = 'namecard-og-capture-scene';
+        var captureWrap = document.createElement('div');
+        captureWrap.className = 'namecard-og-card-only-wrap';
 
         var cardClone = sourceCard.cloneNode(true);
-        var captionClone = sourceCaption.cloneNode(true);
 
         cardClone.removeAttribute('id');
         cardClone.removeAttribute('target');
         cardClone.removeAttribute('rel');
 
         cleanupOgClone(cardClone);
-        cleanupOgClone(captionClone);
 
         captureWrap.appendChild(cardClone);
-        captureWrap.appendChild(captionClone);
 
         captureWrap.style.position = 'fixed';
         captureWrap.style.left = '-99999px';
@@ -344,30 +340,24 @@
         captureWrap.style.width = '1200px';
         captureWrap.style.height = '630px';
         captureWrap.style.boxSizing = 'border-box';
-        captureWrap.style.padding = '18px';
+        captureWrap.style.padding = '28px';
         captureWrap.style.display = 'flex';
-        captureWrap.style.flexDirection = 'column';
-        captureWrap.style.gap = '18px';
+        captureWrap.style.alignItems = 'center';
+        captureWrap.style.justifyContent = 'center';
         captureWrap.style.overflow = 'hidden';
-        captureWrap.style.background = '#b8c3d0';
+        captureWrap.style.background = '#d7e0ea';
         captureWrap.style.zIndex = '-1';
         captureWrap.style.pointerEvents = 'none';
 
-        cardClone.style.width = '1164px';
-        cardClone.style.height = '418px';
+        cardClone.style.width = '1144px';
+        cardClone.style.height = '574px';
         cardClone.style.maxWidth = 'none';
         cardClone.style.minHeight = '0';
-        cardClone.style.flex = '0 0 418px';
         cardClone.style.boxSizing = 'border-box';
         cardClone.style.display = 'block';
-
-        captionClone.style.width = '1164px';
-        captionClone.style.height = '158px';
-        captionClone.style.maxWidth = 'none';
-        captionClone.style.minHeight = '0';
-        captionClone.style.flex = '0 0 158px';
-        captionClone.style.boxSizing = 'border-box';
-        captionClone.style.overflow = 'hidden';
+        cardClone.style.borderRadius = '24px';
+        cardClone.style.overflow = 'hidden';
+        cardClone.style.boxShadow = '0 14px 34px rgba(15, 23, 42, 0.18)';
 
         document.body.appendChild(captureWrap);
 
@@ -375,7 +365,7 @@
             await waitForOgCaptureReady();
 
             var canvas = await window.html2canvas(captureWrap, {
-                backgroundColor: '#b8c3d0',
+                backgroundColor: '#d7e0ea',
                 width: 1200,
                 height: 630,
                 windowWidth: 1200,
