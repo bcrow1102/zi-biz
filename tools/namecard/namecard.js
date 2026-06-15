@@ -274,44 +274,119 @@
         });
     }
 
-    async function createNamecardOgImage(userId, slug) {
-        var card =
-            document.querySelector('.namecard-preview-scene') ||
-            document.querySelector('.namecard-preview-area') ||
-            document.getElementById('ncCard');
+    function cleanupOgClone(root) {
+        if (!root) return;
 
-        if (!card || !window.html2canvas) {
+        var removeClasses = [
+            'is-namecard-selected',
+            'namecard-edit-target',
+            'namecard-tag-edit-target'
+        ];
+
+        [root].concat(Array.prototype.slice.call(root.querySelectorAll('*'))).forEach(function (el) {
+            removeClasses.forEach(function (className) {
+                el.classList.remove(className);
+            });
+
+            el.removeAttribute('data-namecard-edit-target');
+            el.removeAttribute('data-namecard-field');
+            el.removeAttribute('data-namecard-tag-index');
+            el.removeAttribute('tabindex');
+            el.removeAttribute('role');
+            el.removeAttribute('title');
+        });
+    }
+
+    function waitForOgCaptureReady() {
+        if (document.fonts && document.fonts.ready) {
+            return document.fonts.ready.catch(function () {
+                return null;
+            });
+        }
+
+        return new Promise(function (resolve) {
+            window.setTimeout(resolve, 80);
+        });
+    }
+
+    async function createNamecardOgImage(userId, slug) {
+        var sourceCard = document.getElementById('ncCard');
+        var sourceCaption = document.querySelector('.namecard-preview-scene .namecard-caption');
+
+        if (!sourceCard || !sourceCaption || !window.html2canvas) {
             return '';
         }
 
-        var canvas = await window.html2canvas(card, {
-            backgroundColor: null,
-            scale: 2,
-            useCORS: true
-        });
+        /*
+            OG 이미지는 편집 화면을 직접 캡처하지 않는다.
+            #ncCard + .namecard-caption만 복제해서 임시 캡처 전용 DOM으로 만든다.
+    
+            이유:
+            - .namecard-preview-scene 안에는 JS가 시안 선택 UI를 append한다.
+            - 편집용 선택선 / toolbar / 회색 배경이 같이 찍힐 수 있다.
+        */
+        var captureWrap = document.createElement('article');
+        captureWrap.className = 'namecard-preview-scene namecard-preview-scene--compact namecard-og-capture-scene';
 
-        var dataUrl = canvas.toDataURL('image/png');
-        var blob = dataUrlToBlob(dataUrl);
-        var filePath = userId + '/' + slug + '.png';
+        var cardClone = sourceCard.cloneNode(true);
+        var captionClone = sourceCaption.cloneNode(true);
 
-        var uploadResult = await window.zimoSupabase.storage
-            .from('namecard-og')
-            .upload(filePath, blob, {
-                contentType: 'image/png',
-                upsert: true
+        cardClone.removeAttribute('id');
+        cardClone.removeAttribute('target');
+        cardClone.removeAttribute('rel');
+
+        cleanupOgClone(cardClone);
+        cleanupOgClone(captionClone);
+
+        captureWrap.appendChild(cardClone);
+        captureWrap.appendChild(captionClone);
+
+        captureWrap.style.position = 'fixed';
+        captureWrap.style.left = '-99999px';
+        captureWrap.style.top = '0';
+        captureWrap.style.zIndex = '-1';
+        captureWrap.style.pointerEvents = 'none';
+        captureWrap.style.background = 'transparent';
+
+        document.body.appendChild(captureWrap);
+
+        try {
+            await waitForOgCaptureReady();
+
+            var canvas = await window.html2canvas(captureWrap, {
+                backgroundColor: null,
+                scale: 2,
+                useCORS: true,
+                logging: false
             });
 
-        if (uploadResult.error) {
-            throw uploadResult.error;
+            var dataUrl = canvas.toDataURL('image/png');
+            var blob = dataUrlToBlob(dataUrl);
+            var filePath = userId + '/' + slug + '.png';
+
+            var uploadResult = await window.zimoSupabase.storage
+                .from('namecard-og')
+                .upload(filePath, blob, {
+                    contentType: 'image/png',
+                    upsert: true
+                });
+
+            if (uploadResult.error) {
+                throw uploadResult.error;
+            }
+
+            var publicResult = window.zimoSupabase.storage
+                .from('namecard-og')
+                .getPublicUrl(filePath);
+
+            return publicResult.data && publicResult.data.publicUrl
+                ? publicResult.data.publicUrl
+                : '';
+        } finally {
+            if (captureWrap && captureWrap.parentNode) {
+                captureWrap.parentNode.removeChild(captureWrap);
+            }
         }
-
-        var publicResult = window.zimoSupabase.storage
-            .from('namecard-og')
-            .getPublicUrl(filePath);
-
-        return publicResult.data && publicResult.data.publicUrl
-            ? publicResult.data.publicUrl
-            : '';
     }
 
     async function createShareUrl(data) {
