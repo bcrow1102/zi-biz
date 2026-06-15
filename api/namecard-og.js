@@ -59,8 +59,16 @@ export default async function handler(req, res) {
         }
 
         const baseUrl = getBaseUrl(req);
-        const viewUrl = `${baseUrl}/share/namecard.html?slug=${encodeURIComponent(slug)}`;
+        const sharePageUrl = `${baseUrl}/share/namecard.html?slug=${encodeURIComponent(slug)}`;
         const ogUrl = `${baseUrl}/n/${encodeURIComponent(slug)}`;
+
+        let landingUrl = String(card.website || '').trim();
+
+        if (landingUrl && !/^https?:\/\//i.test(landingUrl)) {
+            landingUrl = 'https://' + landingUrl;
+        }
+
+        const viewUrl = landingUrl || sharePageUrl;
 
         const name = card.name || '지모비즈 디지털 명함';
         const position = card.position || '';
