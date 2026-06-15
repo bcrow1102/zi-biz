@@ -313,31 +313,18 @@
 
     async function createShareUrl(data) {
         var user = await getCurrentSupabaseUser();
-        var savedRef = getSavedNamecardRef();
-        var slug = savedRef && savedRef.slug ? savedRef.slug : makeNamecardSlug();
+
+        /*
+            카카오톡 OG 캐시 때문에 공유 URL은 매번 새 slug로 생성한다.
+            같은 slug를 재사용하면 시안/이름/전화번호/OG 이미지가 바뀌어도
+            카톡에서는 예전 미리보기가 계속 보일 수 있다.
+        */
+        var slug = makeNamecardSlug();
         var row = makeNamecardRow(data, user.id, slug);
         var ogImageUrl = await createNamecardOgImage(user.id, slug);
 
         if (ogImageUrl) {
             row.og_image_url = ogImageUrl;
-        }
-
-        if (savedRef && savedRef.id) {
-            var updateResult = await window.zimoSupabase
-                .from('namecards')
-                .update(row)
-                .eq('id', savedRef.id)
-                .select('id, slug')
-                .maybeSingle();
-
-            if (!updateResult.error && updateResult.data) {
-                saveNamecardRef({
-                    id: updateResult.data.id,
-                    slug: updateResult.data.slug
-                });
-
-                return buildNamecardShareUrl(updateResult.data.slug);
-            }
         }
 
         var insertResult = await window.zimoSupabase
