@@ -275,7 +275,10 @@
     }
 
     async function createNamecardOgImage(userId, slug) {
-        var card = document.getElementById('ncCard');
+        var card =
+            document.querySelector('.namecard-preview-scene') ||
+            document.querySelector('.namecard-preview-area') ||
+            document.getElementById('ncCard');
 
         if (!card || !window.html2canvas) {
             return '';
