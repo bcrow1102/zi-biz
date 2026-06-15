@@ -360,7 +360,35 @@
                 logging: false
             });
 
-            var dataUrl = canvas.toDataURL('image/png');
+            var ogCanvas = document.createElement('canvas');
+            var ogWidth = 1200;
+            var ogHeight = 630;
+            var padding = 36;
+
+            ogCanvas.width = ogWidth;
+            ogCanvas.height = ogHeight;
+
+            var ctx = ogCanvas.getContext('2d');
+
+            ctx.fillStyle = '#eef3f8';
+            ctx.fillRect(0, 0, ogWidth, ogHeight);
+
+            var maxWidth = ogWidth - padding * 2;
+            var maxHeight = ogHeight - padding * 2;
+
+            var scale = Math.min(
+                maxWidth / canvas.width,
+                maxHeight / canvas.height
+            );
+
+            var drawWidth = canvas.width * scale;
+            var drawHeight = canvas.height * scale;
+            var drawX = (ogWidth - drawWidth) / 2;
+            var drawY = (ogHeight - drawHeight) / 2;
+
+            ctx.drawImage(canvas, drawX, drawY, drawWidth, drawHeight);
+
+            var dataUrl = ogCanvas.toDataURL('image/png');
             var blob = dataUrlToBlob(dataUrl);
             var filePath = userId + '/' + slug + '.png';
 
