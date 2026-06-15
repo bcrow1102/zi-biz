@@ -14,10 +14,7 @@
         landline: '052-000-0000',
         email: 'hello@zimo.kr',
         address: '울산 남구 삼산로 00',
-        website: 'https://www.zimo.kr',
-        desc1: '명함을 누르면 상세 안내 페이지로 바로 연결됩니다.',
-        desc2: '카카오톡·문자 공유용 링크로 사용할 수 있습니다.',
-        tags: '분양상담, 상세안내, 바로연결'
+        website: 'https://www.zimo.kr'
     };
 
     var els = {};
@@ -38,9 +35,6 @@
             email: $('ncEmail'),
             address: $('ncAddress'),
             website: $('ncWebsite'),
-            desc1: $('ncDesc1'),
-            desc2: $('ncDesc2'),
-            tags: $('ncTags'),
 
             card: $('ncCard'),
             previewCompany: $('ncPreviewCompany'),
@@ -51,9 +45,6 @@
             previewPhone: $('ncPreviewPhone'),
             previewLandline: $('ncPreviewLandline'),
             previewEmail: $('ncPreviewEmail'),
-            previewDesc1: $('ncPreviewDesc1'),
-            previewDesc2: $('ncPreviewDesc2'),
-            previewTags: $('ncPreviewTags'),
 
             copyTextBtn: $('ncCopyTextBtn'),
             saveVcardBtn: $('ncSaveVcardBtn'),
@@ -113,12 +104,10 @@
             landline: value('landline', defaults.landline),
             email: value('email', defaults.email),
             address: value('address', defaults.address),
-            website: value('website', defaults.website),
-            desc1: value('desc1', defaults.desc1),
-            desc2: value('desc2', defaults.desc2),
-            tags: value('tags', defaults.tags)
+            website: value('website', defaults.website)
         };
     }
+
     function getEmptyFields(data) {
         var fieldLabels = {
             company: '현장명 / 회사명',
@@ -129,10 +118,7 @@
             landline: '대표번호',
             email: '이메일',
             address: '주소',
-            website: '연결 주소',
-            desc1: '설명 1줄',
-            desc2: '설명 2줄',
-            tags: '태그 3개'
+            website: '연결 주소'
         };
 
         return Object.keys(fieldLabels)
@@ -159,6 +145,28 @@
         return window.confirm(message);
     }
 
+    function fallbackCopy(text) {
+        var textarea = document.createElement('textarea');
+
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '0';
+
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            document.execCommand('copy');
+            setHelper('공유 URL을 복사했습니다.');
+        } catch (error) {
+            setHelper('복사에 실패했습니다. 브라우저 권한을 확인해줘.');
+        }
+
+        document.body.removeChild(textarea);
+    }
+
     function copyTextToClipboard(text, successMessage) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text)
@@ -175,27 +183,8 @@
         fallbackCopy(text);
     }
 
-    /*
-        나중에 Supabase 붙이면 이 함수만 바꾸면 됨.
-    
-        최종 동작:
-        1. Supabase에 data 저장
-        2. namecard id 받기
-        3. 공유 URL 만들기
-        4. OG 이미지 생성/연결
-        5. 공유 URL 반환
-    */
     function makeNamecardSlug() {
         return 'nc-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
-    }
-
-    function getSavedNamecardRef() {
-        try {
-            var saved = localStorage.getItem(SAVED_NAMECARD_KEY);
-            return saved ? JSON.parse(saved) : null;
-        } catch (error) {
-            return null;
-        }
     }
 
     function saveNamecardRef(ref) {
@@ -227,6 +216,16 @@
         return user;
     }
 
+    function makeOgDescription(data) {
+        var summary = String(data.summary || '').trim();
+
+        if (summary) {
+            return summary + ' 명함을 누르면 상세 안내 페이지로 바로 연결됩니다.';
+        }
+
+        return '명함을 누르면 상세 안내 페이지로 바로 연결됩니다.';
+    }
+
     function makeNamecardRow(data, userId, slug) {
         return {
             user_id: userId,
@@ -247,10 +246,10 @@
             address: data.address || '',
             website: normalizeUrl(data.website || ''),
 
-            description: [data.desc1 || '', data.desc2 || ''].filter(Boolean).join('\n'),
-            desc1: data.desc1 || '',
-            desc2: data.desc2 || '',
-            tags: data.tags || '',
+            description: makeOgDescription(data),
+            desc1: '',
+            desc2: '',
+            tags: '',
 
             is_public: true,
             updated_at: new Date().toISOString()
@@ -274,29 +273,6 @@
         });
     }
 
-    function cleanupOgClone(root) {
-        if (!root) return;
-
-        var removeClasses = [
-            'is-namecard-selected',
-            'namecard-edit-target',
-            'namecard-tag-edit-target'
-        ];
-
-        [root].concat(Array.prototype.slice.call(root.querySelectorAll('*'))).forEach(function (el) {
-            removeClasses.forEach(function (className) {
-                el.classList.remove(className);
-            });
-
-            el.removeAttribute('data-namecard-edit-target');
-            el.removeAttribute('data-namecard-field');
-            el.removeAttribute('data-namecard-tag-index');
-            el.removeAttribute('tabindex');
-            el.removeAttribute('role');
-            el.removeAttribute('title');
-        });
-    }
-
     function waitForOgCaptureReady() {
         if (document.fonts && document.fonts.ready) {
             return document.fonts.ready.catch(function () {
@@ -316,11 +292,6 @@
             return '';
         }
 
-        /*
-            OG 이미지는 실제 화면의 #ncCard만 그대로 캡처한다.
-            복제 DOM을 만들면 시안별 명함 비율/배경/높이가 깨질 수 있다.
-            #ncCard 안에는 하단 설명부나 시안 선택 UI가 없으므로 안전하다.
-        */
         var selectedEls = Array.prototype.slice.call(
             document.querySelectorAll('#namecardTool .is-namecard-selected')
         );
@@ -370,12 +341,6 @@
 
     async function createShareUrl(data) {
         var user = await getCurrentSupabaseUser();
-
-        /*
-            카카오톡 OG 캐시 때문에 공유 URL은 매번 새 slug로 생성한다.
-            같은 slug를 재사용하면 시안/이름/전화번호/OG 이미지가 바뀌어도
-            카톡에서는 예전 미리보기가 계속 보일 수 있다.
-        */
         var slug = makeNamecardSlug();
         var row = makeNamecardRow(data, user.id, slug);
         var ogImageUrl = await createNamecardOgImage(user.id, slug);
@@ -486,28 +451,6 @@
         }
     }
 
-    function renderTags(tagsText) {
-        if (!els.previewTags) return;
-
-        var tags = String(tagsText || '')
-            .split(',')
-            .map(function (tag) {
-                return tag.trim();
-            })
-            .filter(Boolean)
-            .slice(0, 3);
-
-
-
-        els.previewTags.innerHTML = '';
-
-        tags.forEach(function (tag) {
-            var span = document.createElement('span');
-            span.textContent = tag;
-            els.previewTags.appendChild(span);
-        });
-    }
-
     function updatePreview() {
         var data = getData();
 
@@ -519,60 +462,10 @@
         setText(els.previewPhone, data.phone);
         setText(els.previewLandline, data.landline);
         setText(els.previewEmail, data.email);
-        setText(els.previewDesc1, data.desc1);
-        setText(els.previewDesc2, data.desc2);
 
         updateTemplate(data.template);
         updateCompanySize(data.company);
         updateCardLink(data.website);
-        renderTags(data.tags);
-    }
-
-    function fallbackCopy(text) {
-        var textarea = document.createElement('textarea');
-
-        textarea.value = text;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'fixed';
-        textarea.style.left = '-9999px';
-        textarea.style.top = '0';
-
-        document.body.appendChild(textarea);
-        textarea.select();
-
-        try {
-            document.execCommand('copy');
-            setHelper('공유 URL을 복사했습니다.');
-        } catch (error) {
-            setHelper('복사에 실패했습니다. 브라우저 권한을 확인해줘.');
-        }
-
-        document.body.removeChild(textarea);
-    }
-
-    function copyShareText() {
-        var data = getData();
-        var url = normalizeUrl(data.website);
-
-        if (!url) {
-            setHelper('복사할 연결 주소를 입력해줘.');
-            if (els.website) els.website.focus();
-            return;
-        }
-
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(url)
-                .then(function () {
-                    setHelper('공유 URL을 복사했습니다.');
-                })
-                .catch(function () {
-                    fallbackCopy(url);
-                });
-
-            return;
-        }
-
-        fallbackCopy(url);
     }
 
     function saveDraft() {
@@ -677,10 +570,7 @@
             'landline',
             'email',
             'address',
-            'website',
-            'desc1',
-            'desc2',
-            'tags'
+            'website'
         ].forEach(function (key) {
             if (!els[key]) return;
 
@@ -721,10 +611,9 @@
         bootNamecardTool();
     }
 })();
+
 /* =========================================================
    NAMECARD EMPTY INPUT PREVIEW FALLBACK
-   - input value가 비어 있어도 placeholder 예시값으로 미리보기 유지
-   - 예시 문구는 입력칸에만 흐리게 보이고, 명함은 깨지지 않게 함
 ========================================================= */
 
 (function () {
@@ -771,10 +660,6 @@
         var email = getInputPreviewValue('ncEmail', 'hello@zimo.kr');
         var website = getInputPreviewValue('ncWebsite', 'https://www.zimo.kr');
 
-        var desc1 = getInputPreviewValue('ncDesc1', '울산 신규 아파트 상담 안내');
-        var desc2 = getInputPreviewValue('ncDesc2', '분양 조건, 혜택, 방문 예약을 빠르게 안내드립니다.');
-        var tags = getInputPreviewValue('ncTags', '현장상담, 조건안내, 방문예약');
-
         setPreviewText('ncPreviewCompany', company);
         setPreviewText('ncPreviewRole', role);
         setPreviewText('ncPreviewName', name);
@@ -783,31 +668,11 @@
         setPreviewText('ncPreviewPhone', phone);
         setPreviewText('ncPreviewLandline', landline);
         setPreviewText('ncPreviewEmail', email);
-        setPreviewText('ncPreviewDesc1', desc1);
-        setPreviewText('ncPreviewDesc2', desc2);
 
         var card = document.getElementById('ncCard');
 
         if (card) {
             card.href = website || 'https://www.zimo.kr';
-        }
-
-        var tagWrap = document.getElementById('ncPreviewTags');
-
-        if (tagWrap) {
-            tagWrap.innerHTML = '';
-
-            tags.split(',')
-                .map(function (tag) {
-                    return tag.trim();
-                })
-                .filter(Boolean)
-                .slice(0, 3)
-                .forEach(function (tag) {
-                    var span = document.createElement('span');
-                    span.textContent = tag;
-                    tagWrap.appendChild(span);
-                });
         }
 
         var companyEl = document.getElementById('ncPreviewCompany');
@@ -840,11 +705,9 @@
         window.setTimeout(syncNamecardPreviewFallback, 0);
     };
 })();
+
 /* =========================================================
    NAMECARD DIRECT EDIT FINAL
-   - 명함 미리보기 직접 클릭 수정
-   - 미니맵 없음
-   - 기존 입력폼은 데이터 저장용으로만 유지
 ========================================================= */
 
 (function () {
@@ -916,30 +779,6 @@
             previewId: 'ncPreviewEmail',
             placeholder: '예시) hello@zimo.kr',
             maxLength: 32
-        },
-        {
-            key: 'desc1',
-            label: '설명 1줄',
-            inputId: 'ncDesc1',
-            previewId: 'ncPreviewDesc1',
-            placeholder: '예시) 울산 신규 아파트 상담 안내',
-            maxLength: 28
-        },
-        {
-            key: 'desc2',
-            label: '설명 2줄',
-            inputId: 'ncDesc2',
-            previewId: 'ncPreviewDesc2',
-            placeholder: '예시) 분양 조건, 혜택, 방문 예약을 빠르게 안내드립니다.',
-            maxLength: 42
-        },
-        {
-            key: 'tags',
-            label: '태그 3개',
-            inputId: 'ncTags',
-            previewId: 'ncPreviewTags',
-            placeholder: '예시) 현장상담, 조건안내, 방문예약',
-            maxLength: 28
         }
     ];
 
@@ -987,7 +826,6 @@
             bubbles: true
         }));
     }
-
 
     function createInlineEditor(tool) {
         var existing = $('namecardEditBar');
@@ -1056,7 +894,6 @@
         });
     }
 
-
     function updateEditor(key) {
         var field = getField(key);
         var input = $('namecardEditInput');
@@ -1124,7 +961,6 @@
         });
     }
 
-
     function bindEditorInput() {
         var input = $('namecardEditInput');
         var clearBtn = $('namecardEditClearBtn');
@@ -1178,7 +1014,6 @@
             }
         });
     }
-
 
     function moveTemplateSelectToPreview(tool) {
         var template = $('ncTemplate');
@@ -1237,6 +1072,7 @@
                 }
             });
         }
+
         var websiteEditBtn = $('namecardWebsiteEditBtn');
 
         if (websiteEditBtn) {
@@ -1338,232 +1174,7 @@
 })();
 
 /* =========================================================
-   NAMECARD TAG EACH EDIT FINAL
-   - 하단 설명 태그를 버튼 하나씩 직접 수정
-   - ncTags 값은 내부적으로 콤마 문자열 유지
-========================================================= */
-
-(function () {
-    'use strict';
-
-    var activeTagIndex = null;
-
-    function $(id) {
-        return document.getElementById(id);
-    }
-
-    function cleanExampleText(value, fallback) {
-        var text = String(value || '').trim();
-
-        if (!text) return fallback || '';
-
-        return text.replace(/^예시\)\s*/g, '').trim() || fallback || '';
-    }
-
-    function getTagInputValue() {
-        var input = $('ncTags');
-
-        if (!input) return '현장상담, 조건안내, 방문예약';
-
-        var value = String(input.value || '').trim();
-
-        if (value) return value;
-
-        return cleanExampleText(input.getAttribute('placeholder'), '현장상담, 조건안내, 방문예약');
-    }
-
-    function getTags() {
-        var tags = getTagInputValue()
-            .split(',')
-            .map(function (tag) {
-                return tag.trim();
-            })
-            .filter(Boolean)
-            .slice(0, 3);
-
-        while (tags.length < 3) {
-            tags.push('');
-        }
-
-        return tags;
-    }
-
-    function setTags(tags) {
-        var input = $('ncTags');
-
-        if (!input) return;
-
-        input.value = tags
-            .map(function (tag) {
-                return String(tag || '').trim();
-            })
-            .filter(Boolean)
-            .join(', ');
-
-        input.dispatchEvent(new Event('input', {
-            bubbles: true
-        }));
-
-        input.dispatchEvent(new Event('change', {
-            bubbles: true
-        }));
-    }
-
-    function markTagButtons() {
-        var wrap = $('ncPreviewTags');
-
-        if (!wrap) return;
-
-        /* 전체 태그 영역이 아니라, 태그 하나하나만 선택되게 */
-        wrap.classList.remove('namecard-edit-target');
-        wrap.removeAttribute('data-namecard-field');
-        wrap.removeAttribute('tabindex');
-        wrap.removeAttribute('role');
-        wrap.removeAttribute('title');
-
-        Array.prototype.forEach.call(wrap.querySelectorAll('span'), function (span, index) {
-            span.classList.add('namecard-tag-edit-target');
-            span.dataset.namecardTagIndex = String(index);
-            span.setAttribute('tabindex', '0');
-            span.setAttribute('role', 'button');
-            span.setAttribute('title', '태그 ' + String(index + 1) + ' 수정');
-        });
-    }
-
-    function markActiveTag(index) {
-        var wrap = $('ncPreviewTags');
-        var tool = $('namecardTool');
-
-        /* 일반 입력 항목 선택 표시 먼저 전부 제거 */
-        if (tool) {
-            Array.prototype.forEach.call(
-                tool.querySelectorAll('.namecard-edit-target.is-namecard-selected'),
-                function (el) {
-                    el.classList.remove('is-namecard-selected');
-                }
-            );
-        }
-
-        if (!wrap) return;
-
-        /* 태그는 선택한 태그 하나만 표시 */
-        Array.prototype.forEach.call(wrap.querySelectorAll('span'), function (span, spanIndex) {
-            span.classList.toggle('is-namecard-selected', spanIndex === index);
-        });
-    }
-
-    function selectTag(index) {
-        var tags = getTags();
-        var editInput = $('namecardEditInput');
-        var editLabel = $('namecardEditLabel');
-        var editCount = $('namecardEditCount');
-
-        if (!editInput || !editLabel || !editCount) return;
-
-        activeTagIndex = index;
-
-        editLabel.textContent = '태그 ' + String(index + 1);
-        editInput.disabled = false;
-        editInput.value = tags[index] || '';
-        editInput.placeholder = '예시) 현장상담';
-        editInput.maxLength = 10;
-        editCount.textContent = String(editInput.value.length) + '/10';
-
-        markActiveTag(index);
-
-        window.setTimeout(function () {
-            editInput.focus();
-            editInput.select();
-        }, 0);
-    }
-
-    document.addEventListener('click', function (event) {
-        var tag = event.target.closest('#ncPreviewTags span');
-
-        if (!tag) {
-            if (event.target.closest('.namecard-edit-target')) {
-                activeTagIndex = null;
-            }
-
-            return;
-        }
-
-        event.preventDefault();
-        event.stopImmediatePropagation();
-
-        markTagButtons();
-
-        var index = Number(tag.dataset.namecardTagIndex || '0');
-
-        selectTag(index);
-    }, true);
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-
-        var tag = event.target.closest('#ncPreviewTags span');
-
-        if (!tag) return;
-
-        event.preventDefault();
-        event.stopImmediatePropagation();
-
-        var index = Number(tag.dataset.namecardTagIndex || '0');
-
-        selectTag(index);
-    }, true);
-
-    document.addEventListener('input', function (event) {
-        var editInput = $('namecardEditInput');
-
-        if (!editInput || event.target !== editInput) return;
-        if (activeTagIndex === null) return;
-
-        event.stopImmediatePropagation();
-
-        var tags = getTags();
-        var editCount = $('namecardEditCount');
-
-        tags[activeTagIndex] = editInput.value;
-
-        setTags(tags);
-
-        if (editCount) {
-            editCount.textContent = String(editInput.value.length) + '/10';
-        }
-
-        window.setTimeout(function () {
-            markTagButtons();
-            markActiveTag(activeTagIndex);
-        }, 0);
-    }, true);
-
-    document.addEventListener('DOMContentLoaded', function () {
-        window.setTimeout(markTagButtons, 300);
-    });
-
-    document.addEventListener('input', function (event) {
-        if (!event.target.closest('#namecardTool')) return;
-
-        window.setTimeout(markTagButtons, 0);
-    }, true);
-
-    document.addEventListener('change', function (event) {
-        if (!event.target.closest('#namecardTool')) return;
-
-        window.setTimeout(markTagButtons, 0);
-    }, true);
-
-    window.setInterval(function () {
-        if ($('namecardTool')) {
-            markTagButtons();
-        }
-    }, 800);
-})();
-/* =========================================================
    NAMECARD EDIT MODE LINK BLOCK FINAL
-   - 편집 화면에서는 명함 카드 클릭 시 연결주소 이동 방지
-   - 카톡/문자 공유용 실제 페이지에서는 링크 사용 가능
 ========================================================= */
 
 (function () {
@@ -1585,7 +1196,6 @@
 
         if (!card) return;
 
-        /* 편집 화면에서는 링크 이동만 막고, 텍스트 선택 클릭은 계속 전달 */
         event.preventDefault();
     }
 
