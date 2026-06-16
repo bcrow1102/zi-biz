@@ -3954,6 +3954,52 @@
 }
 
 /* =========================================================
+   NAMECARD TEMPLATE IMAGE BACKGROUND RESTORE SAFE
+   - 시안1/2/3 배경 이미지만 복구
+   - 카드 장식/가상요소/텍스트 위치는 건드리지 않음
+========================================================= */
+
+#namecardTool .namecard-card.template-red {
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.38)),
+        url("./images/namecard-bg-01.jpg") center / cover no-repeat !important;
+}
+
+#namecardTool .namecard-card.template-blue {
+    background:
+        linear-gradient(90deg, rgba(34, 50, 36, 0.32), rgba(34, 50, 36, 0.10)),
+        url("./images/namecard-bg-02.jpg") center / cover no-repeat !important;
+}
+
+#namecardTool .namecard-card.template-gold {
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.12)),
+        url("./images/namecard-bg-03.jpg") center / cover no-repeat !important;
+    color: #f3e6b3 !important;
+}
+
+/* 시안3 텍스트 색상 복구 */
+#namecardTool .namecard-card.template-gold .namecard-logo,
+#namecardTool .namecard-card.template-gold .namecard-card-middle strong,
+#namecardTool .namecard-card.template-gold .namecard-info-col span {
+    color: #f3d37a !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-person,
+#namecardTool .namecard-card.template-gold .namecard-card-middle p,
+#namecardTool .namecard-card.template-gold .namecard-info-col strong {
+    color: rgba(255, 246, 214, 0.84) !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-divider {
+    background: rgba(243, 211, 122, 0.42) !important;
+}
+
+#namecardTool .namecard-card.template-gold .namecard-person::before {
+    background: rgba(243, 211, 122, 0.44) !important;
+}
+
+/* =========================================================
    NAMECARD KAKAO OG REAL CARD SAFE FINAL
    - OG 캡처는 JS에서 #ncCard만 사용
    - 시안1/2/3 기존 디자인을 덮지 않음
