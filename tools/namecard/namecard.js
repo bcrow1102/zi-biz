@@ -286,7 +286,7 @@
     }
 
     async function createNamecardOgImage(userId, slug) {
-        var card = document.getElementById('ncOgCapture');
+        var card = document.getElementById('ncCard');
 
         if (!card || !window.html2canvas) {
             return '';
