@@ -4582,104 +4582,10 @@
 }
 
 /* =========================================================
-   NAMECARD KAKAO OG CARD LOOK FINAL
-   - 명함 스캔본 느낌 강화
-   - 모서리 라운드 강화
-   - 카드/배경 분리감 강화
-========================================================= */
-
-#namecardTool.is-namecard-direct-final .namecard-preview-scene {
-    background:
-        radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.55), transparent 26%),
-        linear-gradient(180deg, #eef2f7 0%, #e7ecf3 100%) !important;
-}
-
-/* 명함 자체 */
-#namecardTool.is-namecard-direct-final .namecard-card {
-    position: relative !important;
-    border-radius: 24px !important;
-    overflow: hidden !important;
-    box-shadow:
-        0 20px 40px rgba(15, 23, 42, 0.16),
-        0 8px 18px rgba(15, 23, 42, 0.10) !important;
-    transform: translateY(0) !important;
-}
-
-/* 종이 가장자리 느낌 */
-#namecardTool.is-namecard-direct-final .namecard-card::before {
-    content: "" !important;
-    display: block !important;
-    position: absolute !important;
-    inset: 0 !important;
-    border-radius: inherit !important;
-    pointer-events: none !important;
-    box-shadow:
-        inset 0 0 0 1px rgba(17, 24, 39, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.72) !important;
-}
-
-/* 아주 약한 하이라이트 */
-#namecardTool.is-namecard-direct-final .namecard-card::after {
-    content: "" !important;
-    display: block !important;
-    position: absolute !important;
-    inset: 0 !important;
-    border-radius: inherit !important;
-    pointer-events: none !important;
-    background:
-        linear-gradient(120deg,
-            rgba(255, 255, 255, 0.20) 0%,
-            rgba(255, 255, 255, 0.00) 26%,
-            rgba(255, 255, 255, 0.00) 76%,
-            rgba(255, 255, 255, 0.12) 100%) !important;
-    opacity: 0.9 !important;
-}
-
-/* 카드 안 여백 조금 더 고급스럽게 */
-@media (min-width: 761px) {
-    #namecardTool.is-namecard-direct-final .namecard-card-inner {
-        padding: 32px 34px 27px !important;
-    }
-}
-
-@media (max-width: 760px) {
-    #namecardTool.is-namecard-direct-final .namecard-card {
-        border-radius: 20px !important;
-    }
-
-    #namecardTool.is-namecard-direct-final .namecard-card-inner {
-        padding: 22px 20px 16px !important;
-    }
-}
-
-/* =========================================================
-   NAMECARD OG CAPTURE WRAP
-   - 카톡 OG에서 아래 설명과 분리감 주기
-========================================================= */
-
-#namecardTool .namecard-og-capture {
-    width: min(100%, 560px) !important;
-    margin: 0 auto !important;
-    padding: 0 0 16px !important;
-    /* 아래 여백이 핵심 */
-    display: flex !important;
-    justify-content: center !important;
-    align-items: flex-start !important;
-    background: transparent !important;
-}
-
-#namecardTool .namecard-og-capture::after {
-    content: "" !important;
-    display: block !important;
-    width: 100% !important;
-    height: 10px !important;
-    flex: 0 0 10px !important;
-}
-
-/* =========================================================
-   NAMECARD KAKAO OG REAL CARD FINAL
-   - 카톡 OG는 명함 카드 자체만 보이게
-   - 래퍼 여백/배경 효과 제거
+   NAMECARD KAKAO OG REAL CARD SAFE FINAL
+   - OG 캡처는 JS에서 #ncCard만 사용
+   - 시안1/2/3 기존 디자인을 덮지 않음
+   - 래퍼는 화면 구조용으로만 유지
 ========================================================= */
 
 #namecardTool .namecard-og-capture {
@@ -4696,53 +4602,16 @@
     display: none !important;
 }
 
-/* 카톡 OG에서 진짜 명함처럼 보이도록 카드 자체만 정리 */
+/* 카톡 OG 캡처용: 전체 시안 공통으로 과한 외부 여백만 방지 */
 #namecardTool.is-namecard-direct-final .namecard-card {
-    border-radius: 18px !important;
     overflow: hidden !important;
     background-clip: padding-box !important;
 }
 
-/* 외부 그림자는 캡처에서 잘리거나 회색 여백을 만들 수 있어서 약하게 */
-#namecardTool.is-namecard-direct-final .namecard-card {
-    box-shadow:
-        0 0 0 1px rgba(17, 24, 39, 0.06),
-        0 8px 18px rgba(15, 23, 42, 0.10) !important;
-}
-
-/* 모바일/카톡 캡처용: 모서리 너무 과하지 않게 */
-@media (max-width: 760px) {
-    #namecardTool.is-namecard-direct-final .namecard-card {
-        border-radius: 16px !important;
-    }
-}
-
-/* =========================================================
-   NAMECARD KAKAO OG REAL CARD FINAL
-   - 카톡 OG는 명함 카드 자체만 캡처
-   - 바깥 회색 여백/래퍼 효과 제거
-========================================================= */
-
-#namecardTool .namecard-og-capture {
-    width: auto !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    display: block !important;
-    background: transparent !important;
-}
-
-#namecardTool .namecard-og-capture::before,
-#namecardTool .namecard-og-capture::after {
+/* 시안3 보호: 뒤쪽 공통 보정이 골드 장식을 다시 덮지 못하게 고정 */
+#namecardTool .namecard-card.template-gold::before,
+#namecardTool .namecard-card.template-gold::after,
+#namecardTool .namecard-card.template-gold .namecard-card-inner::after {
     content: none !important;
     display: none !important;
-}
-
-/* 카톡 OG용 명함 자체 */
-#namecardTool.is-namecard-direct-final .namecard-card {
-    border-radius: 18px !important;
-    overflow: hidden !important;
-    background-clip: padding-box !important;
-    box-shadow:
-        0 0 0 1px rgba(17, 24, 39, 0.06),
-        0 8px 18px rgba(15, 23, 42, 0.10) !important;
 }
