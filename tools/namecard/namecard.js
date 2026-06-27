@@ -196,7 +196,7 @@
     }
 
     function buildNamecardShareUrl(slug) {
-        var base = window.location.origin || 'https://지모비즈.com';
+        var base = 'https://zi-biz.vercel.app';
 
         return base + '/n/' + encodeURIComponent(slug);
     }
@@ -417,7 +417,7 @@
     function updateTemplate(templateName) {
         if (!els.card) return;
 
-        els.card.classList.remove('template-red', 'template-blue', 'template-gold');
+        els.card.classList.remove('template-red', 'template-blue', 'template-gold', 'template-blackgold');
         els.card.classList.add(templateName || defaults.template);
     }
 
@@ -1099,6 +1099,7 @@
                     '   <option value="template-red">시안 1</option>' +
                     '   <option value="template-blue">시안 2</option>' +
                     '   <option value="template-gold">시안 3</option>' +
+                    '   <option value="template-blackgold">시안 4</option>' +
                     '</select>';
 
                 previewScene.appendChild(wrap);

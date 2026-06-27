@@ -1209,7 +1209,7 @@
         var link = document.createElement('link');
         link.id = 'namecardToolCss';
         link.rel = 'stylesheet';
-        link.href = './tools/namecard/namecard.css';
+        link.href = './tools/namecard/namecard.css?v=70';
 
         document.head.appendChild(link);
     }
@@ -1223,7 +1223,7 @@
 
             var script = document.createElement('script');
             script.id = 'namecardToolScript';
-            script.src = './tools/namecard/namecard.js';
+            script.src = './tools/namecard/namecard.js?v=40';
             script.onload = function () {
                 resolve();
             };
