@@ -3872,9 +3872,10 @@
 
         display: inline-flex !important;
         align-items: baseline !important;
-        gap: 3px !important;
+        gap: 4px !important;
 
-        font-size: 8.5px !important;
+
+        font-size: 11px !important;
         line-height: 1 !important;
         letter-spacing: -0.045em !important;
         white-space: nowrap !important;
@@ -3891,13 +3892,51 @@
         width: auto !important;
         max-width: none !important;
 
-        font-size: 8.5px !important;
+        font-size: 11px !important;
         line-height: 1 !important;
         letter-spacing: -0.045em !important;
         white-space: nowrap !important;
 
         overflow: visible !important;
         text-overflow: clip !important;
+    }
+
+    /* 시안3 전체 글씨 한 단계 확대 */
+    /* 시안3 전체 글씨 한 단계 확대 - 수정본 */
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-logo {
+        font-size: 36px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-logo.is-long {
+        font-size: 34px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-logo.is-very-long {
+        font-size: 30px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-person span {
+        font-size: 14px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-person strong {
+        font-size: 22px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-card-middle strong {
+        font-size: 18px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-card-middle p {
+        font-size: 14px !important;
+    }
+
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-info-col,
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-info-col--wide,
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-info-col span,
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-info-col strong,
+    #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold #ncPreviewEmail {
+        font-size: 11px !important;
     }
 
     /* 시안3 하단 세로 막대기 */
@@ -5097,4 +5136,152 @@
 #namecardTool .namecard-card.template-blackgold .namecard-person,
 #namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-person {
     left: 73.5% !important;
+}
+
+/* =========================================================
+   NAMECARD TEMPLATE 3 FONT FORCE FINAL
+   - 시안3 글씨 최종 강제 확대
+   - PC / 모바일 / 카톡 캡처 공통 적용
+========================================================= */
+
+#namecardTool #ncCard.namecard-card.template-gold .namecard-logo,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-logo {
+    font-size: 42px !important;
+    line-height: 0.95 !important;
+}
+
+#namecardTool #ncCard.namecard-card.template-gold .namecard-logo.is-long,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-logo.is-long {
+    font-size: 38px !important;
+    line-height: 0.95 !important;
+}
+
+#namecardTool #ncCard.namecard-card.template-gold .namecard-logo.is-very-long,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-logo.is-very-long {
+    font-size: 34px !important;
+    line-height: 0.95 !important;
+}
+
+#namecardTool #ncCard.namecard-card.template-gold .namecard-person span,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-person span {
+    font-size: 15px !important;
+    line-height: 1 !important;
+}
+
+#namecardTool #ncCard.namecard-card.template-gold .namecard-person strong,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-person strong {
+    font-size: 25px !important;
+    line-height: 1 !important;
+}
+
+#namecardTool #ncCard.namecard-card.template-gold .namecard-card-middle strong,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-card-middle strong {
+    font-size: 21px !important;
+    line-height: 1.22 !important;
+}
+
+#namecardTool #ncCard.namecard-card.template-gold .namecard-card-middle p,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-card-middle p {
+    font-size: 16px !important;
+    line-height: 1.22 !important;
+}
+
+#namecardTool #ncCard.namecard-card.template-gold .namecard-info-col,
+#namecardTool #ncCard.namecard-card.template-gold .namecard-info-col--wide,
+#namecardTool #ncCard.namecard-card.template-gold .namecard-info-col span,
+#namecardTool #ncCard.namecard-card.template-gold .namecard-info-col strong,
+#namecardTool #ncCard.namecard-card.template-gold #ncPreviewEmail,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-info-col,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-info-col--wide,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-info-col span,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-info-col strong,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold #ncPreviewEmail {
+    font-size: 11px !important;
+    line-height: 1 !important;
+}
+
+/* =========================================================
+   NAMECARD TEMPLATE 3 CONTACT FONT FINAL
+   - 시안3 하단 Mobile / Tel / E-mail 최종 크기
+========================================================= */
+
+#namecardTool #ncCard.namecard-card.template-gold .namecard-card-bottom .namecard-info-col,
+#namecardTool #ncCard.namecard-card.template-gold .namecard-card-bottom .namecard-info-col span,
+#namecardTool #ncCard.namecard-card.template-gold .namecard-card-bottom .namecard-info-col strong,
+#namecardTool #ncCard.namecard-card.template-gold #ncPreviewPhone,
+#namecardTool #ncCard.namecard-card.template-gold #ncPreviewLandline,
+#namecardTool #ncCard.namecard-card.template-gold #ncPreviewEmail,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-card-bottom .namecard-info-col,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-card-bottom .namecard-info-col span,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold .namecard-card-bottom .namecard-info-col strong,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold #ncPreviewPhone,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold #ncPreviewLandline,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-gold #ncPreviewEmail {
+    font-size: 15.5px !important;
+    line-height: 1.05 !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.045em !important;
+    white-space: nowrap !important;
+}
+
+/* =========================================================
+   NAMECARD TEMPLATE 4 KAKAO OG SAFE TEXT FINAL
+   - 시안4 메탈 그라데이션 제거
+   - 카톡 OG 캡처에서 글씨가 금색 막대로 찍히는 문제 해결
+========================================================= */
+
+#namecardTool .namecard-card.template-blackgold .namecard-logo,
+#namecardTool .namecard-card.template-blackgold .namecard-person span,
+#namecardTool .namecard-card.template-blackgold .namecard-person strong,
+#namecardTool .namecard-card.template-blackgold .namecard-card-middle strong,
+#namecardTool .namecard-card.template-blackgold .namecard-card-middle p,
+#namecardTool .namecard-card.template-blackgold .namecard-info-col span,
+#namecardTool .namecard-card.template-blackgold .namecard-info-col strong,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-logo,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-person span,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-person strong,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-card-middle strong,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-card-middle p,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-info-col span,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-info-col strong {
+    color: #e8c46a !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    -webkit-text-fill-color: #e8c46a !important;
+
+    text-shadow:
+        0 1px 0 rgba(255, 245, 190, 0.18),
+        0 2px 4px rgba(0, 0, 0, 0.55),
+        0 0 5px rgba(218, 172, 74, 0.18) !important;
+}
+
+/* 큰 글씨는 조금 더 밝게 */
+#namecardTool .namecard-card.template-blackgold .namecard-logo,
+#namecardTool .namecard-card.template-blackgold .namecard-person strong,
+#namecardTool .namecard-card.template-blackgold .namecard-card-middle strong,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-logo,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-person strong,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-card-middle strong {
+    color: #f3d98b !important;
+    -webkit-text-fill-color: #f3d98b !important;
+}
+
+/* 작은 글씨는 선명한 샴페인 골드 */
+#namecardTool .namecard-card.template-blackgold .namecard-person span,
+#namecardTool .namecard-card.template-blackgold .namecard-card-middle p,
+#namecardTool .namecard-card.template-blackgold .namecard-info-col strong,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-person span,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-card-middle p,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-info-col strong {
+    color: #efd58f !important;
+    -webkit-text-fill-color: #efd58f !important;
+}
+
+/* 하단 라벨 Mobile / Tel / E-mail */
+#namecardTool .namecard-card.template-blackgold .namecard-info-col span,
+#namecardTool.is-namecard-direct-final #ncCard.namecard-card.template-blackgold .namecard-info-col span {
+    color: #d9ae4e !important;
+    -webkit-text-fill-color: #d9ae4e !important;
 }
